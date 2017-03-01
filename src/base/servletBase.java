@@ -1,5 +1,7 @@
 package base;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
@@ -9,6 +11,7 @@ import java.sql.Statement;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
@@ -38,12 +41,13 @@ public class servletBase extends HttpServlet {
 	// Define states
 	protected static final int LOGIN_FALSE = 0;
 	protected static final int LOGIN_TRUE = 1;	
-	protected Connection conn = null;
+	//protected Connection conn = null;
 	
 	/**
 	 * Constructs a servlet and makes a connection to the database. 
 	 * It also writes all user names on the console for test purpose. 
 	 */
+    /*
     public servletBase() {
     	try{
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/base?" +
@@ -67,6 +71,7 @@ public class servletBase extends HttpServlet {
 		    System.out.println("VendorError: " + ex.getErrorCode());
 		}
     }
+    */
     
     /**
      * Checks if a user is logged in or not.
@@ -81,26 +86,45 @@ public class servletBase extends HttpServlet {
 			state = (Integer) objectState; 
 		return (state == LOGIN_TRUE);
     }
+
+    /**
+     * Genererar en sida av typen text/plain med kritisk felmeddelande,
+     * där denan metod endast används i BaseBlockSystem när klienten
+     * skulle råka komma åt BaseBlockSystem inifrån E-KYSS.
+     * @param response Tar emot aktuell svaranrop.
+     * @throws IOException Kastar ett undantag vid
+     */
+    protected void criticalErrorMessage(HttpServletResponse response) throws IOException {
+        response.setHeader("Content-Type", "text/plain");
+        response.setHeader("success", "yes");
+        PrintWriter writer = response.getWriter();
+        writer.write("A critical error has occured. Please go back and try again.\n");
+        writer.close();
+    }
     
     /**
      * Can be used to construct form elements.
      * @param par Input string
      * @return output string = "par" 
      */
+    /*
     protected String formElement(String par) {
     	return '"' + par + '"';
     }
+    */
     
     
     /**
      * Constructs the header of all servlets. 
      * @return String with html code for the header. 
      */
+    /*
     protected String getPageIntro() {
     	String intro = "<html>" +
                        "<head><title> The Base Block System </title></head>" +
                        "<body>";
     	return intro;
     }
+    */
 
 }

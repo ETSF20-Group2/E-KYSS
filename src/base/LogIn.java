@@ -42,6 +42,7 @@ public class LogIn extends servletBase {
      * Generates a form for login. 
      * @return HTML code for the form
      */
+    /*
     protected String loginRequestForm() {
     	String html = "<p>Please enter your name and password in order to log in:</p>";
     	html += "<p> <form name=" + formElement("input");
@@ -51,6 +52,7 @@ public class LogIn extends servletBase {
     	html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Submit") + '>';
     	return html;
     }
+    */
     
     
     /**
@@ -59,6 +61,7 @@ public class LogIn extends servletBase {
      * @param password The password of the user
      * @return true if the user should be accepted
      */
+    /*
     private boolean checkUser(String name, String password) {
 		
 		boolean userOk = false;
@@ -83,7 +86,7 @@ public class LogIn extends servletBase {
 		}
 		return userOk;
 	}
-
+	*/
     
     
 	/**
@@ -97,7 +100,7 @@ public class LogIn extends servletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		/*
 		// Get the session
 		HttpSession session = request.getSession(true);
 		
@@ -132,6 +135,9 @@ public class LogIn extends servletBase {
        	}
 		
 		out.println("</body></html>");
+		*/
+
+        criticalErrorMessage(response);
 	}
 
 	/**

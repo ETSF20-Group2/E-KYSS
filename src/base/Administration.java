@@ -27,10 +27,7 @@ import java.util.Random;
 public class Administration extends servletBase {
 	private static final long serialVersionUID = 1L;
 	private static final int PASSWORD_LENGTH = 6;
-       
-    /**
-     * @see servletBase#servletBase()
-     */
+
     public Administration() {
         super();
         // TODO Auto-generated constructor stub
@@ -40,6 +37,7 @@ public class Administration extends servletBase {
      * generates a form for adding new users
      * @return HTML code for the form
      */
+    /*
     private String addUserForm() {
     	String html;
     	html = "<p> <form name=" + formElement("input");
@@ -49,12 +47,14 @@ public class Administration extends servletBase {
     	html += "</form>";
     	return html;
     }
+    */
     
     /**
      * Checks if a username corresponds to the requirements for user names. 
      * @param name The investigated username
      * @return True if the username corresponds to the requirements
      */
+    /*
     private boolean checkNewName(String name) {
     	int length = name.length();
     	boolean ok = (length>=5 && length<=10);
@@ -70,11 +70,13 @@ public class Administration extends servletBase {
     		}    	
     	return ok;
     }
+    */
     
     /**
      * Creates a random password.
      * @return a randomly chosen password
      */
+    /*
     private String createPassword() {
     	String result = "";
     	Random r = new Random();
@@ -82,6 +84,7 @@ public class Administration extends servletBase {
     		result += (char)(r.nextInt(26)+97); // 122-97+1=26
     	return result;
     }
+    */
     
     
     /**
@@ -90,6 +93,7 @@ public class Administration extends servletBase {
      * @return true if it was possible to add the name. False if it was not, e.g. 
      * because the name already exist in the database. 
      */
+    /*
     private boolean addUser(String name) {
     	boolean resultOk = true;
     	try{
@@ -108,12 +112,14 @@ public class Administration extends servletBase {
 		}
     	return resultOk;
     }
+    */
     
     /**
      * Deletes a user from the database. 
      * If the user does not exist in the database nothing happens. 
      * @param name name of user to be deleted. 
      */
+    /*
     private void deleteUser(String name) {
     	try{
 			Statement stmt = conn.createStatement();
@@ -128,6 +134,7 @@ public class Administration extends servletBase {
 		    System.out.println("VendorError: " + ex.getErrorCode());
 		}
     }
+    */
 
 
 	/**
@@ -142,7 +149,7 @@ public class Administration extends servletBase {
 	 * 
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+		/*PrintWriter out = response.getWriter();
 		out.println(getPageIntro());
 		
 		String myName = "";
@@ -213,13 +220,13 @@ public class Administration extends servletBase {
 				out.println("</body></html>");
 			} else  // name not admin
 				response.sendRedirect("functionality.html");
+		    */
+
+        criticalErrorMessage(response);
 	}
 
-	/**
-	 *
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }
