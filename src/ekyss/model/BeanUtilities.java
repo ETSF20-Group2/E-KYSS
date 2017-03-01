@@ -1,4 +1,4 @@
-package ekys.model;
+package ekyss.model;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.*;

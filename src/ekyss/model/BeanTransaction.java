@@ -1,4 +1,4 @@
-package ekys.model;
+package ekyss.model;
 
 public class BeanTransaction {
 }
