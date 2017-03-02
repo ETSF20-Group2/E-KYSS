@@ -105,6 +105,11 @@ public class servletBase extends HttpServlet {
         writer.close();
     }
 
+    protected void forwardToView(HttpServletRequest request, HttpServletResponse response, String patternToJSP, Object bean) throws ServletException, IOException {
+        request.setAttribute("bean", bean);
+        forwardToView(request, response, patternToJSP);
+    }
+
     protected void forwardToView(HttpServletRequest request, HttpServletResponse response, String patternToJSP) throws ServletException, IOException {
         ServletContext sc = getServletContext();
         RequestDispatcher rd = sc.getRequestDispatcher(patternToJSP);
