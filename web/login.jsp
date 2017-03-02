@@ -36,8 +36,8 @@
             <div class="col-md-4">
                 ${infoMsg}
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/login">
-                    <h2 class="form-signin-heading">Välkommen</h2>
-                    <p class="form-signin-heading">För att logga in ange användarnamn och lösenord.</p>
+                    <h2 class="form-signin-heading">Välkommen till E-KYSS</h2>
+                    <p class="form-signin-heading">Logga in genom att ange ditt användarnamn, lösenord samt projektgrupp.</p>
                     <div class="input-group">
                         <span class="input-group-addon" id="sizing-addon-username"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
                         <label for="username" class="sr-only">Användarnamn</label>
