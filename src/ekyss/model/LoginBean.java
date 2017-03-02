@@ -9,6 +9,9 @@ public class LoginBean implements Serializable {
     private boolean login = false;
     private List<String> groups = new ArrayList<>();
     private int err_code = 0;
+    private String username = null;
+    private String password = null;
+    private String group = null;
 
     /**
      * Sätter status i bönan för att veta om användaren är inloggad eller ej.
@@ -25,7 +28,8 @@ public class LoginBean implements Serializable {
     /**
      * Sätter felkod, som används i login.jsp
      * @param err_code 0 = inget felmeddelande, 1 = fel anv.namn och/eller lösenord
-     *                 2 = felaktigt format för anv.namn och/eller lösenord.
+     *                 2 = utloggningsmeddelande efter 30 minuter
+     *                 3 = meddelande vid aktiv utloggning
      */
     public void setErrorCode(int err_code) {
         this.err_code = err_code;
@@ -36,15 +40,59 @@ public class LoginBean implements Serializable {
     }
 
     /**
-     * Sätter vilka projektgrupper som finns i databasen.
+     * Lägger till en lista av grupper till listan över tillgängliga projektgrupper.
      * @param groups Stränglista innehållandes grupper.
      */
     public void setGroups(ArrayList<String> groups) {
-        this.groups = groups;
+        this.groups.addAll(groups);
+    }
+
+    /**
+     * Lägger till en projektgrupp i listan över tillgängliga projektgrupper.
+     * @param group Namn på projektgrupp.
+     */
+    public void setGroups(String group) {
+        this.groups.add(group);
     }
 
     public List<String> getGroups() {
         return groups;
+    }
+
+    /**
+     * Lägger in användarnamn.
+     * @param username Användarnamn.
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Lägger in lösenord.
+     * @param password Lösenord.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Lägger in den projektgrupp användaren loggar in under.
+     * @param group Projektgrupp.
+     */
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public String getGroup() {
+        return group;
     }
 
 }
