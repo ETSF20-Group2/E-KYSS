@@ -58,7 +58,6 @@ public class LoginServlet extends LogIn {
         bean.setGroups("DDD");
         // Sätter test för felmeddelande
         bean.setErrorCode(1);
-        request.setAttribute("bean", bean);
         // ---- SLUT PÅ TEST ----
 
         forwardToView(request, response, "/login.jsp", bean);
