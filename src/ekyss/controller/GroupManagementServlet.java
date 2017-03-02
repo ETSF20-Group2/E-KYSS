@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(
         name="GroupManagementServlet",
         urlPatterns = {
-                "./management/groups",
+                "/management/groups",
         }
 )
 public class GroupManagementServlet extends Administration {

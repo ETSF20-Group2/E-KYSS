@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(
         name="UserServlet",
         urlPatterns = {
-                "./user",
+                "/user",
         }
 )
 public class UserServlet extends servletBase {

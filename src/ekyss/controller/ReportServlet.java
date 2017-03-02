@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(
         name="ReportServlet",
         urlPatterns = {
-                "./report",
+                "/report",
         }
 )
 public class ReportServlet extends servletBase {

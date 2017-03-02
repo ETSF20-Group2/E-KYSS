@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(
         name="UserManagementServlet",
         urlPatterns = {
-                "./management/users",
+                "/management/users",
         }
 )
 public class UserManagementServlet extends Administration {
