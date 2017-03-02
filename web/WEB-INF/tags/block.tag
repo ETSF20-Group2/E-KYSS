@@ -3,6 +3,7 @@
 <%@ attribute name="navigation" fragment="true" %>
 <%@ attribute name="javascript" fragment="true" %>
 <%@ attribute name="stylesheets" fragment="true" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="sv">
@@ -22,7 +23,11 @@
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top">
-            <jsp:invoke fragment="navigation" />
+            <t:menu>
+                <jsp:attribute name="container">
+                    <jsp:invoke fragment="navigation" />
+                </jsp:attribute>
+            </t:menu>
         </nav>
         <div class="container">
             <jsp:doBody />

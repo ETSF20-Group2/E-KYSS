@@ -8,13 +8,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">E-KYSS</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/">E-KYSS</a>
     </div>
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
-            <jsp:invoke fragment="container"/>
+            <jsp:invoke fragment="container" />
             <c:choose>
-                <c:when test="${sessionScope.state ne 0}">
+                <c:when test="${sessionScope.state eq 1}">
                     <c:if test="${sessionScope.name eq 'admin'}">
                         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -28,7 +28,7 @@
                 </c:otherwise>
             </c:choose>
         </ul>
-        <c:if test="${sessionScope.state ne 0}">
+        <c:if test="${sessionScope.state eq 1}">
             <a href="${pageContext.request.contextPath}/user" type="button" class="btn btn-default navbar-btn navbar-right logedin" aria-label="Left Align">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${sessionScope.name}
             </a>
