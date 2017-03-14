@@ -3,5 +3,6 @@
 out
 
 # Files
+Do_not_send_up_this_to_GitHub.java
 *.iml
 *.jar
