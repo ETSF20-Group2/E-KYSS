@@ -1,6 +1,6 @@
 package ekyss.controller;
 
-import base.Administration;
+import base.servletBase;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebServlet;
                 "/management/groups",
         }
 )
-public class GroupManagementServlet extends Administration {
+public class GroupManagementServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;
 

@@ -43,39 +43,8 @@ public class servletBase extends HttpServlet {
 	
 	// Define states
 	protected static final int LOGIN_FALSE = 0;
-	protected static final int LOGIN_TRUE = 1;	
-	//protected Connection conn = null;
-	
-	/**
-	 * Constructs a servlet and makes a connection to the database. 
-	 * It also writes all user names on the console for test purpose. 
-	 */
-    /*
-    public servletBase() {
-    	try{
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/base?" +
-            "user=martin&password=");			
-			       
-						
-			// Display the contents of the database in the console. 
-			// This should be removed in the final version
-			Statement stmt = conn.createStatement();		    
-		    ResultSet rs = stmt.executeQuery("select * from users"); 
-		    while (rs.next( )) {
-		    	String name = rs.getString("name"); 
-		    	System.out.println("base " + name);
-		    	}
+	protected static final int LOGIN_TRUE = 1;
 
-		    stmt.close();
-			
-		} catch (SQLException ex) {
-		    System.out.println("SQLException: " + ex.getMessage());
-		    System.out.println("SQLState: " + ex.getSQLState());
-		    System.out.println("VendorError: " + ex.getErrorCode());
-		}
-    }
-    */
-    
     /**
      * Checks if a user is logged in or not.
      * @param request The HTTP Servlet request (so that the session can be found)
@@ -90,21 +59,6 @@ public class servletBase extends HttpServlet {
 		return (state == LOGIN_TRUE);
     }
 
-    /**
-     * Genererar en sida av typen text/plain med kritisk felmeddelande,
-     * där denan metod endast används i BaseBlockSystem när klienten
-     * skulle råka komma åt BaseBlockSystem inifrån E-KYSS.
-     * @param response Tar emot aktuell svaranrop.
-     * @throws IOException Kastar ett undantag vid
-     */
-    protected void criticalErrorMessage(HttpServletResponse response) throws IOException {
-        response.setHeader("Content-Type", "text/plain");
-        response.setHeader("success", "yes");
-        PrintWriter writer = response.getWriter();
-        writer.write("A critical error has occured. Please go back and try again.\n");
-        writer.close();
-    }
-
     protected void forwardToView(HttpServletRequest request, HttpServletResponse response, String patternToJSP, Object bean) throws ServletException, IOException {
         request.setAttribute("bean", bean);
         forwardToView(request, response, patternToJSP);
@@ -115,30 +69,5 @@ public class servletBase extends HttpServlet {
         RequestDispatcher rd = sc.getRequestDispatcher(patternToJSP);
         rd.forward(request, response);
     }
-    
-    /**
-     * Can be used to construct form elements.
-     * @param par Input string
-     * @return output string = "par" 
-     */
-    /*
-    protected String formElement(String par) {
-    	return '"' + par + '"';
-    }
-    */
-    
-    
-    /**
-     * Constructs the header of all servlets. 
-     * @return String with html code for the header. 
-     */
-    /*
-    protected String getPageIntro() {
-    	String intro = "<html>" +
-                       "<head><title> The Base Block System </title></head>" +
-                       "<body>";
-    	return intro;
-    }
-    */
 
 }

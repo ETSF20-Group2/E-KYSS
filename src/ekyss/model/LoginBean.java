@@ -32,7 +32,9 @@ public class LoginBean implements Serializable {
      *                 3 = meddelande vid aktiv utloggning
      */
     public void setErrorCode(int err_code) {
-        this.err_code = err_code;
+        if ( (err_code-0)*(err_code-3) <= 0 ) {
+            this.err_code = err_code;
+        }
     }
 
     public int getErrorCode() {

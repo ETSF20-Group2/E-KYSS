@@ -1,6 +1,6 @@
 package ekyss.controller;
 
-import base.LogIn;
+import base.servletBase;
 import ekyss.model.BeanUtilities;
 import ekyss.model.LoginBean;
 
@@ -21,7 +21,7 @@ import java.util.List;
                 "/logout",
         }
 )
-public class LoginServlet extends LogIn {
+public class LoginServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;
 
