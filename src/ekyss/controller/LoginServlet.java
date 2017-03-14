@@ -37,7 +37,7 @@ public class LoginServlet extends servletBase {
         // Test om informationen kommer in till bönan från POST-anropet
         System.out.println("USERNAME: " + bean.getUsername());
         System.out.println("PASSWORD: " + bean.getPassword());
-        System.out.println("GROUP: " + bean.getGroup());
+        System.out.println("GROUP: " + bean.getSelectedGroup());
         // Skicka tillbaka till login
         doGet(request, response);
         // --- SLUT PÅ TEST ----
@@ -52,10 +52,10 @@ public class LoginServlet extends servletBase {
         // --- START AV TEST ----
         // Test för JSP innan modellen implementeras.
         // Sätter in test för projektgrupp
-        bean.setGroups("AAA");
-        bean.setGroups("BBB");
-        bean.setGroups("CCC");
-        bean.setGroups("DDD");
+        bean.setAllGroups("AAA");
+        bean.setAllGroups("BBB");
+        bean.setAllGroups("CCC");
+        bean.setAllGroups("DDD");
         // Sätter test för felmeddelande
         bean.setErrorCode(2);
         // ---- SLUT PÅ TEST ----

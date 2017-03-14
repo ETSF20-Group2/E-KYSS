@@ -45,7 +45,7 @@ public class LoginBean implements Serializable {
      * Lägger till en lista av grupper till listan över tillgängliga projektgrupper.
      * @param groups Stränglista innehållandes grupper.
      */
-    public void setGroups(ArrayList<String> groups) {
+    public void setAllGroups(ArrayList<String> groups) {
         this.groups.addAll(groups);
     }
 
@@ -53,11 +53,11 @@ public class LoginBean implements Serializable {
      * Lägger till en projektgrupp i listan över tillgängliga projektgrupper.
      * @param group Namn på projektgrupp.
      */
-    public void setGroups(String group) {
+    public void setAllGroups(String group) {
         this.groups.add(group);
     }
 
-    public List<String> getGroups() {
+    public List<String> getAllGroups() {
         return groups;
     }
 
@@ -89,11 +89,11 @@ public class LoginBean implements Serializable {
      * Lägger in den projektgrupp användaren loggar in under.
      * @param group Projektgrupp.
      */
-    public void setGroup(String group) {
+    public void setSelectedGroup(String group) {
         this.group = group;
     }
 
-    public String getGroup() {
+    public String getSelectedGroup() {
         return group;
     }
 
