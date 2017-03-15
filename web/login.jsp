@@ -22,7 +22,7 @@
     </c:if>
 </c:set>
 <c:set var="groups">
-    <c:forEach items="${bean.getGroups()}" var="group">
+    <c:forEach items="${bean.getAllGroups()}" var="group">
         <option value="${group}">${group}</option>
     </c:forEach>
 </c:set>

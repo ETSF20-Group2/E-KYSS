@@ -1,8 +1,12 @@
 # Folders
+.settings
 .idea
 out
+.DS_Store
 
 # Files
 Do_not_send_up_this_to_GitHub.java
+.classpath
+.project
 *.iml
 *.jar
