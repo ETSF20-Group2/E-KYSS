@@ -24,7 +24,7 @@
 <c:set var="groups">
     <c:if test="${not empty bean.getAllGroups()}">
         <label for="selectGroup">Projektgrupp:</label>
-        <select class="form-control" id="selectGroup" name="group">
+        <select class="form-control" id="selectGroup" name="selectedGroup">
             <c:forEach items="${bean.getAllGroups()}" var="group">
                 <option value="${group}">${group}</option>
             </c:forEach>

@@ -35,21 +35,26 @@ public class LoginServlet extends servletBase {
         LoginBean bean = new LoginBean();
         BeanUtilities.populateBean(bean, request);
 
+        if (bean.getSelectedGroup() == null) {
 
 
-        // --- START AV TEST ----
-        // Test om informationen kommer in till bönan från POST-anropet
-        System.out.println("USERNAME: " + bean.getUsername());
-        System.out.println("PASSWORD: " + bean.getPassword());
-        System.out.println("GROUP: " + bean.getSelectedGroup());
-        // Skicka tillbaka till login
+
+
+            System.out.println("###### admin #########");
+        } else {
+
+
+
+            System.out.println("###### normal #########");
+        }
+
         doGet(request, response);
-        // --- SLUT PÅ TEST ----
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession(true);
+
         LoginBean bean = BeanFactory.getLoginBean();
 
         if (request.getServletPath().equals("/login")) {
