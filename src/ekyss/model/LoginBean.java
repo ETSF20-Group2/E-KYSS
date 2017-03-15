@@ -12,6 +12,7 @@ public class LoginBean implements Serializable {
     private String username = null;
     private String password = null;
     private String group = null;
+    private boolean adminLogin = false;
 
     /**
      * Sätter status i bönan för att veta om användaren är inloggad eller ej.
@@ -45,7 +46,7 @@ public class LoginBean implements Serializable {
      * Lägger till en lista av grupper till listan över tillgängliga projektgrupper.
      * @param groups Stränglista innehållandes grupper.
      */
-    public void setAllGroups(ArrayList<String> groups) {
+    public void setAllGroups(List<String> groups) {
         this.groups.addAll(groups);
     }
 
@@ -95,6 +96,18 @@ public class LoginBean implements Serializable {
 
     public String getSelectedGroup() {
         return group;
+    }
+
+    /**
+     * Val av layout för inloggningssidan.
+     * @param adminLogin True - administrationsinloggning, False - ordinarie användarinloggning
+     */
+    public void setAdminLogin(boolean adminLogin) {
+        this.adminLogin = adminLogin;
+    }
+
+    public boolean getAdminLogin() {
+        return adminLogin;
     }
 
 }

@@ -26,7 +26,7 @@ public class DatabaseHandlerTest {
         LoginBean b = new LoginBean();
         b.setUsername("Elihn");
         b.setPassword("1234");
-        b.setGroup("2");
+        b.setSelectedGroup("2");
         assertTrue(db.loginUser(b));
         end();
     }
@@ -37,13 +37,13 @@ public class DatabaseHandlerTest {
         LoginBean b = new LoginBean();
         b.setUsername("Elihn");
         b.setPassword("123");
-        b.setGroup("2");
+        b.setSelectedGroup("2");
         assertFalse(db.loginUser(b));
         b.setPassword("1234");
         b.setUsername("E");
         assertFalse(db.loginUser(b));
         b.setUsername("Elihn");
-        b.setGroup("1");
+        b.setSelectedGroup("1");
         assertFalse(db.loginUser(b));
         end();
     }
@@ -257,7 +257,7 @@ public class DatabaseHandlerTest {
         LoginBean login = new LoginBean();
         login.setUsername("test");
         login.setPassword("test");
-        login.setGroup("1");
+        login.setSelectedGroup("1");
         UserManagementBean create = new UserManagementBean();
         create.setUserName("test");
         create.setPassword("test");

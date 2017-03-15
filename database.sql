@@ -24,7 +24,7 @@ role varChar(10),
 UNIQUE (groupName, member), -- = en medlem kan bara ha en roll per grupp
 FOREIGN KEY (groupName) references ProjectGroups(groupName) ON UPDATE CASCADE
 ON DELETE CASCADE,
-FOREIGN KEY (member) REFERENCES users(userName) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY (member) REFERENCES Users(userName) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -60,7 +60,7 @@ d_t Integer DEFAULT 0, i_t Integer DEFAULT 0, f_t Integer DEFAULT 0, r_t Integer
 signed boolean DEFAULT FALSE,
 FOREIGN KEY (user) REFERENCES Users(userName) ON UPDATE CASCADE ON DELETE CASCADE, -- !!!Hela tidsrapporten tas borst. kanske bättre med SET NULL
 FOREIGN KEY (groupName) REFERENCES ProjectGroups(groupName) ON UPDATE CASCADE ON DELETE CASCADE, -- !!! SOM OVAN
-PRIMARY KEY (User, week, groupName) -- = Varje användare kan bara tidsrapportera en gång i veckan
+PRIMARY KEY (user, week, groupName) -- = Varje användare kan bara tidsrapportera en gång i veckan
 );
 
 -----------------------------------------------------------------
@@ -195,7 +195,7 @@ INSERT INTO Users(userName, emial, password) VALUES('admin', '', 'adminp');
 
 ----- Inserts for testing (will be removed) -------------------------------------
 
-INSERT INTO USERS values('Johannes', '1234', '1234...'), 
+INSERT INTO Users values('Johannes', '1234', '1234...'),
 ('Elihn', '1234', '1234....'),
 ('Kalle', '1234', '1234....'),
 ('Pelle', '1234', '1234....'),

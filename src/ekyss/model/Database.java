@@ -17,7 +17,6 @@ public class Database {
         url = Do_not_send_up_this_to_GitHub.getUrl();
         user = Do_not_send_up_this_to_GitHub.getUser();
         password = Do_not_send_up_this_to_GitHub.getPass();
-        System.out.print("url: " + url + " user: " + user + " pass:" + password);
     }
 
     public static Database getInstance() {
