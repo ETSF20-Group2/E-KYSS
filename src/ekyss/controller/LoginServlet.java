@@ -32,6 +32,9 @@ public class LoginServlet extends servletBase {
     private final int LOGIN_SING_OUT_DO_TO_INACTIVITY = 2;
     private final int LOGIN_SING_OUT = 3;
 
+    private final int LOGIN_TYPE_ADMIN = 0;
+    private final int LOGIN_TYPE_COMMON = 1;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession(true);
@@ -39,7 +42,7 @@ public class LoginServlet extends servletBase {
         LoginBean bean = new LoginBean();
         BeanUtilities.populateBean(bean, request);
 
-        // Kontrollerar om viklen typ av inloggning som används
+        // Kontrollerar viklen typ av inloggning som används
         if (bean.getSelectedGroup() == null) {
             bean.setAdminLogin(true);
         } else {
@@ -59,6 +62,11 @@ public class LoginServlet extends servletBase {
         } else {
             // Inloggninsuppgifter inkorrekta, skickas tillbaka till inloggning.
             request.setAttribute("msg_code", LOGIN_WRONG_CREDENTIAL);
+            if (bean.getAdminLogin()) {
+                request.setAttribute("login_type", LOGIN_TYPE_ADMIN);
+            } else {
+                request.setAttribute("login_type", LOGIN_TYPE_COMMON);
+            }
         }
 
         doGet(request, response);
@@ -69,16 +77,38 @@ public class LoginServlet extends servletBase {
         HttpSession session = request.getSession(true);
         LoginBean bean = BeanFactory.getLoginBean();
 
-        if (loggedIn(request) && request.getServletPath().equals("/logout")) {
-            session.setAttribute("state", LOGIN_FALSE);
-            bean.setErrorCode(LOGIN_SING_OUT);
-        } else if (request.getServletPath().equals("/login")) {
-            bean.setAdminLogin(true);
+        if (loggedIn(request)) {
+            // Användare inloggad
+            if (request.getServletPath().equals("/logout")) {
+                // Användaren kommer till ./logout => Användare loggas ut.
+                session.setAttribute("state", LOGIN_FALSE);
+                bean.setErrorCode(LOGIN_SING_OUT);
+            } else {
+                // Användare kommer till ./ eller ./login => omdirigeras till ./dashboard
+                response.sendRedirect("/dashboard");
+                return;
+            }
         } else {
-            bean.setAdminLogin(false);
+            // Användare ej inloggad
+            if (request.getAttribute("login_type") != null) {
+                // Användaren vidaresänds från en befintlig inloggningssession.
+                // Returnera tillbaka till samma inloggningssession som användaren kom ifrån.
+                if ((int) request.getAttribute("login_type") == LOGIN_TYPE_ADMIN) {
+                    bean.setAdminLogin(true);
+                } else {
+                 bean.setAdminLogin(false);
+                }
+                bean.setErrorCode((int) request.getAttribute("msg_code"));
+            } else if (request.getServletPath().equals("/login")) {
+                // Användare kommer in till administrationsinloggning
+                bean.setAdminLogin(true);
+            } else {
+                // Användare kommer in till den allmänna inloggningen
+                bean.setAdminLogin(false);
+            }
         }
 
-        forwardToView(request, response, "/login.jsp", bean);
+        forwardToView(request, response, "/login.jsp",bean);
     }
 
 }
