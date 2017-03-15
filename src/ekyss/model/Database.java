@@ -1,10 +1,7 @@
 package ekyss.model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import com.mysql.jdbc.Connection;
 
