@@ -24,7 +24,7 @@
                     <li><a href="${pageContext.request.contextPath}/logout">Logga ut</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li class="active"><a href="${pageContext.request.contextPath}/login">Logga in</a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/">Logga in</a></li>
                 </c:otherwise>
             </c:choose>
         </ul>
