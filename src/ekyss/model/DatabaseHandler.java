@@ -43,7 +43,7 @@ public class DatabaseHandler {
     public boolean loginUser(String username, String password, String group){
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("SELECT * FROM Users NATURAL JOIN memberOf WHERE userName = ? AND password = ? AND groupName = ?");
+            ps = conn.prepareStatement("SELECT * FROM Users LEFT JOIN MemberOf ON member = userName WHERE userName = ? AND password = ? AND groupName IS ?");
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, group);

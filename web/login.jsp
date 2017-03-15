@@ -65,7 +65,15 @@
     </c:choose>
 </c:set>
 <t:block pageTitle="Inloggningssidan">
-    <jsp:attribute name="stylesheets" />
+    <jsp:attribute name="stylesheets">
+        <c:if test="${bean.getAdminLogin()}">
+            <style>
+                html, body {
+                    background-color: #ffeee6;
+                }
+            </style>
+        </c:if>
+    </jsp:attribute>
     <jsp:attribute name="navigation" />
     <jsp:attribute name="javascript" />
     <jsp:body>
