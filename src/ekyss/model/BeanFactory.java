@@ -20,15 +20,14 @@ public class BeanFactory {
     public static void checkLoginBean(LoginBean bean) {
         DatabaseHandler db = new DatabaseHandler();
 
-        String username = bean.getUsername();
-        String password = bean.getPassword();
-        String group = bean.getSelectedGroup();
-
-        bean.setLogin(db.loginUser(
-                bean.getUsername(),
-                bean.getPassword(),
-                bean.getSelectedGroup()
-        ));
+        bean.setLogin(
+            new DatabaseHandler().
+                    loginUser(
+                        bean.getUsername(),
+                        bean.getPassword(),
+                        bean.getSelectedGroup()
+                    )
+        );
     }
 
 }
