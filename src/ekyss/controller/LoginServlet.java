@@ -27,6 +27,10 @@ public class LoginServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;
 
+    private final int LOGIN_NO_MSG = 0;
+    private final int LOGIN_WRONG_CREDENTIAL = 1;
+    private final int LOGIN_SING_OUT_DO_TO_INACTIVITY = 2;
+    private final int LOGIN_SING_OUT = 3;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -35,17 +39,26 @@ public class LoginServlet extends servletBase {
         LoginBean bean = new LoginBean();
         BeanUtilities.populateBean(bean, request);
 
+        // Kontrollerar om viklen typ av inloggning som används
         if (bean.getSelectedGroup() == null) {
-
-
-
-
-            System.out.println("###### admin #########");
+            bean.setAdminLogin(true);
         } else {
+            bean.setAdminLogin(false);
+        }
 
+        // Kontrollerar om inloggningsuppgifterna är korrekta
+        BeanFactory.checkLoginBean(bean);
 
-
-            System.out.println("###### normal #########");
+        if (bean.isLogin()) {
+            // Loggar in användaren
+            session.setAttribute("name", bean.getUsername());
+            session.setAttribute("group", bean.getSelectedGroup());
+            session.setAttribute("state", LOGIN_TRUE);
+            response.sendRedirect("/dashboard");
+            return;
+        } else {
+            // Inloggninsuppgifter inkorrekta, skickas tillbaka till inloggning.
+            request.setAttribute("msg_code", LOGIN_WRONG_CREDENTIAL);
         }
 
         doGet(request, response);
@@ -54,10 +67,12 @@ public class LoginServlet extends servletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession(true);
-
         LoginBean bean = BeanFactory.getLoginBean();
 
-        if (request.getServletPath().equals("/login")) {
+        if (loggedIn(request) && request.getServletPath().equals("/logout")) {
+            session.setAttribute("state", LOGIN_FALSE);
+            bean.setErrorCode(LOGIN_SING_OUT);
+        } else if (request.getServletPath().equals("/login")) {
             bean.setAdminLogin(true);
         } else {
             bean.setAdminLogin(false);
