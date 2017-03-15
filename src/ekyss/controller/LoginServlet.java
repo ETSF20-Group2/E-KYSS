@@ -1,6 +1,7 @@
 package ekyss.controller;
 
 import base.servletBase;
+import ekyss.model.BeanFactory;
 import ekyss.model.BeanUtilities;
 import ekyss.model.Database;
 import ekyss.model.LoginBean;
@@ -26,6 +27,13 @@ public class LoginServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;
 
+    private final int LOGIN_NO_MSG = 0;
+    private final int LOGIN_WRONG_CREDENTIAL = 1;
+    private final int LOGIN_SING_OUT_DO_TO_INACTIVITY = 2;
+    private final int LOGIN_SING_OUT = 3;
+
+    private final int LOGIN_TYPE_ADMIN = 0;
+    private final int LOGIN_TYPE_COMMON = 1;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -34,36 +42,73 @@ public class LoginServlet extends servletBase {
         LoginBean bean = new LoginBean();
         BeanUtilities.populateBean(bean, request);
 
+        // Kontrollerar viklen typ av inloggning som används
+        if (bean.getSelectedGroup() == null) {
+            bean.setAdminLogin(true);
+        } else {
+            bean.setAdminLogin(false);
+        }
 
+        // Kontrollerar om inloggningsuppgifterna är korrekta
+        BeanFactory.checkLoginBean(bean);
 
-        // --- START AV TEST ----
-        // Test om informationen kommer in till bönan från POST-anropet
-        System.out.println("USERNAME: " + bean.getUsername());
-        System.out.println("PASSWORD: " + bean.getPassword());
-        System.out.println("GROUP: " + bean.getSelectedGroup());
-        // Skicka tillbaka till login
+        if (bean.isLogin()) {
+            // Loggar in användaren
+            session.setAttribute("name", bean.getUsername());
+            session.setAttribute("group", bean.getSelectedGroup());
+            session.setAttribute("state", LOGIN_TRUE);
+            response.sendRedirect("/dashboard");
+            return;
+        } else {
+            // Inloggninsuppgifter inkorrekta, skickas tillbaka till inloggning.
+            request.setAttribute("msg_code", LOGIN_WRONG_CREDENTIAL);
+            if (bean.getAdminLogin()) {
+                request.setAttribute("login_type", LOGIN_TYPE_ADMIN);
+            } else {
+                request.setAttribute("login_type", LOGIN_TYPE_COMMON);
+            }
+        }
+
         doGet(request, response);
-        // --- SLUT PÅ TEST ----
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession(true);
+        LoginBean bean = BeanFactory.getLoginBean();
 
-        LoginBean bean = new LoginBean();
+        if (loggedIn(request)) {
+            // Användare inloggad
+            if (request.getServletPath().equals("/logout")) {
+                // Användaren kommer till ./logout => Användare loggas ut.
+                session.setAttribute("state", LOGIN_FALSE);
+                bean.setErrorCode(LOGIN_SING_OUT);
+            } else {
+                // Användare kommer till ./ eller ./login => omdirigeras till ./dashboard
+                response.sendRedirect("/dashboard");
+                return;
+            }
+        } else {
+            // Användare ej inloggad
+            if (request.getAttribute("login_type") != null) {
+                // Användaren vidaresänds från en befintlig inloggningssession.
+                // Returnera tillbaka till samma inloggningssession som användaren kom ifrån.
+                if ((int) request.getAttribute("login_type") == LOGIN_TYPE_ADMIN) {
+                    bean.setAdminLogin(true);
+                } else {
+                 bean.setAdminLogin(false);
+                }
+                bean.setErrorCode((int) request.getAttribute("msg_code"));
+            } else if (request.getServletPath().equals("/login")) {
+                // Användare kommer in till administrationsinloggning
+                bean.setAdminLogin(true);
+            } else {
+                // Användare kommer in till den allmänna inloggningen
+                bean.setAdminLogin(false);
+            }
+        }
 
-        // --- START AV TEST ----
-        // Test för JSP innan modellen implementeras.
-        // Sätter in test för projektgrupp
-        bean.setAllGroups("AAA");
-        bean.setAllGroups("BBB");
-        bean.setAllGroups("CCC");
-        bean.setAllGroups("DDD");
-        // Sätter test för felmeddelande
-        bean.setErrorCode(2);
-        // ---- SLUT PÅ TEST ----
-
-        forwardToView(request, response, "/login.jsp", bean);
+        forwardToView(request, response, "/login.jsp",bean);
     }
 
 }

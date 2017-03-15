@@ -17,14 +17,14 @@ PRIMARY KEY (groupName)
 
 
 -- Definerar förhållande mellan användare och de olika projektgrupperna
-CREATE TABLE memberOf (
+CREATE TABLE MemberOf (
 groupName varChar(100),
 member varChar(10),
 role varChar(10),
 UNIQUE (groupName, member), -- = en medlem kan bara ha en roll per grupp
 FOREIGN KEY (groupName) references ProjectGroups(groupName) ON UPDATE CASCADE
 ON DELETE CASCADE,
-FOREIGN KEY (member) REFERENCES users(userName) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY (member) REFERENCES Users(userName) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -60,7 +60,7 @@ d_t Integer DEFAULT 0, i_t Integer DEFAULT 0, f_t Integer DEFAULT 0, r_t Integer
 signed boolean DEFAULT FALSE,
 FOREIGN KEY (user) REFERENCES Users(userName) ON UPDATE CASCADE ON DELETE CASCADE, -- !!!Hela tidsrapporten tas borst. kanske bättre med SET NULL
 FOREIGN KEY (groupName) REFERENCES ProjectGroups(groupName) ON UPDATE CASCADE ON DELETE CASCADE, -- !!! SOM OVAN
-PRIMARY KEY (User, week, groupName) -- = Varje användare kan bara tidsrapportera en gång i veckan
+PRIMARY KEY (user, week, groupName) -- = Varje användare kan bara tidsrapportera en gång i veckan
 );
 
 -----------------------------------------------------------------
@@ -141,7 +141,7 @@ CREATE TRIGGER updateTotUpdt BEFORE UPDATE ON TimeReports
 FOR EACH ROW
 BEGIN
 SET NEW.date = NOW();
-SET NEW.role = (select role from memberOf where groupName = NEW.groupName AND userName = NEW.user);
+SET NEW.role = (select role from MemberOf where groupName = NEW.groupName AND userName = NEW.user);
 SET NEW.11_t = NEW.11_d + NEW.11_i + NEW.11_f + NEW.11_r;
 SET NEW.12_t = NEW.12_d + NEW.12_i + NEW.12_f + NEW.12_r;
 SET NEW.13_t = NEW.13_d + NEW.13_i + NEW.13_f + NEW.13_r;
@@ -168,7 +168,7 @@ CREATE TRIGGER updateTotInsrt BEFORE INSERT ON TimeReports
 FOR EACH ROW
 BEGIN
 SET NEW.date = NOW();
-SET NEW.role = (select role from memberOf where groupName = NEW.groupName AND userName = NEW.user);
+SET NEW.role = (select role from MemberOf where groupName = NEW.groupName AND userName = NEW.user);
 SET NEW.11_t = NEW.11_d + NEW.11_i + NEW.11_f + NEW.11_r;
 SET NEW.12_t = NEW.12_d + NEW.12_i + NEW.12_f + NEW.12_r;
 SET NEW.13_t = NEW.13_d + NEW.13_i + NEW.13_f + NEW.13_r;
@@ -189,13 +189,13 @@ DELIMITER ;
 --------------------------------------------------------------------------------
 
 ----- Insert admin -------------------------------------------------------------
-INSERT INTO Users(userName, emial, password) VALUES('admin', '', 'adminp');
+INSERT INTO Users(userName, email, password) VALUES('admin', '', 'adminp');
 
 
 
 ----- Inserts for testing (will be removed) -------------------------------------
 
-INSERT INTO USERS values('Johannes', '1234', '1234...'), 
+INSERT INTO Users values('Johannes', '1234', '1234...'),
 ('Elihn', '1234', '1234....'),
 ('Kalle', '1234', '1234....'),
 ('Pelle', '1234', '1234....'),
@@ -209,7 +209,7 @@ INSERT INTO USERS values('Johannes', '1234', '1234...'),
 
 INSERT INTO ProjectGroups values('1'), ('2'), ('3');
 
-INSERT INTO memberOf values('1', 'Johannes', 'PG'),
+INSERT INTO MemberOf values('1', 'Johannes', 'PG'),
 ('2', 'Elihn', 'PG'),
 ('3', 'Kalle', 'PG'),
 ('1', 'Jonas', 'SG'),
@@ -233,3 +233,4 @@ VALUES('Johannes', '2017-11-11', '1', 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ('Jesper', '2017-11-11', '2', 2, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1),
 ('Pelle', '2017-11-11', '2', 2, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)
 ;
+

@@ -35,22 +35,24 @@ public class DatabaseHandler {
     /**
      * Function that checks if the user is able to log in (If username is in database and matches
      * with the entered password and the selected group).
-     * @param bean A LoginBean that contains an userName, a password and a groupName.
-     * @return true if the user is able to log in, else false.
+     * @param username The username
+     * @param password The password
+     * @param group The selected group (if the user is not admin)
+     * @return True if the user is able to log in, else false.
      */
-    public boolean loginUser(LoginBean bean){
+    public boolean loginUser(String username, String password, String group){
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("SELECT * FROM Users NATURAL JOIN memberOf WHERE userName = ? AND password = ? AND groupName = ?");
-            ps.setString(1, bean.getUsername());
-            ps.setString(2, bean.getPassword());
-            ps.setString(3, bean.getSelectedGroup());
+            ps = conn.prepareStatement("SELECT * FROM Users LEFT JOIN MemberOf ON member = userName WHERE userName = ? AND password = ? AND groupName IS ?");
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ps.setString(3, group);
             ResultSet rs = ps.executeQuery();
             print(ps);
             if(rs.next()){
-//				System.out.print(rs.getString("username") + "\t");
-//				System.out.print(rs.getString("password") + "\t");
-//				System.out.println(rs.getString("groupName"));
+				System.out.print(rs.getString("username") + "\t");
+				System.out.print(rs.getString("password") + "\t");
+				System.out.println(rs.getString("groupName"));
                 return true;
             }
             return false;
@@ -146,25 +148,24 @@ public class DatabaseHandler {
         return false;
     }
 
-		/* BeanFactory */
+	/* BeanFactory */
     /**
      * Function that is used to fetch a list of all the groups in the database.
-     * @return A GroupManagementBean that contains a List<String> of all the groups (as the groups
-     * attribute in bean).
+     * @return A List<String> of all the groups.
      */
-    public GroupManagementBean getGroupList(){
+    public List<String> getAllGroupsList(){
         PreparedStatement ps = null;
-        GroupManagementBean bean = new GroupManagementBean();
+        List<String> list = new ArrayList<>();
         try{
-            ps = conn.prepareStatement("SELECT * FROM projectGroups");
+            ps = conn.prepareStatement("SELECT * FROM ProjectGroups");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                bean.setGroups(rs.getString("groupName"));
+                list.add(rs.getString("groupName"));
             }
         } catch(SQLException e){
             printError(e);
         }
-        return bean;
+        return list;
     }
 
     /**
