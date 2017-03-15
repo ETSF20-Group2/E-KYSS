@@ -36,7 +36,7 @@
         <c:when test="${empty bean.getAllGroups() and not bean.getAdminLogin()}">
             <div class="alert alert-info" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                Systemet är nere för underhåll. Om du är administratör, gå till <a href="${pageContext.request.contextPath}/login">inloggningssidan för administratör</a>.
+                Systemet är nere för underhåll. Om du är administratör, gå till <a href="${pageContext.request.contextPath}">inloggningssidan för administratör</a>.
             </div>
         </c:when>
         <c:otherwise>
@@ -73,7 +73,7 @@
             <div class="col-md-4"></div>
             <div class="col-md-4">
                 ${infoMsg}
-                <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/login">
+                <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/">
                     <h2 class="form-signin-heading">Välkommen till E-KYSS</h2>
                     <p class="form-signin-heading">Logga in genom att ange ditt användarnamn, lösenord samt projektgrupp.</p>
                     ${login}

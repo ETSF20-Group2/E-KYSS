@@ -17,11 +17,18 @@ public class BeanFactory {
      * Kollar om bönan är behörig att logga in i systemet.
      * @return LoginBean
      */
-    public static LoginBean checkLoginBean(LoginBean bean) {
+    public static void checkLoginBean(LoginBean bean) {
         DatabaseHandler db = new DatabaseHandler();
 
+        String username = bean.getUsername();
+        String password = bean.getPassword();
+        String group = bean.getSelectedGroup();
 
-        return bean;
+        bean.setLogin(db.loginUser(
+                bean.getUsername(),
+                bean.getPassword(),
+                bean.getSelectedGroup()
+        ));
     }
 
 }
