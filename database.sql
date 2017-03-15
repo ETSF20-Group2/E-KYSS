@@ -24,7 +24,7 @@ role varChar(10),
 UNIQUE (groupName, member), -- = en medlem kan bara ha en roll per grupp
 FOREIGN KEY (groupName) references ProjectGroups(groupName) ON UPDATE CASCADE
 ON DELETE CASCADE,
-FOREIGN KEY (member) REFERENCES users(userName) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY (member) REFERENCES Users(userName) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -195,7 +195,7 @@ INSERT INTO Users(userName, emial, password) VALUES('admin', '', 'adminp');
 
 ----- Inserts for testing (will be removed) -------------------------------------
 
-INSERT INTO USERS values('Johannes', '1234', '1234...'), 
+INSERT INTO Users values('Johannes', '1234', '1234...'),
 ('Elihn', '1234', '1234....'),
 ('Kalle', '1234', '1234....'),
 ('Pelle', '1234', '1234....'),
@@ -233,3 +233,4 @@ VALUES('Johannes', '2017-11-11', '1', 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ('Jesper', '2017-11-11', '2', 2, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1),
 ('Pelle', '2017-11-11', '2', 2, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)
 ;
+
