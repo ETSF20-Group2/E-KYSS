@@ -146,25 +146,24 @@ public class DatabaseHandler {
         return false;
     }
 
-		/* BeanFactory */
+	/* BeanFactory */
     /**
      * Function that is used to fetch a list of all the groups in the database.
-     * @return A GroupManagementBean that contains a List<String> of all the groups (as the groups
-     * attribute in bean).
+     * @return A List<String> of all the groups.
      */
-    public GroupManagementBean getGroupList(){
+    public List<String> getAllGroupsList(){
         PreparedStatement ps = null;
-        GroupManagementBean bean = new GroupManagementBean();
+        List<String> list = new ArrayList<>();
         try{
-            ps = conn.prepareStatement("SELECT * FROM projectGroups");
+            ps = conn.prepareStatement("SELECT * FROM ProjectGroups");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                bean.setGroups(rs.getString("groupName"));
+                list.add(rs.getString("groupName"));
             }
         } catch(SQLException e){
             printError(e);
         }
-        return bean;
+        return list;
     }
 
     /**

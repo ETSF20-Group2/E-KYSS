@@ -60,7 +60,7 @@ d_t Integer DEFAULT 0, i_t Integer DEFAULT 0, f_t Integer DEFAULT 0, r_t Integer
 signed boolean DEFAULT FALSE,
 FOREIGN KEY (user) REFERENCES Users(userName) ON UPDATE CASCADE ON DELETE CASCADE, -- !!!Hela tidsrapporten tas borst. kanske bättre med SET NULL
 FOREIGN KEY (groupName) REFERENCES ProjectGroups(groupName) ON UPDATE CASCADE ON DELETE CASCADE, -- !!! SOM OVAN
-PRIMARY KEY (User, week, groupName) -- = Varje användare kan bara tidsrapportera en gång i veckan
+PRIMARY KEY (user, week, groupName) -- = Varje användare kan bara tidsrapportera en gång i veckan
 );
 
 -----------------------------------------------------------------

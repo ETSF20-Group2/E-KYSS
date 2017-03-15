@@ -1,6 +1,7 @@
 package ekyss.controller;
 
 import base.servletBase;
+import ekyss.model.BeanFactory;
 import ekyss.model.BeanUtilities;
 import ekyss.model.Database;
 import ekyss.model.LoginBean;
@@ -49,19 +50,13 @@ public class LoginServlet extends servletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession(true);
+        LoginBean bean = BeanFactory.getLoginBean();
 
-        LoginBean bean = new LoginBean();
-
-        // --- START AV TEST ----
-        // Test för JSP innan modellen implementeras.
-        // Sätter in test för projektgrupp
-        bean.setAllGroups("AAA");
-        bean.setAllGroups("BBB");
-        bean.setAllGroups("CCC");
-        bean.setAllGroups("DDD");
-        // Sätter test för felmeddelande
-        bean.setErrorCode(2);
-        // ---- SLUT PÅ TEST ----
+        if (request.getServletPath().equals("/login")) {
+            bean.setAdminLogin(true);
+        } else {
+            bean.setAdminLogin(false);
+        }
 
         forwardToView(request, response, "/login.jsp", bean);
     }
