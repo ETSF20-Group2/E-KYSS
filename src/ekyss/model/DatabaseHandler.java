@@ -25,8 +25,7 @@ public class DatabaseHandler {
 		/* Endast för test, vet inte riktigt hur det ska se ut här. Tänker att man har
 		 * en tom konstrukor och får conn genom getConnection() eller något liknande
 		 */
-        db = new Database();
-        db.connect("localhost/testForProj", "publicusr", "");
+		db = Database.getInstance();
         conn = db.getConnection();
     }
 
@@ -45,7 +44,7 @@ public class DatabaseHandler {
             ps = conn.prepareStatement("SELECT * FROM Users NATURAL JOIN memberOf WHERE userName = ? AND password = ? AND groupName = ?");
             ps.setString(1, bean.getUsername());
             ps.setString(2, bean.getPassword());
-            ps.setString(3, bean.getGroup());
+            ps.setString(3, bean.getSelectedGroup());
             ResultSet rs = ps.executeQuery();
             print(ps);
             if(rs.next()){
@@ -636,7 +635,7 @@ public class DatabaseHandler {
 
 
     public void disconnect(){
-        db.closeConnection();
+        db.close();
     }
 
     private void print(PreparedStatement ps){
