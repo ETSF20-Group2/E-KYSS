@@ -2,6 +2,7 @@ package ekyss.controller;
 
 import base.servletBase;
 import ekyss.model.BeanUtilities;
+import ekyss.model.Database;
 import ekyss.model.LoginBean;
 
 import javax.servlet.ServletException;
@@ -32,6 +33,8 @@ public class LoginServlet extends servletBase {
 
         LoginBean bean = new LoginBean();
         BeanUtilities.populateBean(bean, request);
+
+
 
         // --- START AV TEST ----
         // Test om informationen kommer in till bönan från POST-anropet
