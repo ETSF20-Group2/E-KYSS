@@ -1,4 +1,4 @@
-package beanTests;
+package ekyss.model;
 
 import static org.junit.Assert.*;
 
@@ -16,31 +16,31 @@ public class UserManagementBeanTest {
 	@Test
 	public void setUser() throws Exception {
 		 bean.setUserName("a");
-		 assertEquals("Inkorrekt v‰rde av user", "a", bean.getUserName()); 
+		 assertEquals("Inkorrekt v√§rde av user", "a", bean.getUserName()); 
 	}
 	
 	@Test
 	public void setPassword() throws Exception {
 		bean.setPassword("a");
-		assertEquals("Inkorrekt v‰rde av password", "a", bean.getPassword()); 
+		assertEquals("Inkorrekt v√§rde av password", "a", bean.getPassword()); 
 	}
 	
 	@Test
 	public void setGroup() throws Exception {
 		bean.setGroup("a");
-		assertEquals("Inkorrekt v‰rde av group", "a", bean.getGroup());
+		assertEquals("Inkorrekt v√§rde av group", "a", bean.getGroup());
 	}
 	
 	@Test
 	public void setRole() throws Exception {
 		bean.setRole("a");
-		assertEquals("Inkorrekt v‰rde av role", "a", bean.getRole());
+		assertEquals("Inkorrekt v√§rde av role", "a", bean.getRole());
 	}
 	
 	@Test
 	public void setEmail() throws Exception {
 		bean.setEmail("ab");
-		assertEquals("Inkorrekt v‰rde av email", "ab", bean.getEmail());
+		assertEquals("Inkorrekt v√§rde av email", "ab", bean.getEmail());
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ public class UserManagementBeanTest {
 		testList.add("b");
 		testList.add("c");
 		bean.setUserList(testList);
-		assertEquals("Inkorrekt v‰rde av userList", testList, bean.getUserList());
-		assertFalse("Inkorrekt v‰rde av userList", bean.getUserList() == null);
+		assertEquals("Inkorrekt v√§rde av userList", testList, bean.getUserList());
+		assertFalse("Inkorrekt v√§rde av userList", bean.getUserList() == null);
 	}
 }
