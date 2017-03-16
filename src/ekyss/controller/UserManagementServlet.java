@@ -28,7 +28,7 @@ public class UserManagementServlet extends servletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         UserManagementBean bean = null;
-        forwardToView(request, response, "/userpmanagement.jsp",bean);
+        forwardToView(request, response, "/usermanagement.jsp",bean);
 
     }
 
