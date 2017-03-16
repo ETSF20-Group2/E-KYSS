@@ -11,12 +11,20 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <c:forEach items="${bean.getAllGroups()}" var="group">
+                <thead>
                     <tr>
-                        <td>${group}</td>
-                        <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
+                        <th>Projektgrupp</th>
+                        <th>Ta bort</th>
                     </tr>
-                </c:forEach>
+                </thead>
+                <tbody>
+                    <c:forEach items="${bean.getAllGroups()}" var="group">
+                        <tr>
+                            <td>${group}</td>
+                            <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
             </c:otherwise>
         </c:choose>
     </table>
@@ -45,7 +53,7 @@
                 <p class="form-signin-heading">Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                     <meta type="hidden" name="type" value="delete">
-                    ${grups}
+                    ${groups}
                 </form>
             </div>
             <div class="col-md-3"></div>
