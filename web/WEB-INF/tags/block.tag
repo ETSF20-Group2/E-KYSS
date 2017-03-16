@@ -38,6 +38,7 @@
                 <p class="text-muted text-center">Upphovsrätt © <fmt:formatDate value="${now}" pattern="yyyy" /> Gruppen PUSP1702 för ETSF20 vid Campus Hbg.</p>
             </div>
         </footer>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="${pageContext.request.contextPath}/assets/js/ie10-viewport-bug-workaround.js"></script>
