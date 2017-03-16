@@ -28,6 +28,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="${pageContext.request.contextPath}/dashboard">Sammanställning</a></li>
                             <li><a href="${pageContext.request.contextPath}/report">Veckorapportering</a></li>
+                            <li><a href="${pageContext.request.contextPath}/settings/user">Kontoinställningar</a></li>
                         </ul>
                     </li>
 
@@ -51,9 +52,18 @@
             </c:choose>
         </ul>
         <c:if test="${sessionScope.state eq 1}">
-            <a href="${pageContext.request.contextPath}/settings/user" type="button" class="btn btn-default navbar-btn navbar-right logedin" aria-label="Left Align">
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${sessionScope.name}
-            </a>
+            <c:choose>
+                <c:when test="${sessionScope.name eq 'admin'}">
+                    <a href="#" type="button" class="btn btn-default navbar-btn navbar-right logedin" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${sessionScope.name}
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/settings/user" type="button" class="btn btn-default navbar-btn navbar-right logedin" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${sessionScope.name}
+                    </a>
+                </c:otherwise>
+            </c:choose>
         </c:if>
     </div>
 </div>

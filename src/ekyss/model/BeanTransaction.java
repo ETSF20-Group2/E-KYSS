@@ -27,9 +27,9 @@ public class BeanTransaction {
 	 * @param bean A GroupManagementBean containing the name of the group (group attribute in the bean).
 	 * @return true if the group is added, else false.
 	 */
-	public boolean addGroup(GroupManagementBean bean){
+	/*public boolean addGroup(GroupManagementBean bean){
 		return db.addGroup(bean.getGroup());
-	}
+	}*/
 	
 	/**
 	 * Deletes one or many groups from the database.
@@ -37,9 +37,9 @@ public class BeanTransaction {
 	 * @return true if the group(s) is deleted, else false (most likely because some of the groups doesn't
 	 * exist in the database.
 	 */
-	public boolean deleteGroups(GroupManagementBean bean){
+	/*public boolean deleteGroups(GroupManagementBean bean){
 		return db.deleteGroups(bean.getGroups());
-	}
+	}*/
 	
 	/**
 	 * Assigns a leader to a group. The user must be a member of the group.
@@ -47,9 +47,9 @@ public class BeanTransaction {
 	 * @return true if the user is assigned leader, else false (most likely because
 	 * the user is not in the group).
 	 */
-	public boolean assignLeader(GroupManagementBean bean){
+	/*public boolean assignLeader(GroupManagementBean bean){
 		return db.assignLeader(bean.getGroup(), bean.getLeader());
-	}
+	}*/
 	
 	
 	/* UserManagementServlet */

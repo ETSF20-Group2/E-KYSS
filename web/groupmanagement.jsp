@@ -1,6 +1,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="groups">
+    <table class="table table-hover">
+        <c:choose>
+            <c:when test="${empty bean.getAllGroups()}">
+                <div class="alert alert-info" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Det finns inga projektgrupper att visa. Skapa en ny projektgrupp för att kunna se den här.
+                </div>
+            </c:when>
+            <c:otherwise>
+                <c:forEach items="${bean.getAllGroups()}" var="group">
+                    <tr>
+                        <td>${group}</td>
+                        <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
+                    </tr>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
+    </table>
+    <button class="btn btn-default" type="submit">Ta bort</button>
+</c:set>
 <t:block pageTitle="Projektgrupphantering">
     <jsp:attribute name="stylesheets" />
     <jsp:attribute name="navigation" />
@@ -24,21 +45,7 @@
                 <p class="form-signin-heading">Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                     <meta type="hidden" name="type" value="delete">
-                    <table class="table table-hover">
-                        <tr>
-                            <td>{gruppnamn}</td>
-                            <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
-                        </tr>
-                        <tr>
-                            <td>{gruppnamn}</td>
-                            <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
-                        </tr>
-                        <tr>
-                            <td>{gruppnamn}</td>
-                            <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
-                        </tr>
-                    </table>
-                    <button class="btn btn-default" type="submit">Ta bort</button>
+                    ${grups}
                 </form>
             </div>
             <div class="col-md-3"></div>

@@ -3,6 +3,7 @@ package ekyss.controller;
 import base.servletBase;
 import ekyss.model.BeanFactory;
 import ekyss.model.GroupManagementBean;
+import ekyss.model.ReportManagementBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +27,7 @@ public class ReportManagementServlet extends servletBase {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        GroupManagementBean bean = BeanFactory.getGroupManagementBean();
+        ReportManagementBean bean = null;
         forwardToView(request, response, "/reportpmanagement.jsp",bean);
 
     }
