@@ -21,14 +21,16 @@
                     <c:forEach items="${bean.getAllGroups()}" var="group">
                         <tr>
                             <td>${group}</td>
-                            <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
+                            <td><input name="checkbox[]" type="checkbox" value="${group}"></td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </c:otherwise>
         </c:choose>
     </table>
-    <button class="btn btn-default" type="submit">Ta bort</button>
+    <c:if test="${not empty bean.getAllGroups()}">
+        <button class="btn btn-default" type="submit">Ta bort</button>
+    </c:if>
 </c:set>
 <t:block pageTitle="Projektgrupphantering">
     <jsp:attribute name="stylesheets" />

@@ -1,6 +1,41 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="users">
+    <table class="table table-hover">
+        <c:choose>
+            <c:when test="${empty bean.getAllUsers()}">
+                <div class="alert alert-info" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Det finns inga användare att ta bort. Skapa en ny användare för att kunna se den här.
+                </div>
+            </c:when>
+            <c:otherwise>
+                <thead>
+                    <tr>
+                        <th>Användarnamn</th>
+                        <th>Lösenord</th>
+                        <th>E-post</th>
+                        <th>Ta bort</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${bean.getAllUsers()}" var="user">
+                        <tr>
+                            <td>${user.getUsername}</td>
+                            <td>${user.getPassword}</td>
+                            <td>${user.getMail}</td>
+                            <td><input name="checkbox[]" type="checkbox" value="${user.getUsername}"></td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </c:otherwise>
+        </c:choose>
+    </table>
+    <c:if test="${not empty bean.getAllUsers()}">
+        <button class="btn btn-default" type="submit">Ta bort</button>
+    </c:if>
+</c:set>
 <t:block pageTitle="Användarhanterare">
     <jsp:attribute name="stylesheets" />
     <jsp:attribute name="navigation" />
@@ -27,37 +62,7 @@
                 <p class="form-signin-heading">Ta bort existerande användare genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
                     <meta type="hidden" name="type" value="delete">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Anv.namn</th>
-                                <th>Lösen.</th>
-                                <th>E-post</th>
-                                <th>Ta bort</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{username}</td>
-                                <td>{password}</td>
-                                <td>{email}</td>
-                                <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
-                            </tr>
-                            <tr>
-                                <td>{username}</td>
-                                <td>{password}</td>
-                                <td>{email}</td>
-                                <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
-                            </tr>
-                            <tr>
-                                <td>{username}</td>
-                                <td>{password}</td>
-                                <td>{email}</td>
-                                <td><input name="checkbox[]" type="checkbox" value="{id}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button class="btn btn-default" type="submit">Ta bort</button>
+                    ${users}
                 </form>
             </div>
             <div class="col-md-2"></div>
