@@ -11,6 +11,10 @@ public class BeanTransaction {
 		new DatabaseHandler().addGroup(name);
 	}
 
+	public static void deleteProjectGroup(String[] groups) {
+		new DatabaseHandler().deleteGroups(groups);
+	}
+
 
 	
 	/* LoginServlet */
