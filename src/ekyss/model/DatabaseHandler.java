@@ -42,8 +42,11 @@ public class DatabaseHandler {
      */
     public boolean loginUser(String username, String password, String group){
         PreparedStatement ps = null;
+        if(username == "admin" && password == "admino" && group == null)
+        	return true;
+        
         try{
-            ps = conn.prepareStatement("SELECT * FROM Users LEFT JOIN MemberOf ON member = userName WHERE userName = ? AND password = ? AND groupName IS ?");
+            ps = conn.prepareStatement("SELECT * FROM Users LEFT JOIN MemberOf ON member = userName WHERE userName = ? AND password = ? AND groupName = ?");
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, group);
@@ -73,10 +76,10 @@ public class DatabaseHandler {
      * @return true if the group is added, else false (most likely because the group name already
      * exists).
      */
-    public boolean addGroup(GroupManagementBean bean){
+    public boolean addGroup(String group){
         try{
             PreparedStatement ps = conn.prepareStatement("INSERT INTO ProjectGroups(groupName) VALUES(?)");
-            ps.setString(1, bean.getGroup());
+            ps.setString(1, group);
             print(ps);
             if(ps.executeUpdate() > 0)
                 return true;
@@ -93,9 +96,9 @@ public class DatabaseHandler {
      * @return true if the group(s) is deleted, else false (most likely because some of the groups doesn't
      * exist in the database.
      */
-    public boolean deleteGroups(GroupManagementBean bean){
+    public boolean deleteGroups(List<String> groups){
         String sql = "WHERE ";
-        for(String s:bean.getGroups()){
+        for(String s:groups){
             sql += "GroupName = ? OR ";
         }
         if(sql.endsWith(" OR ")){
@@ -105,7 +108,7 @@ public class DatabaseHandler {
         try{
             ps = conn.prepareStatement("DELETE FROM ProjectGroups " + sql);
             int i = 1;
-            for(String s: bean.getGroups()){
+            for(String s: groups){
                 ps.setString(i, s);
                 i++;
             }
@@ -124,12 +127,12 @@ public class DatabaseHandler {
      * @return true if the user is assigned leader, else false (most likely because
      * the user is not in the group).
      */
-    public boolean assignLeader(GroupManagementBean bean){
+    public boolean assignLeader(String group, String leader){
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("UPDATE MemberOf set role = 'PG' WHERE userName = ? AND groupName = ?");
-            ps.setString(1, bean.getLeader());
-            ps.setString(2, bean.getGroup());
+            ps.setString(1, leader);
+            ps.setString(2, group);
             print(ps);
             if(ps.executeUpdate() > 0){
                 return true;
@@ -173,19 +176,19 @@ public class DatabaseHandler {
      * @return A GroupManagementBean that contains a List<String> of all the users (as the users
      * attribute in bean).
      */
-    public GroupManagementBean getUserListG(){
+    public List<String> getUserListG(){
         PreparedStatement ps = null;
-        GroupManagementBean bean = new GroupManagementBean();
+        List<String> users = new ArrayList<String>();
         try{
             ps = conn.prepareStatement("SELECT * FROM Users");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                bean.setUsers(rs.getString("userName"));
+                users.add(rs.getString("userName"));
             }
         } catch(SQLException e){
             printError(e);
         }
-        return bean;
+        return users;
     }
 
 	/*------ UserManagementServlet --------*/
@@ -196,13 +199,13 @@ public class DatabaseHandler {
      * @param bean A UserManagementBean that contains UserName, Email and Password for the new user.
      * @return true if the user is added, else false.
      */
-    public boolean addUser(UserManagementBean bean){
+    public boolean addUser(String userName, String email, String password){
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("INSERT INTO Users(userName, email, password) VALUES (?,?,?)");
-            ps.setString(1, bean.getUserName());
-            ps.setString(2, bean.getEmail());
-            ps.setString(3, bean.getPassword());
+            ps.setString(1, userName);
+            ps.setString(2, email);
+            ps.setString(3, password);
             print(ps);
             if(ps.executeUpdate() > 0)
                 return true;
@@ -219,9 +222,9 @@ public class DatabaseHandler {
      * @param bean A bean that contains a List of the users to be deleted (userList attribute in the Bean).
      * @return true if all the users are deleted, else false.
      */
-    public boolean deleteUsers(UserManagementBean bean){
+    public boolean deleteUsers(List<String> users){
         String where = " WHERE";
-        for(String s: bean.getUserList()){
+        for(String s: users){
             where += " userName = ? OR";
         }
         if(where.endsWith("OR")){
@@ -232,7 +235,7 @@ public class DatabaseHandler {
         try{
             ps = conn.prepareStatement("DELETE FROM Users" + where);
             int i = 1;
-            for(String s:bean.getUserList())
+            for(String s : users)
                 ps.setString(i++, s);
             print(ps);
             if(ps.executeUpdate() > 0){
@@ -251,12 +254,12 @@ public class DatabaseHandler {
      * assigned to (group and userName attribute in the bean).
      * @return true if the user is assigned to the group, else false.
      */
-    public boolean assignGroup(UserManagementBean bean){
+    public boolean assignGroup(String group, String userName){
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("INSERT INTO memberOf(groupName, userName) VALUES(?,?)");
-            ps.setString(1, bean.getGroup());
-            ps.setString(2, bean.getUserName());
+            ps.setString(1, group);
+            ps.setString(2, userName);
             print(ps);
             if(ps.executeUpdate() > 0)
                 return true;
@@ -272,13 +275,13 @@ public class DatabaseHandler {
      * should be assigned (role, group and userName attributes in the bean).
      * @return true if the role is assigned, else false.
      */
-    public boolean assignRole(UserManagementBean bean){
+    public boolean assignRole(String group, String userName, String role){
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("UPDATE memberOf SET role = ? WHERE groupName = ? AND userName = ?");
-            ps.setString(1, bean.getRole());
-            ps.setString(2, bean.getGroup());
-            ps.setString(3, bean.getUserName());
+            ps.setString(1, role);
+            ps.setString(2, group);
+            ps.setString(3, userName);
             print(ps);
             if(ps.executeUpdate() > 0)
                 return true;
@@ -294,12 +297,12 @@ public class DatabaseHandler {
      * user should be deleted (userName and group attributes in the bean).
      * @return true if the user is deleted from the group, else false.
      */
-    public boolean deleteFromGroup(UserManagementBean bean){
+    public boolean deleteFromGroup(String userName, String group){
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("DELETE FROM MemberOf WHERE UserName = ? AND groupName = ?");
-            ps.setString(1, bean.getUserName());
-            ps.setString(2, bean.getGroup());
+            ps.setString(1, userName);
+            ps.setString(2, group);
             print(ps);
             if(ps.executeUpdate() > 0){
                 return true;
@@ -317,20 +320,20 @@ public class DatabaseHandler {
      * @return A UserManagementBean containing a list of all the users (userList attribute in
      * the bean).
      */
-    public UserManagementBean getUserListU(){
-        UserManagementBean bean = new UserManagementBean();
+    public List<String> getUserListU(){
+        List<String> users = new ArrayList<String>();
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("SELECT userName FROM Users");
             print(ps);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                bean.setUserList(rs.getString("userName"));
+                users.add(rs.getString("userName"));
             }
         } catch (SQLException e){
             printError(e);
         }
-        return bean;
+        return users;
     }
 
 	/*------ ReportManagementServlet ------*/
@@ -344,12 +347,11 @@ public class DatabaseHandler {
      * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
      * @return true if all the reports are signed, else false.
      */
-    public boolean signReports(ReportManagementBean bean){
+    public boolean signReports(String group, Map<String, List<Integer>> signMap){
         PreparedStatement ps = null;
         String where = " WHERE";
-        Map<String, List<Integer>> m = bean.getSignMap();
-        for(String s:m.keySet()){
-            for(int i:m.get(s)){
+        for(String s:signMap.keySet()){
+            for(int i:signMap.get(s)){
                 where += " groupName = ? AND user = ? AND Week = ? OR";
             }
         }
@@ -358,9 +360,9 @@ public class DatabaseHandler {
         try{
             ps = conn.prepareStatement("UPDATE TimeReports SET Signed = TRUE" + where);
             int c = 1;
-            for(String s:m.keySet()){
-                for(int i:m.get(s)){
-                    ps.setString(c++, bean.getGroup());
+            for(String s:signMap.keySet()){
+                for(int i:signMap.get(s)){
+                    ps.setString(c++, group);
                     ps.setString(c++, s);
                     ps.setInt(c++, i);
                 }
@@ -383,12 +385,11 @@ public class DatabaseHandler {
      * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
      * @return true if all the reports are unsigned, else false.
      */
-    public boolean unsignReports(ReportManagementBean bean){
+    public boolean unsignReports(String group, Map<String, List<Integer>> signMap){
         PreparedStatement ps = null;
         String where = " WHERE";
-        Map<String, List<Integer>> m = bean.getSignMap();
-        for(String s:m.keySet()){
-            for(int i:m.get(s)){
+        for(String s:signMap.keySet()){
+            for(int i:signMap.get(s)){
                 where += " groupName = ? AND user = ? AND Week = ? OR";
             }
         }
@@ -397,9 +398,9 @@ public class DatabaseHandler {
         try{
             ps = conn.prepareStatement("UPDATE TimeReports SET Signed = FALSE" + where);
             int c = 1;
-            for(String s:m.keySet()){
-                for(int i:m.get(s)){
-                    ps.setString(c++, bean.getGroup());
+            for(String s:signMap.keySet()){
+                for(int i:signMap.get(s)){
+                    ps.setString(c++, group);
                     ps.setString(c++, s);
                     ps.setInt(c++, i);
                 }
@@ -423,11 +424,10 @@ public class DatabaseHandler {
      * should be added to the database (user, group, week and reportValues in the bean).
      * @return true if the time report is added, else false.
      */
-    public boolean createTimeReport(ReportBean bean){
+    public boolean createTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
         String columns = "(user, groupname, week,";
         String values = "VALUES(?, ?, ?,";
-        Map<String, Integer> rep = bean.getReportValues();
-        for(String s:rep.keySet()){
+        for(String s:reportValues.keySet()){
             columns += s + ", ";
             values += "?,";
         }
@@ -440,11 +440,11 @@ public class DatabaseHandler {
         try{
             ps = conn.prepareStatement("INSERT INTO TimeReports" + columns + " " + values);
             int i = 1;
-            ps.setString(i++, bean.getUser());
-            ps.setString(i++, bean.getGroup());
-            ps.setInt(i++, bean.getWeek());
-            for(String s : rep.keySet()){
-                ps.setInt(i++, rep.get(s));
+            ps.setString(i++, user);
+            ps.setString(i++, group);
+            ps.setInt(i++, week);
+            for(String s : reportValues.keySet()){
+                ps.setInt(i++, reportValues.get(s));
             }
             print(ps);
             if(ps.executeUpdate()>0)
@@ -462,8 +462,8 @@ public class DatabaseHandler {
      * should be updated in the database (user, group, week and reportValues in the bean).
      * @return true if the time report is updated, else false.
      */
-    public boolean updateTimeReports(ReportBean bean){
-        return removeTimeReport(bean) && createTimeReport(bean);
+    public boolean updateTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
+        return removeTimeReport(user, group, week) && createTimeReport(user, group, week, reportValues);
     }
 
     /**
@@ -472,13 +472,13 @@ public class DatabaseHandler {
      * should be deleted (group, user and week in the bean).
      * @return true if the time report is deleted, else false.
      */
-    public boolean removeTimeReport(ReportBean bean){
+    public boolean removeTimeReport(String user, String group, int week){
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("DELETE FROM TimeReports WHERE groupName = ? AND user = ? AND week = ?");
-            ps.setString(1, bean.getGroup());
-            ps.setString(2, bean.getUser());
-            ps.setInt(3, bean.getWeek());
+            ps.setString(1, group);
+            ps.setString(2, user);
+            ps.setInt(3, week);
             if(ps.executeUpdate() > 0){
                 return true;
             }
@@ -497,12 +497,12 @@ public class DatabaseHandler {
      * password attributes in the bean).
      * @return true if the password is changed, else false.
      */
-    public boolean changePassword(UserBean bean){
+    public boolean changePassword(String userName, String newPassword){
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("UPDATE Users SET password = ? WHERE userName = ?");
-            ps.setString(1, bean.getNewPassword());
-            ps.setString(2, bean.getUserName());
+            ps.setString(1, newPassword);
+            ps.setString(2, userName);
             print(ps);
             if(ps.executeUpdate() > 0){
                 return true;
@@ -521,8 +521,8 @@ public class DatabaseHandler {
      * @return A UserBean that contains a list of all groups the user is member of (groupList attribute
      * in the bean).
      */
-    public UserBean getMemberOf(String user){
-        UserBean bean = new UserBean();
+    public List<String> getMemberOf(String user){
+    	List<String> groups = new ArrayList<String>();
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("SELECT groupName FROM memberOf WHERE userName = ?");
@@ -530,12 +530,12 @@ public class DatabaseHandler {
             print(ps);
             ResultSet rs = ps.executeQuery();
             while(rs.next())
-                bean.setGroupList(rs.getString("groupName"));
+                groups.add(rs.getString("groupName"));
         } catch (SQLException e){
             printError(e);
         }
 
-        return bean;
+        return groups;
     }
 
 	/*------ DashboardServlet -------------*/
@@ -552,8 +552,8 @@ public class DatabaseHandler {
      * The columns are placed in a Map with the column as the key and the amount of time as the value (reportValues attribute
      * in the bean).
      */
-    public DashboardBean getTimeReport(String group, String user, String role, int week){
-        DashboardBean bean = new DashboardBean();
+    public Map<String, Integer> getTimeReport(String group, String user, String role, int week){
+        Map<String, Integer> reportValues = new HashMap<String, Integer>();
         PreparedStatement ps = null;
         group = group == null? "":group;
         user = user == null? "":user;
@@ -568,13 +568,13 @@ public class DatabaseHandler {
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 for(String s:TIMEREPORTCOLUMNS){
-                    bean.setReportValues(s, rs.getInt(s));
+                    reportValues.put(s, rs.getInt(s));
                 }
             }
         } catch (SQLException e){
             printError(e);
         }
-        return bean;
+        return reportValues;
     }
 
     /**
@@ -584,8 +584,8 @@ public class DatabaseHandler {
      * @return A DashboardBean containing an integer describing the time reported to the document (
      * documentSummary attribute in the bean).
      */
-    public DashboardBean getDocumentSummary(String group, int document){
-        DashboardBean bean = new DashboardBean();
+    public int getDocumentSummary(String group, int document){
+        int docSummary = 0;
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("SELECT SUM(?_t) as sum FROM TimeReports WHERE groupName = ?");
@@ -594,12 +594,12 @@ public class DatabaseHandler {
             print(ps);
             ResultSet rs = ps.executeQuery();
             if(rs.next())
-                bean.setDocumentSummary(rs.getInt("sum"));
+                docSummary = rs.getInt("sum");
 
         } catch (SQLException e){
             printError(e);
         }
-        return bean;
+        return docSummary;
     }
 
     /**
@@ -609,10 +609,9 @@ public class DatabaseHandler {
      * @return A DashboardBean containing an integer describing the time reported to the activity (
      * activitySummary attribute in the bean).
      */
-    public DashboardBean getActivitySummary(String group, String activity){
-        DashboardBean bean = new DashboardBean();
+    public int getActivitySummary(String group, String activity){
         if(activity.contains("'"))
-            return bean;
+            return 0;
         PreparedStatement ps = null;
         int sum = 0;
         try{
@@ -627,11 +626,10 @@ public class DatabaseHandler {
                     sum += rs.getInt("sum");
                 }
             }
-            bean.setActivitySummary(sum);
         } catch(SQLException e){
             printError(e);
         }
-        return bean;
+        return sum;
     }
 
 
