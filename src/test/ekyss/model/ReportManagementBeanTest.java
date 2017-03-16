@@ -1,4 +1,4 @@
-package beanTests;
+package ekyss.model;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +18,7 @@ public class ReportManagementBeanTest {
 	@Test
 	public void setGroup() throws Exception {
 		bean.setGroup("a");
-		assertEquals("Inkorrekt värde av user", "a", bean.getGroup());
+		assertEquals("Inkorrekt vÃ¤rde av user", "a", bean.getGroup());
 	}
 	
 	@Test
@@ -30,9 +30,9 @@ public class ReportManagementBeanTest {
 		}
 		testMap.put("a", testList);
 		bean.setSignMap(testMap);
-		assertEquals("Fel värde av signMap", testMap, bean.getSignMap());
+		assertEquals("Fel vÃ¤rde av signMap", testMap, bean.getSignMap());
 	}
 	
-	//Behövs fler tester, men fann det svårt att göra rätt test här. Tyckte att koden var lite fel, men nog bara jag som är förvirrad /Calle
+	//BehÃ¶vs fler tester, men fann det svÃ¥rt att gÃ¶ra rÃ¤tt test hÃ¤r. Tyckte att koden var lite fel, men nog bara jag som Ã¤r fÃ¶rvirrad /Calle
 
 }
