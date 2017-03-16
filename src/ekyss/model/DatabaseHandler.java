@@ -104,7 +104,7 @@ public class DatabaseHandler {
      * @return true if the group(s) is deleted, else false (most likely because some of the groups doesn't
      * exist in the database.
      */
-    public boolean deleteGroups(List<String> groups){
+    public boolean deleteGroups(String[] groups){
         String sql = "WHERE ";
         for(String s:groups){
             sql += "GroupName = ? OR ";
