@@ -1,11 +1,17 @@
 package ekyss.model;
 
 public class BeanTransaction {
-	DatabaseHandler db = new DatabaseHandler();
-	
-	public BeanTransaction() {
-		
+
+
+	/**
+	 * Skapar en ny projektgrupp
+	 * @param name Namn på projektgruppen
+	 */
+	public static void createNewProjectGroup(String name) {
+		new DatabaseHandler().addGroup(name);
 	}
+
+
 	
 	/* LoginServlet */
 	
@@ -15,9 +21,9 @@ public class BeanTransaction {
 	 * wishes to sign in to (userName, password and group attributes in the bean).
 	 * @return true if the user is able to sign in, else false.
 	 */
-	public boolean loginUser(LoginBean bean){
+	/*public boolean loginUser(LoginBean bean){
 		return db.loginUser(bean.getUsername(), bean.getPassword(), bean.getSelectedGroup());
-	}
+	}*/
 	
 	
 	/* GroupManagementServlet */
@@ -59,18 +65,18 @@ public class BeanTransaction {
 	 * @param bean A UserManagementBean that contains UserName, Email and Password for the new user.
 	 * @return true if the user is added, else false.
 	 */
-	public boolean addUser(UserManagementBean bean){
+	/*public boolean addUser(UserManagementBean bean){
 		return db.addUser(bean.getUserName(), bean.getEmail(), bean.getPassword());
-	}
+	}*/
 	
 	/** 
 	 * Deletes one or many users from the database.
 	 * @param bean A bean that contains a List of the users to be deleted (userList attribute in the Bean).
 	 * @return true if all the users are deleted, else false.
 	 */
-	public boolean deleteUsers(UserManagementBean bean){
+	/*public boolean deleteUsers(UserManagementBean bean){
 		return db.deleteUsers(bean.getUserList());
-	}
+	}*/
 	
 	/**
 	 * Assigns an user to a group. A user can be a member of many groups, but only one time
@@ -79,9 +85,9 @@ public class BeanTransaction {
 	 * assigned to (group and userName attribute in the bean).
 	 * @return true if the user is assigned to the group, else false.
 	 */
-	public boolean assignGroup(UserManagementBean bean){
+	/*public boolean assignGroup(UserManagementBean bean){
 		return db.assignGroup(bean.getGroup(), bean.getUserName());
-	}
+	}*/
 	
 	/**
 	 * Assigns a role to a user in a group.
@@ -89,9 +95,9 @@ public class BeanTransaction {
 	 * should be assigned (role, group and userName attributes in the bean).
 	 * @return true if the role is assigned, else false.
 	 */
-	public boolean assignRole(UserManagementBean bean){
+	/*public boolean assignRole(UserManagementBean bean){
 		return db.assignRole(bean.getGroup(), bean.getUserName(), bean.getRole());
-	}
+	}*/
 	
 	/**
 	 * Deletes a user from a group.
@@ -99,9 +105,9 @@ public class BeanTransaction {
 	 * user should be deleted (userName and group attributes in the bean).
 	 * @return true if the user is deleted from the group, else false.
 	 */
-	public boolean deleteFromGroup(UserManagementBean bean){
+	/*public boolean deleteFromGroup(UserManagementBean bean){
 		return db.deleteFromGroup(bean.getUserName(), bean.getGroup());
-	}
+	}*/
 	
 	
 	/* ReportManagementServlet */
@@ -114,9 +120,9 @@ public class BeanTransaction {
 	 * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
 	 * @return true if all the reports are signed, else false.
 	 */
-	public boolean signReports(ReportManagementBean bean){
+	/*public boolean signReports(ReportManagementBean bean){
 		return db.signReports(bean.getGroup(), bean.getSignMap());
-	}
+	}*/
 	
 	/**
 	 * Unsigns one or many reports. Only the project leader should be able to do this.
@@ -126,9 +132,9 @@ public class BeanTransaction {
 	 * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
 	 * @return true if all the reports are unsigned, else false.
 	 */
-	public boolean unsignReport(ReportManagementBean bean){
+	/*public boolean unsignReport(ReportManagementBean bean){
 		return db.unsignReports(bean.getGroup(), bean.getSignMap());
-	}
+	}*/
 	
 	
 	/* ReportServlet */
@@ -139,9 +145,9 @@ public class BeanTransaction {
 	 * should be added to the database (user, group, week and reportValues in the bean).
 	 * @return true if the time report is added, else false.
 	 */
-	public boolean createTimeReport(ReportBean bean){
+	/*public boolean createTimeReport(ReportBean bean){
 		return db.createTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek(), bean.getReportValues());
-	}
+	}*/
 	
 	/**
 	 * Updates a time report in the database with new values.
@@ -149,9 +155,9 @@ public class BeanTransaction {
 	 * should be updated in the database (user, group, week and reportValues in the bean).
 	 * @return true if the time report is updated, else false.
 	 */
-	public boolean updateTimeReport(ReportBean bean){
+	/*public boolean updateTimeReport(ReportBean bean){
 		return db.updateTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek(), bean.getReportValues());
-	}
+	}*/
 	
 	/**
 	 * Removes a time report from the database.
@@ -159,9 +165,9 @@ public class BeanTransaction {
 	 * should be deleted (group, user and week in the bean).
 	 * @return true if the time report is deleted, else false.
 	 */
-	public boolean removeTimeReport(ReportBean bean){
+	/*public boolean removeTimeReport(ReportBean bean){
 		return db.removeTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek());
-	}
+	}*/
 	
 	/* UserServlet */
 	
@@ -171,8 +177,8 @@ public class BeanTransaction {
 	 * password attributes in the bean).
 	 * @return true if the password is changed, else false.
 	 */
-	public boolean changePassword(UserBean bean){
+	/*public boolean changePassword(UserBean bean){
 		return db.changePassword(bean.getUserName(), bean.getNewPassword());
-	}
+	}*/
 	
 }
