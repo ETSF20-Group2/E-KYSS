@@ -42,10 +42,7 @@ public class UserManagementServlet extends servletBase {
         if(validateInput(umb)) {       // TODO: IMPLEMENT validateInput(UserManagementBean)
             String pw = generatePassword();
             umb.setPassword(pw);
-
-
-
-            System.out.print(umb.getUsername());
+            System.out.print(umb    .getUsername());
             MailHandler.sendPassword(umb.getEmail(), pw);
             BeanTransaction.addUser(umb);
         }
