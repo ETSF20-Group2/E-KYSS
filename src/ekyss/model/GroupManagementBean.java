@@ -10,6 +10,7 @@ public class GroupManagementBean implements Serializable {
     private String type = null;
     private String groupName = null;
     private int err_code = 0;
+    private String[] deleteGroup;
 
     /**
      * Sätter en lista innehållandes samtliga existerande grupper i databasen.
@@ -63,6 +64,18 @@ public class GroupManagementBean implements Serializable {
 
     public int getErrorCode() {
         return err_code;
+    }
+
+    /**
+     * Sätter de grupper som ska tas bort.
+     * @param groups
+     */
+    public void setDeleteGroup(String[] groups) {
+        deleteGroup = groups;
+    }
+
+    public String[] getDeleteGroup() {
+        return deleteGroup;
     }
 
 

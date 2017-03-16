@@ -35,7 +35,7 @@
                     <c:forEach items="${bean.getAllGroups()}" var="group">
                         <tr>
                             <td>${group}</td>
-                            <td><input name="checkbox[]" type="checkbox" value="${group}"></td>
+                            <td><input name="deleteGroup" type="checkbox" value="${group}"></td>
                         </tr>
                     </c:forEach>
                 </tbody>

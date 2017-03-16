@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(
         name="GroupManagementServlet",
@@ -38,7 +39,8 @@ public class GroupManagementServlet extends servletBase {
                         // Gruppnamnet finns inte i databasen.
                         if (!bean.getGroupName().isEmpty() || !bean.getGroupName().equals("")) {
                             // Vi har här ett unikt gruppnamn som ska sparas i databasen
-                            new BeanTransaction().createNewProjectGroup(bean.getGroupName());
+                            new BeanTransaction();
+                            BeanTransaction.createNewProjectGroup(bean.getGroupName());
                         } else {
                             // Gruppnamnet är tomt
                             bean.setErrorCode(ERR_GROUP_EMPTY);
@@ -54,7 +56,14 @@ public class GroupManagementServlet extends servletBase {
 
                 } else if (bean.getType().equals(TYPE_DELETE)) {
                     // Förfrågning kommer från delete-formuläret
-                    // TODO: Implementera borttagning av grupper.
+                    if (bean.getDeleteGroup() != null) {
+                        // Användaren tryckte 'ta bort' med en eller flera grupper som ska tas bort.
+                        new BeanTransaction();
+                        BeanTransaction.deleteProjectGroup(bean.getDeleteGroup());
+                    } else {
+                        // Användaren tryckte 'ta bort' utan att markera nån grupp.
+                        // TODO: implementera ett felmeddelande
+                    }
                 }
             }
         } else {
