@@ -37,14 +37,16 @@ public class GroupManagementServlet extends servletBase {
                     if (!bean.getAllGroups().contains(bean.getGroupName())) {
                         // Gruppnamnet finns inte i databasen.
                         if (!bean.getGroupName().isEmpty() || !bean.getGroupName().equals("")) {
-
+                            // Vi har här ett unikt gruppnamn som ska sparas i databasen
+                            new BeanTransaction().createNewProjectGroup(bean.getGroupName());
                         } else {
+                            // Gruppnamnet är tomt
                             bean.setErrorCode(ERR_GROUP_EMPTY);
                             forwardToView(request, response, "/groupmanagement.jsp", bean);
                             return;
                         }
                     } else {
-                        // Gruppnamnet finns i databasen.
+                        // Gruppnamnet finns redan i databasen.
                         bean.setErrorCode(ERR_GROUP_EXISTS);
                         forwardToView(request, response, "/groupmanagement.jsp", bean);
                         return;
