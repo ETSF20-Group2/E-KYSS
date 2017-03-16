@@ -8,7 +8,7 @@ import org.junit.Test;
 public class GroupManagementTest {
 	private GroupManagementBean bean = new GroupManagementBean();
 	
-	 @Test
+	 /*@Test
 	 public final void testSetandGetGroups(){
 		 ArrayList<String> groups = new ArrayList<String>();
 		 groups.add("Grupp1");
@@ -41,5 +41,5 @@ public class GroupManagementTest {
 		 users.add("Grupp2");
 		 bean.setGroups(users);
 		 assertEquals("Inkorrekt returnering av getGroups()", users, bean.getGroups());
-		}
+		}*/
 }

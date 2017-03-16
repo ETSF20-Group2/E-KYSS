@@ -25,7 +25,7 @@ public class DashboardServlet extends servletBase {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        DashboardBean bean = new DashboardBean();
+        DashboardBean bean = null;
 
         forwardToView(request, response, "/dashboard.jsp",bean);
     }

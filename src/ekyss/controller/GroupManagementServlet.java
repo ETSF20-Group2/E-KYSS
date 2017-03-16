@@ -29,6 +29,7 @@ public class GroupManagementServlet extends servletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         GroupManagementBean bean = BeanFactory.getGroupManagementBean();
+
         forwardToView(request, response, "/groupmanagement.jsp",bean);
 
     }
