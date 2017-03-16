@@ -28,7 +28,7 @@ public class ReportManagementServlet extends servletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         ReportManagementBean bean = null;
-        forwardToView(request, response, "/reportpmanagement.jsp",bean);
+        forwardToView(request, response, "/reportmanagement.jsp",bean);
 
     }
 

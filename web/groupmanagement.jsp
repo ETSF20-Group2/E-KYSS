@@ -1,6 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="infoMsg">
+    <c:if test="${bean.getErrorCode() eq 1}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Det projektgruppnamn du har valt existerar redan. Välj ett annat namn.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErrorCode() eq 2}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Du har inte anget något namn på den nya projektgrupp som du försöker skapa. Ange ett projekgtuppnamn och klicka sedan på <em>skapa</em>-knappen.
+        </div>
+    </c:if>
+</c:set>
 <c:set var="groups">
     <table class="table table-hover">
         <c:choose>
@@ -43,18 +57,19 @@
                 <h2 class="form-signin-heading">Hantering av projektgrupper</h2>
                 <p class="form-signin-heading">Lägg till en ny projektgrupp.</p>
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                    <meta type="hidden" name="type" value="add">
+                    <input type="hidden" name="type" value="add">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Ange önskat projektgruppsnamn">
+                        <input type="text" name="groupName" class="form-control" placeholder="Ange önskat projektgruppsnamn">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Skapa</button>
                         </span>
                     </div>
+                    ${infoMsg}
                 </form>
                 <br>
                 <p class="form-signin-heading">Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                    <meta type="hidden" name="type" value="delete">
+                    <input type="hidden" name="type" value="delete">
                     ${groups}
                 </form>
             </div>
