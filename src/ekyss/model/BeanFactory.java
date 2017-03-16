@@ -25,14 +25,12 @@ public class BeanFactory {
 	 * @return LoginBean
 	 */
 	public static void checkLoginBean(LoginBean bean) {
-	    DatabaseHandler db = new DatabaseHandler();
-	
 	    bean.setLogin(
 	        new DatabaseHandler().
 	                loginUser(
 	                    bean.getUsername(),
 	                    bean.getPassword(),
-	                    bean.getSelectedGroup()
+						bean.getSelectedGroup()
 	                )
 	    );
 	}
@@ -44,9 +42,9 @@ public class BeanFactory {
 	 * @return A GroupManagementBean that contains a List<String> of all the groups (as the groups
 	 * attribute in bean).
 	 */
-	public GroupManagementBean getAllGroupsList(){
+	public static GroupManagementBean getAllGroupsList(){
 		GroupManagementBean bean = new GroupManagementBean();
-		bean.setGroups(db.getAllGroupsList());
+		bean.setGroups(new DatabaseHandler().getAllGroupsList());
 		return bean;
 	}
 	
