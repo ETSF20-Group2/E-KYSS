@@ -1,4 +1,4 @@
-package BeansTest;
+package ekyss.model;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import Beans.UserBean;
 
 public class UserBeanTest {
  private UserBean bean = new UserBean();

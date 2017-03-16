@@ -3,6 +3,7 @@ package ekyss.controller;
 import base.servletBase;
 import ekyss.model.BeanFactory;
 import ekyss.model.GroupManagementBean;
+import ekyss.model.UserManagementBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,8 +27,8 @@ public class UserManagementServlet extends servletBase {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        GroupManagementBean bean = BeanFactory.getGroupManagementBean();
-        forwardToView(request, response, "/userpmanagement.jsp",bean);
+        UserManagementBean bean = null;
+        forwardToView(request, response, "/usermanagement.jsp",bean);
 
     }
 

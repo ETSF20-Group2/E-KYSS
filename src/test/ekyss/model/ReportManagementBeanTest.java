@@ -9,8 +9,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import beans.ReportManagementBean;
-
 public class ReportManagementBeanTest {
 	
 	private ReportManagementBean bean = new ReportManagementBean();

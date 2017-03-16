@@ -5,11 +5,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupManagementBean implements Serializable {
-    private List<String> groups = new ArrayList<String>();
+
+    private List<String> groups = new ArrayList<>();
+
+    public void setAllGroups(List<String> groups) {
+        this.groups.addAll(groups);
+    }
+
+    public void setAllGroups(String group) {
+        groups.add(group);
+    }
+
+    public List<String> getAllGroups() {
+        return groups;
+    }
+
+
+    /*
+    private List<String> groups = new ArrayList<>();
     private String group = null;
     private String leader = null;
-
-    private List<String> users = new ArrayList<String>(); // Måste läggas till
+    private List<String> users = new ArrayList<>();
 
     public void setUsers(List<String> users){
         this.users = users;
@@ -50,4 +66,5 @@ public class GroupManagementBean implements Serializable {
     public String getLeader(){
         return leader;
     }
+    */
 }

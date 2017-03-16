@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import beans.UserManagementBean;
-
 public class UserManagementBeanTest {
 	
 	private UserManagementBean bean = new UserManagementBean();
