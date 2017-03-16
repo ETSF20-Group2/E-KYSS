@@ -5,6 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserManagementBean implements Serializable {
+
+    private List<String[]> list = new ArrayList<>();
+
+    public void setAllUsers(List<String[]> users) {
+        list.addAll(users);
+    }
+
+    public List<String[]> getAllUsers() {
+        return list;
+    }
+
+
+    /*
     private String userName;
     private String password;
     private String group;
@@ -64,4 +77,5 @@ public class UserManagementBean implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    */
 }

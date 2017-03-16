@@ -180,6 +180,25 @@ public class DatabaseHandler {
         return list;
     }
 
+    public List<String[]> getUserTable() {
+        List<String[]> list = new ArrayList<>();
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement("SELECT * FROM Users");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String[] user = new String[3];
+                user[0] = rs.getString("userName");
+                user[1] = rs.getString("password");
+                user[2] = rs.getString("email");
+                list.add(user);
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return list;
+    }
+
     /**
      * Function that is used to fetch a list of all the users in the database.
      * @return A GroupManagementBean that contains a List<String> of all the users (as the users
