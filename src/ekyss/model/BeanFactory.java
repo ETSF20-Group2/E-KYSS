@@ -27,6 +27,7 @@ public class BeanFactory {
 	 */
 	public static UserManagementBean getUserManagementBean() {
 		UserManagementBean bean = new UserManagementBean();
+		bean.setAllUsers(new DatabaseHandler().getUserTable());
 		return bean;
 	}
 
