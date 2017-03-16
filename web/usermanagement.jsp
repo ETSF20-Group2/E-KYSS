@@ -21,12 +21,14 @@
                 </thead>
                 <tbody>
                     <c:forEach items="${bean.getAllUsers()}" var="user">
-                        <tr>
-                            <td>${user.getUsername}</td>
-                            <td>${user.getPassword}</td>
-                            <td>${user.getMail}</td>
-                            <td><input name="checkbox[]" type="checkbox" value="${user.getUsername}"></td>
-                        </tr>
+                        <c:if test="${user[0] ne 'admin'}">
+                            <tr>
+                                <td>${user[0]}</td>
+                                <td>${user[1]}</td>
+                                <td>${user[2]}</td>
+                                <td><input name="checkbox[]" type="checkbox" value="${user[0]}"></td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
                 </tbody>
             </c:otherwise>

@@ -59,18 +59,18 @@ public class BeanTransaction {
 	 * @param bean A UserManagementBean that contains UserName, Email and Password for the new user.
 	 * @return true if the user is added, else false.
 	 */
-	public boolean addUser(UserManagementBean bean){
+	/*public boolean addUser(UserManagementBean bean){
 		return db.addUser(bean.getUserName(), bean.getEmail(), bean.getPassword());
-	}
+	}*/
 	
 	/** 
 	 * Deletes one or many users from the database.
 	 * @param bean A bean that contains a List of the users to be deleted (userList attribute in the Bean).
 	 * @return true if all the users are deleted, else false.
 	 */
-	public boolean deleteUsers(UserManagementBean bean){
+	/*public boolean deleteUsers(UserManagementBean bean){
 		return db.deleteUsers(bean.getUserList());
-	}
+	}*/
 	
 	/**
 	 * Assigns an user to a group. A user can be a member of many groups, but only one time
@@ -79,9 +79,9 @@ public class BeanTransaction {
 	 * assigned to (group and userName attribute in the bean).
 	 * @return true if the user is assigned to the group, else false.
 	 */
-	public boolean assignGroup(UserManagementBean bean){
+	/*public boolean assignGroup(UserManagementBean bean){
 		return db.assignGroup(bean.getGroup(), bean.getUserName());
-	}
+	}*/
 	
 	/**
 	 * Assigns a role to a user in a group.
@@ -89,9 +89,9 @@ public class BeanTransaction {
 	 * should be assigned (role, group and userName attributes in the bean).
 	 * @return true if the role is assigned, else false.
 	 */
-	public boolean assignRole(UserManagementBean bean){
+	/*public boolean assignRole(UserManagementBean bean){
 		return db.assignRole(bean.getGroup(), bean.getUserName(), bean.getRole());
-	}
+	}*/
 	
 	/**
 	 * Deletes a user from a group.
@@ -99,9 +99,9 @@ public class BeanTransaction {
 	 * user should be deleted (userName and group attributes in the bean).
 	 * @return true if the user is deleted from the group, else false.
 	 */
-	public boolean deleteFromGroup(UserManagementBean bean){
+	/*public boolean deleteFromGroup(UserManagementBean bean){
 		return db.deleteFromGroup(bean.getUserName(), bean.getGroup());
-	}
+	}*/
 	
 	
 	/* ReportManagementServlet */
