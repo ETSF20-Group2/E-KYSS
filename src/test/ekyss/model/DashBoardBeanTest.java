@@ -6,8 +6,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import beans.DashboardBean;
-
 public class DashBoardBeanTest {
 	
 	private DashboardBean bean = new DashboardBean();

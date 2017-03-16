@@ -1,11 +1,9 @@
-package BeansTest;
+package ekyss.model;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
-
-import Beans.GroupManagementBean;
 
 public class GroupManagementTest {
 	private GroupManagementBean bean = new GroupManagementBean();
