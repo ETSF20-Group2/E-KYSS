@@ -51,6 +51,11 @@
         <option value="${group}">${group}</option>
     </c:forEach>
 </c:set>
+<c:set var="select_users">
+    <c:forEach items="${bean.getAllUsers()}" var="user">
+        <option value="${user}">${user}</option>
+    </c:forEach>
+</c:set>
 <t:block pageTitle="Projektgrupphantering">
     <jsp:attribute name="stylesheets" />
     <jsp:attribute name="navigation" />
@@ -100,9 +105,7 @@
                             <div class="form-group">
                                 <label for="inputUsername">Användarnamn</label>
                                 <select name="username" type="text" class="form-control" id="inputUsername">
-                                    <option value="x">x</option>
-                                    <option value="y">y</option>
-                                    <option value="z">z</option>
+                                    ${select_users}
                                 </select>
                             </div>
                             <div class="form-group">
