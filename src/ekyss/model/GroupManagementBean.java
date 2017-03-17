@@ -7,6 +7,7 @@ import java.util.List;
 public class GroupManagementBean implements Serializable {
 
     private List<String> groups = new ArrayList<>();
+    private List<String> users = new ArrayList<>();
     private String type = null;
     private String groupName = null;
     private int err_code = 0;
@@ -76,5 +77,17 @@ public class GroupManagementBean implements Serializable {
 
     public String[] getDeleteGroup() {
         return deleteGroup;
+    }
+
+    /**
+     * Sätter in användare som finns i databasen.
+     * @param users
+     */
+    public void setAllUsers(List<String> users) {
+        this.users = users;
+    }
+
+    public List<String> getAllUsers() {
+        return users;
     }
 }
