@@ -44,7 +44,7 @@ public class DatabaseHandler {
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 String role = rs.getString("role");
-                if(role != null && role.equals("PG"))
+                if(role != null && role.equals("PL"))
                     return true;
                 return false;
             }
