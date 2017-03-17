@@ -15,6 +15,20 @@
         </div>
     </c:if>
 </c:set>
+<c:set var="infoMsg_assign">
+    <c:if test="${bean.getErrorCode() eq 3}">
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Användaren har kopplats till vald projektgrupp.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErrorCode() eq 4}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Vald användare är redan kopplad till vald projektgrupp. Välj en anna projektgrupp och försök igen på nytt.
+        </div>
+    </c:if>
+</c:set>
 <c:set var="groups">
     <table class="table table-hover">
         <c:choose>
@@ -101,20 +115,21 @@
                     <div role="tabpanel" class="tab-pane" id="assign">
                         <p>Koppla en användare till given projektgrupp.</p>
                         <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                            <meta type="hidden" name="type" value="assign">
+                            <input type="hidden" name="type" value="assign">
                             <div class="form-group">
                                 <label for="inputUsername">Användarnamn</label>
-                                <select name="username" type="text" class="form-control" id="inputUsername">
+                                <select name="assignUser" type="text" class="form-control" id="inputUsername">
                                     ${select_users}
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="inputGroup">Projektgrupp</label>
-                                <select name="f_group" type="text" class="form-control" id="inputGroup">
+                                <select name="assignGroup" type="text" class="form-control" id="inputGroup">
                                     ${select_groups}
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-default">Tilldela</button>
+                            ${infoMsg_assign}
                         </form>
                     </div>
 
