@@ -26,7 +26,7 @@
                                 <td>${user[0]}</td>
                                 <td>${user[1]}</td>
                                 <td>${user[2]}</td>
-                                <td><input name="checkbox[]" type="checkbox" value="${user[0]}"></td>
+                                <td><input name="deleteUserList" type="checkbox" value="${user[0]}"></td>
                             </tr>
                         </c:if>
                     </c:forEach>
@@ -49,7 +49,7 @@
                 <h2 class="form-signin-heading">Hantering av användare</h2>
                 <p class="form-signin-heading">Lägg till en ny användare.</p>
                 <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
-                    <meta type="hidden" name="type" value="add">
+                    <input type="hidden" name="type" value="add">
                     <div class="form-group">
                         <label for="inputUsername">Användarnamn</label>
                         <input name="username" type="text" class="form-control" id="inputUsername" placeholder="Användarnamn">
@@ -63,7 +63,7 @@
                 <br>
                 <p class="form-signin-heading">Ta bort existerande användare genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
-                    <meta type="hidden" name="type" value="delete">
+                    <input type="hidden" name="type" value="delete">
                     ${users}
                 </form>
             </div>

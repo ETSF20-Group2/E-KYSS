@@ -273,7 +273,7 @@ public class DatabaseHandler {
      * @param users A list of the users to be deleted.
      * @return true if all the users are deleted, else false.
      */
-    public boolean deleteUsers(List<String> users){
+    public boolean deleteUsers(String[] users){
         String where = " WHERE";
         for(String s: users){
             where += " userName = ? OR";
