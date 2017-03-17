@@ -21,8 +21,8 @@ public class UserManagementServlet extends servletBase {
     private static final long serialVersionUID = 1L;
 
     protected boolean validateInput(UserManagementBean umb) {
-        if (umb.getPassword().length() == 6) { // Verkar som att det ska vara exakt 6 enligt BaseBlockSystem
-            for(char c : umb.getPassword().toCharArray()){
+        if (umb.getUsername().length() >= 5 && umb.getUsername().length() <= 10) {
+            for(char c : umb.getUsername().toCharArray()){
                 int i = (int) c;
                 if(i < 48 || i > 122 || i > 57 && i < 65 || i > 90 && i < 97){
                     return false;
@@ -34,7 +34,8 @@ public class UserManagementServlet extends servletBase {
     }
 
     protected String generatePassword() {
-        final String ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        final String ALPHANUMERICS = "abcdefghijklmnopqrstuvwxy"; // Krav 6.2.3 - ASCII 97-122 = a-z (små bokstäver)
+        //final String ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder password = new StringBuilder();
         Random rnd = new Random();
         while (password.length() < 6) {
