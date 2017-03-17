@@ -20,8 +20,13 @@ import java.util.Random;
 public class UserManagementServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;
+<<<<<<< HEAD
     private final String TYPE_CREATE = "add";
     private final String TYPE_DELETE = "delete";
+=======
+    private static final long MAXPASSWORDLENGTH = 6;
+
+>>>>>>> 6eea33e1925af652b0a48375ecdad08783c7edf5
 
     protected boolean validateInput(UserManagementBean umb) {
         if (umb.getUsername().length() >= 5 && umb.getUsername().length() <= 10) {
@@ -36,20 +41,26 @@ public class UserManagementServlet extends servletBase {
         return false;
     }
 
+
     protected String generatePassword() {
         final String ALPHANUMERICS = "abcdefghijklmnopqrstuvwxy"; // Krav 6.2.3 - ASCII 97-122 = a-z (små bokstäver)
         //final String ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder password = new StringBuilder();
         Random rnd = new Random();
-        while (password.length() < 6) {
+        while (password.length() < MAXPASSWORDLENGTH) {
             int index = (int) (rnd.nextFloat() * ALPHANUMERICS.length());
             password.append(ALPHANUMERICS.charAt(index));
         }
         return password.toString();
     }
 
+    protected boolean validateInput(UserManagementBean umb)
+    {
+        return true;
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<<<<<<< HEAD
 
         if(true) {
             UserManagementBean umb = BeanFactory.getUserManagementBean();
@@ -75,11 +86,25 @@ public class UserManagementServlet extends servletBase {
 
             System.out.println("sendRedirect");
             response.sendRedirect("/");
+=======
+        UserManagementBean umb = BeanFactory.getUserManagementBean();
+        BeanUtilities.populateBean(umb,request);
+        if(validateInput(umb)) { // TODO: IMPLEMENT validateInput(UserManagementBean)
+            String pw = generatePassword();
+            umb.setPassword(pw);
+            System.out.print(umb.getUsername());
+            MailHandler.sendPassword(umb.getEmail(), pw);
+            BeanTransaction.addUser(umb);
+        }
+        else {
+            System.out.print("Error validating bean!");
+>>>>>>> 6eea33e1925af652b0a48375ecdad08783c7edf5
         }
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<<<<<<< HEAD
 
         System.out.println("doGet");
         UserManagementBean bean = BeanFactory.getUserManagementBean();
@@ -88,6 +113,11 @@ public class UserManagementServlet extends servletBase {
         forwardToView(request, response, "/usermanagement.jsp",bean);
         System.out.println("forwarded to view");
 
+=======
+        // hantering av flera path gets, dvs om man ska t.ex. tilldela roll / grupp istället.
+        UserManagementBean bean = BeanFactory.getUserManagementBean();
+        forwardToView(request, response, "/usermanagement.jsp",bean);
+>>>>>>> 6eea33e1925af652b0a48375ecdad08783c7edf5
     }
 
 }
