@@ -34,7 +34,7 @@ public class UserManagementBean implements Serializable {
         this.deleteUserList = deleteUserList;
     }
 
-    public String getType(){
+    public String getType() {
         return type;
     }
 
