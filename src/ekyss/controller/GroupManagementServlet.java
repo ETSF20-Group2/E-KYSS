@@ -23,10 +23,12 @@ public class GroupManagementServlet extends servletBase {
     private static final long serialVersionUID = 1L;
     private final String TYPE_ADD = "add";
     private final String TYPE_DELETE = "delete";
-
+    private final String TYPE_ASSIGN = "assign";
     private final int ERR_NO_MSG = 0;
     private final int ERR_GROUP_EXISTS = 1;
     private final int ERR_GROUP_EMPTY = 2;
+    private final int ERR_ASSIGN_SUCCESS = 3;
+    private final int ERR_ASSIGN_EXISTS = 4;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Kolla om användaren är inloggad, samt att användaren har behörighet att visa sidan.
@@ -64,6 +66,23 @@ public class GroupManagementServlet extends servletBase {
                 } else {
                     // Användaren tryckte 'ta bort' utan att markera nån grupp.
                     // TODO: implementera ett felmeddelande
+                }
+            } else if (bean.getType().equals(TYPE_ASSIGN)) {
+                // Förfrågning kommer från assign-formuläret
+                if (bean.getAssignUser() != null || bean.getAssignGroup() != null) {
+                    // Användaren tryckte 'tilldela' med vald användare som ska kopplas till vald projektgrupp
+                    new BeanTransaction();
+                    if (BeanTransaction.assignUserToGroup(bean)) {
+                        // Lyckad tilldelning
+                        bean.setErrorCode(ERR_ASSIGN_SUCCESS);
+                        forwardToView(request, response, "/groupmanagement.jsp", bean);
+                        return;
+                    } else {
+                        // Tilldelningen är lyckad - användaren tillhör redan given projektgrupp
+                        bean.setErrorCode(ERR_ASSIGN_EXISTS);
+                        forwardToView(request, response, "/groupmanagement.jsp", bean);
+                        return;
+                    }
                 }
             } else {
                 System.out.println("Förmulärtyp okänd! Inputattributet 'type' saknas vid POST-anrop.");
