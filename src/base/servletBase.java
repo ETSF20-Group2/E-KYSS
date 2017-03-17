@@ -1,10 +1,5 @@
 package base;
 
-import java.io.IOException;
-
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -68,6 +66,36 @@ public class servletBase extends HttpServlet {
     public static long calcActivityTime(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Kollar om användaren är inloggad och har behörighet att visa sidan.
+     * ((( Vad jag kan se är det bara dessa servlets som behöver någon specialbehandling beroende på roll )))
+     * @param request
+     * @return true om användaren har behörighet, annars false.
+     */
+    protected boolean securityCheck(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("user");
+        boolean isPL = (boolean) session.getAttribute("ProjectLeader");
+        if(loggedIn(request)) {
+            switch (request.getServletPath().toLowerCase()){
+                case "/groupmanagement":
+                    return username.equals("admin");
+
+
+                case "/usermanagement":
+                    return username.equals("admin");
+
+                case "/reportmanagement":
+                    return isPL;
+
+                case "/dashboard":
+                    return isPL;
+            }
+        }
+        return false;
+
     }
 
     /**
