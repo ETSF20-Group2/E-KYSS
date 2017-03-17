@@ -8,6 +8,11 @@ import java.util.Map;
 public class ReportManagementBean implements Serializable {
     private String group;
     private Map<String, List<Integer>> signMap = new HashMap<String, List<Integer>>();
+    private String type = null;
+
+    public String getType(){ return type; }
+
+    public void setType(String type){ this.type = type; }
 
     public String getGroup() {
         return group;
