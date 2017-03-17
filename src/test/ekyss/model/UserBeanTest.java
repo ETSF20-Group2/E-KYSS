@@ -45,8 +45,8 @@ public class UserBeanTest {
  
  @Test
  public final void testSetandGetNewPassword(){
-	 bean.setNewPassword("1234");
-	 assertEquals("Inkorrekt returnering av getNewPassword()", "1234", bean.getNewPassword());
+	 bean.setNewPassword1("1234");
+	 assertEquals("Inkorrekt returnering av getNewPassword()", "1234", bean.getNewPassword1());
 	}
  
  @Test

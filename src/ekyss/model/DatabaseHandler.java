@@ -273,7 +273,7 @@ public class DatabaseHandler {
      * @param users A list of the users to be deleted.
      * @return true if all the users are deleted, else false.
      */
-    public boolean deleteUsers(List<String> users){
+    public boolean deleteUsers(String[] users){
         String where = " WHERE";
         for(String s: users){
             where += " userName = ? OR";
@@ -371,7 +371,7 @@ public class DatabaseHandler {
      * @return A UserManagementBean containing a list of all the users (userList attribute in
      * the bean).
      */
-    public List<String> getUserListU(){
+    public List<String> getUserList(){
         List<String> users = new ArrayList<String>();
         PreparedStatement ps = null;
         try{
@@ -379,7 +379,9 @@ public class DatabaseHandler {
             print(ps);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                users.add(rs.getString("userName"));
+                String user = rs.getString("userName");
+                if(user.equals("admin")) continue;
+                users.add(user);
             }
         } catch (SQLException e){
             printError(e);
@@ -548,15 +550,22 @@ public class DatabaseHandler {
      * password attributes in the bean).
      * @return true if the password is changed, else false.
      */
-    public boolean changePassword(String userName, String newPassword){
+    public boolean changePassword(String userName, String oldPassword, String newPassword){
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE Users SET password = ? WHERE userName = ?");
-            ps.setString(1, newPassword);
-            ps.setString(2, userName);
-            print(ps);
-            if(ps.executeUpdate() > 0){
-                return true;
+            ps = conn.prepareStatement("SELECT password FROM Users WHERE username = ?");
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                if (rs.getString("password").equals(oldPassword)) {
+                    ps = conn.prepareStatement("UPDATE Users SET password = ? WHERE userName = ?");
+                    ps.setString(1, newPassword);
+                    ps.setString(2, userName);
+                    print(ps);
+                    if (ps.executeUpdate() > 0) {
+                        return true;
+                    }
+                }
             }
         } catch (SQLException e){
             printError(e);
