@@ -21,7 +21,16 @@ public class UserManagementServlet extends servletBase {
     private static final long serialVersionUID = 1L;
 
     protected boolean validateInput(UserManagementBean umb) {
-        return true;
+        if (umb.getPassword().length() == 6) { // Verkar som att det ska vara exakt 6 enligt BaseBlockSystem
+            for(char c : umb.getPassword().toCharArray()){
+                int i = (int) c;
+                if(i < 48 || i > 122 || i > 57 && i < 65 || i > 90 && i < 97){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     protected String generatePassword() {
