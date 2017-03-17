@@ -12,6 +12,8 @@ public class GroupManagementBean implements Serializable {
     private String groupName = null;
     private int err_code = 0;
     private String[] deleteGroup;
+    private String assignedGroup;
+    private String assignedUser;
 
     /**
      * Sätter en lista innehållandes samtliga existerande grupper i databasen.
@@ -89,5 +91,29 @@ public class GroupManagementBean implements Serializable {
 
     public List<String> getAllUsers() {
         return users;
+    }
+
+    /**
+     * Markerar vilken användare som ska kopplas till en viss projektgrupp
+     * @param user
+     */
+    public void setAssignedUser(String user) {
+        assignedUser = user;
+    }
+
+    public String getAssignUser() {
+        return assignedUser;
+    }
+
+    /**
+     * Markerar vilken projektgrupp en viss användare ska kopplas till.
+     * @param group
+     */
+    public void setAssignedGroup(String group) {
+        assignedGroup = group;
+    }
+
+    public String getAssignGroup() {
+        return assignedGroup;
     }
 }
