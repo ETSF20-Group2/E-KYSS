@@ -8,13 +8,12 @@ var CODES = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "
  */
 function validateRow(act_code) {
     var target = 's';
-    var arr = Array.from(LETTERS, (l) => act_code+l); // construct tag-id ‘11d’ t.ex.
-    var res = arr.reduce(((acc, cur) => acc + parseCell(cur, function(name) {
+    var TextFieldArray = Array.from(LETTERS, (l) => act_code+l); // construct tag-id ‘11d’ t.ex.
+    var res = TextFieldArray.reduce(((acc, cur) => acc + parseCell(cur, function(name) {
             return document.getElementsByName(name)[0];
         })), 0);
     console.log(res);
     document.getElementsByName(act_code+target)[0].value = res;
-    console.log(res);
 }
 
 /**
@@ -24,8 +23,8 @@ function validateRow(act_code) {
  * @param col
  */
 function validateCol(col) {
-    var arr = Array.from(CODES, (l) => l+col);
-    var res = arr.reduce(((acc, cur) => acc + parseCell(cur, function(name) {
+    var TextFieldArray = Array.from(CODES, (l) => l+col);
+    var res = TextFieldArray.reduce(((accumulator, current) => accumulator + parseCell(current, function(name) {
             return document.getElementsByName(name)[0];
         })), 0);
     if(col!='s') document.getElementsByName(col+'s')[0].value = res;
@@ -39,7 +38,7 @@ function validateCol(col) {
  */
 function checkValidTI(ref) {
     var code = ref.name.substring(0,ref.name.length-1);
-    var tag = ref.name.charAt(code.length-1);
+    var tag = ref.name.charAt(ref.name.length-1);
     console.log("code: " + code + " tag: " + tag);
     validateRow(code);
     validateCol(tag);
