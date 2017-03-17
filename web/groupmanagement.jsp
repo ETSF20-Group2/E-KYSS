@@ -46,6 +46,16 @@
         <button class="btn btn-default" type="submit">Ta bort</button>
     </c:if>
 </c:set>
+<c:set var="select_groups">
+    <c:forEach items="${bean.getAllGroups()}" var="group">
+        <option value="${group}">${group}</option>
+    </c:forEach>
+</c:set>
+<c:set var="select_users">
+    <c:forEach items="${bean.getAllUsers()}" var="user">
+        <option value="${user}">${user}</option>
+    </c:forEach>
+</c:set>
 <t:block pageTitle="Projektgrupphantering">
     <jsp:attribute name="stylesheets" />
     <jsp:attribute name="navigation" />
@@ -54,24 +64,62 @@
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
+
                 <h2 class="form-signin-heading">Hantering av projektgrupper</h2>
-                <p class="form-signin-heading">Lägg till en ny projektgrupp.</p>
-                <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                    <input type="hidden" name="type" value="add">
-                    <div class="input-group">
-                        <input type="text" name="groupName" class="form-control" placeholder="Ange önskat projektgruppsnamn">
-                        <span class="input-group-btn">
+                <p class="form-signin-heading">Lägg till nya projektgrupper, ta bort existerande projektgrupper eller koppla användare till projektgrupp</p>
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#add" aria-controls="add" role="tab" data-toggle="tab">Lägg till projektgrupp</a></li>
+                    <li role="presentation"><a href="#delete" aria-controls="delete" role="tab" data-toggle="tab">Ta bort projektgrupp</a></li>
+                    <li role="presentation"><a href="#assign" aria-controls="assign" role="tab" data-toggle="tab">Tilldela projektgrupp</a></li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <div role="tabpanel" class="tab-pane active" id="add">
+                        <p>Lägg till en ny projektgrupp.</p>
+                        <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                            <input type="hidden" name="type" value="add">
+                            <div class="input-group">
+                                <input type="text" name="groupName" class="form-control" placeholder="Ange önskat projektgruppsnamn">
+                                <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Skapa</button>
                         </span>
+                            </div>
+                                ${infoMsg}
+                        </form>
                     </div>
-                    ${infoMsg}
-                </form>
-                <br>
-                <p class="form-signin-heading">Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
-                <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                    <input type="hidden" name="type" value="delete">
-                    ${groups}
-                </form>
+
+                    <div role="tabpanel" class="tab-pane" id="delete">
+                        <p>Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
+                        <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                            <input type="hidden" name="type" value="delete">
+                                ${groups}
+                        </form>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="assign">
+                        <p>Koppla en användare till given projektgrupp.</p>
+                        <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                            <meta type="hidden" name="type" value="assign">
+                            <div class="form-group">
+                                <label for="inputUsername">Användarnamn</label>
+                                <select name="username" type="text" class="form-control" id="inputUsername">
+                                    ${select_users}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputGroup">Projektgrupp</label>
+                                <select name="f_group" type="text" class="form-control" id="inputGroup">
+                                    ${select_groups}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-default">Tilldela</button>
+                        </form>
+                    </div>
+
+                </div>
+
             </div>
             <div class="col-md-3"></div>
         </div>
