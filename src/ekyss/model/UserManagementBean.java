@@ -20,15 +20,31 @@ public class UserManagementBean implements Serializable {
     private String password;
     private String group;
     private String role;
+    private String type;
     private List<String> userList = new ArrayList<String>();
+    private String[] deleteUserList;
 
     private String email; //Måste läggas till då man använder det i addUser() metoden.
+
+    public String[] getDeleteUserList(){
+        return deleteUserList;
+    }
+
+    public void setDeleteUserList(String[] deleteUserList){
+        this.deleteUserList = deleteUserList;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type){
+        this.type = type;
+    }
 
     public void setUsername(String username){
         this.username = username;
     }
-
-
 
     public String getUsername(){
         return username;

@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
 @WebServlet(
@@ -21,6 +22,8 @@ public class UserManagementServlet extends servletBase {
     private static final long serialVersionUID = 1L;
     private static final long MAXPASSWORDLENGTH = 6;
 
+    private final String TYPE_CREATE = "add";
+    private final String TYPE_DELETE = "delete";
 
     protected boolean validateInput(UserManagementBean umb) {
         if (umb.getUsername().length() >= 5 && umb.getUsername().length() <= 10) {
@@ -54,25 +57,43 @@ public class UserManagementServlet extends servletBase {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserManagementBean umb = BeanFactory.getUserManagementBean();
-        BeanUtilities.populateBean(umb,request);
-        if(validateInput(umb)) { // TODO: IMPLEMENT validateInput(UserManagementBean)
-            String pw = generatePassword();
-            umb.setPassword(pw);
-            System.out.print(umb.getUsername());
-            MailHandler.sendPassword(umb.getEmail(), pw);
-            BeanTransaction.addUser(umb);
-        }
-        else {
-            System.out.print("Error validating bean!");
+        if(true) {
+            UserManagementBean umb = BeanFactory.getUserManagementBean();
+            BeanUtilities.populateBean(umb,request);
+            System.out.println("Type = " + umb.getType());
+            if(umb.getType().equals(TYPE_CREATE)) {
+                if (validateInput(umb)) {       // TODO: IMPLEMENT validateInput(UserManagementBean)
+                    String pw = generatePassword();
+                    umb.setPassword(pw);
+                    System.out.print(umb.getUsername());
+                    MailHandler.sendPassword(umb.getEmail(), pw);
+                    BeanTransaction.addUser(umb);
+                } else {
+                    System.out.print("Error validating bean!");
+                }
+            }
+            else if(umb.getType().equals(TYPE_DELETE)){
+                System.out.println("Type = " + umb.getType());
+                BeanTransaction.deleteUsers(umb.getDeleteUserList());
+                System.out.println("Deleted user: " + Arrays.toString(umb.getDeleteUserList()));
+            }
+        } else {
+
+            System.out.println("sendRedirect");
+            response.sendRedirect("/");
         }
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // hantering av flera path gets, dvs om man ska t.ex. tilldela roll / grupp istället.
+
+
+        System.out.println("doGet");
         UserManagementBean bean = BeanFactory.getUserManagementBean();
+        System.out.println("bean created");
+        System.out.println(bean.getAllUsers().toString());
         forwardToView(request, response, "/usermanagement.jsp",bean);
+        System.out.println("forwarded to view");
     }
 
 }

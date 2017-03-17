@@ -19,6 +19,7 @@ public class BeanFactory {
 	public static GroupManagementBean getGroupManagementBean() {
 		GroupManagementBean bean = new GroupManagementBean();
 		bean.setAllGroups(new DatabaseHandler().getAllGroupsList());
+		bean.setAllUsers(new DatabaseHandler().getUserList());
 		return bean;
 	}
 
