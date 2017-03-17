@@ -273,7 +273,7 @@ public class DatabaseHandler {
      * @param users A list of the users to be deleted.
      * @return true if all the users are deleted, else false.
      */
-    public boolean deleteUsers(List<String> users){
+    public boolean deleteUsers(String[] users){
         String where = " WHERE";
         for(String s: users){
             where += " userName = ? OR";
@@ -371,7 +371,7 @@ public class DatabaseHandler {
      * @return A UserManagementBean containing a list of all the users (userList attribute in
      * the bean).
      */
-    public List<String> getUserListU(){
+    public List<String> getUserList(){
         List<String> users = new ArrayList<String>();
         PreparedStatement ps = null;
         try{
@@ -379,7 +379,9 @@ public class DatabaseHandler {
             print(ps);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                users.add(rs.getString("userName"));
+                String user = rs.getString("userName");
+                if(user.equals("admin")) continue;
+                users.add(user);
             }
         } catch (SQLException e){
             printError(e);

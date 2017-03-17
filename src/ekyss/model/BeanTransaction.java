@@ -15,6 +15,9 @@ public class BeanTransaction {
 		new DatabaseHandler().deleteGroups(groups);
 	}
 
+	public static void deleteUsers(String[] users) { new DatabaseHandler().deleteUsers(users); }
+
+
 	/**
 	 * Adds a user to the database. Username must be unique.
 	 * @param bean A UserManagementBean that contains UserName, Email and Password for the new user.
@@ -55,7 +58,7 @@ public class BeanTransaction {
 	 * @return true if the group(s) is deleted, else false (most likely because some of the groups doesn't
 	 * exist in the database.
 	 */
-	/*public boolean deleteGroups(GroupManagementBean bean){
+	/*public static void deleteGroups(GroupManagementBean bean){
 		return db.deleteGroups(bean.getGroups());
 	}*/
 	
@@ -124,9 +127,9 @@ public class BeanTransaction {
 	 * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
 	 * @return true if all the reports are signed, else false.
 	 */
-	/*public boolean signReports(ReportManagementBean bean){
-		return db.signReports(bean.getGroup(), bean.getSignMap());
-	}*/
+	public static boolean signReports(ReportManagementBean bean){
+		return new DatabaseHandler().signReports(bean.getGroup(), bean.getSignMap());
+	}
 	
 	/**
 	 * Unsigns one or many reports. Only the project leader should be able to do this.
@@ -136,9 +139,9 @@ public class BeanTransaction {
 	 * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
 	 * @return true if all the reports are unsigned, else false.
 	 */
-	/*public boolean unsignReport(ReportManagementBean bean){
-		return db.unsignReports(bean.getGroup(), bean.getSignMap());
-	}*/
+	public static boolean unsignReport(ReportManagementBean bean){
+		return new DatabaseHandler().unsignReports(bean.getGroup(), bean.getSignMap());
+	}
 	
 	
 	/* ReportServlet */
