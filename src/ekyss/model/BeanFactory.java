@@ -19,6 +19,7 @@ public class BeanFactory {
 	public static GroupManagementBean getGroupManagementBean() {
 		GroupManagementBean bean = new GroupManagementBean();
 		bean.setAllGroups(new DatabaseHandler().getAllGroupsList());
+		bean.setAllUsers(new DatabaseHandler().getUserList());
 		return bean;
 	}
 
@@ -46,7 +47,7 @@ public class BeanFactory {
 		);
 	}
 
-	public boolean isProjectLeader(LoginBean bean){
+	public static boolean isProjectLeader(LoginBean bean){
 		return new DatabaseHandler().isProjectLeader(bean.getUsername(),bean.getSelectedGroup());
 	}
 

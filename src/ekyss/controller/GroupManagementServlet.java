@@ -1,15 +1,16 @@
 package ekyss.controller;
 
 import base.servletBase;
-import ekyss.model.*;
-import org.apache.commons.beanutils.BeanUtils;
+import ekyss.model.BeanFactory;
+import ekyss.model.BeanTransaction;
+import ekyss.model.BeanUtilities;
+import ekyss.model.GroupManagementBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet(
         name="GroupManagementServlet",
@@ -22,6 +23,7 @@ public class GroupManagementServlet extends servletBase {
     private static final long serialVersionUID = 1L;
     private final String TYPE_ADD = "add";
     private final String TYPE_DELETE = "delete";
+
     private final int ERR_NO_MSG = 0;
     private final int ERR_GROUP_EXISTS = 1;
     private final int ERR_GROUP_EMPTY = 2;
