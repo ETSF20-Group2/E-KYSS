@@ -20,6 +20,8 @@ import java.util.Random;
 public class UserManagementServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;
+    private static final long MAXPASSWORDLENGTH = 6;
+
     private final String TYPE_CREATE = "add";
     private final String TYPE_DELETE = "delete";
 
@@ -36,21 +38,25 @@ public class UserManagementServlet extends servletBase {
         return false;
     }
 
+
     protected String generatePassword() {
         final String ALPHANUMERICS = "abcdefghijklmnopqrstuvwxy"; // Krav 6.2.3 - ASCII 97-122 = a-z (små bokstäver)
         //final String ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder password = new StringBuilder();
         Random rnd = new Random();
-        while (password.length() < 6) {
+        while (password.length() < MAXPASSWORDLENGTH) {
             int index = (int) (rnd.nextFloat() * ALPHANUMERICS.length());
             password.append(ALPHANUMERICS.charAt(index));
         }
         return password.toString();
     }
 
+    protected boolean validateInput(UserManagementBean umb)
+    {
+        return true;
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         if(true) {
             UserManagementBean umb = BeanFactory.getUserManagementBean();
             BeanUtilities.populateBean(umb,request);
@@ -81,13 +87,13 @@ public class UserManagementServlet extends servletBase {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
         System.out.println("doGet");
         UserManagementBean bean = BeanFactory.getUserManagementBean();
         System.out.println("bean created");
         System.out.println(bean.getAllUsers().toString());
         forwardToView(request, response, "/usermanagement.jsp",bean);
         System.out.println("forwarded to view");
-
     }
 
 }
