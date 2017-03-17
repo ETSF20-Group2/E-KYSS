@@ -24,6 +24,7 @@
                         </li>
                     </c:if>
 
+                    <c:if test="${not sessionScope.ProjectLeader and sessionScope.name ne 'admin'}">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Användare <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="${pageContext.request.contextPath}/dashboard">Sammanställning</a></li>
@@ -31,7 +32,9 @@
                             <li><a href="${pageContext.request.contextPath}/settings/user">Kontoinställningar</a></li>
                         </ul>
                     </li>
+                    </c:if>
 
+                    <c:if test="${sessionScope.ProjectLeader and sessionScope.name ne 'admin'}">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projektledare <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="${pageContext.request.contextPath}/dashboard">Sammanställning</a></li>
@@ -40,6 +43,7 @@
                             <li><a href="${pageContext.request.contextPath}/management/reports">Hantering av veckorapporter</a></li>
                         </ul>
                     </li>
+                </c:if>
 
 
 

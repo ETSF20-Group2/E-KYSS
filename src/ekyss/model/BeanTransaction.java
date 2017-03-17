@@ -149,9 +149,9 @@ public class BeanTransaction {
 	 * should be added to the database (user, group, week and reportValues in the bean).
 	 * @return true if the time report is added, else false.
 	 */
-	/*public boolean createTimeReport(ReportBean bean){
-		return db.createTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek(), bean.getReportValues());
-	}*/
+	public static boolean createTimeReport(ReportBean bean){
+		return new DatabaseHandler().createTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek(), bean.getReportValues());
+	}
 	
 	/**
 	 * Updates a time report in the database with new values.
@@ -159,9 +159,9 @@ public class BeanTransaction {
 	 * should be updated in the database (user, group, week and reportValues in the bean).
 	 * @return true if the time report is updated, else false.
 	 */
-	/*public boolean updateTimeReport(ReportBean bean){
-		return db.updateTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek(), bean.getReportValues());
-	}*/
+	public static boolean updateTimeReport(ReportBean bean){
+		return new DatabaseHandler().updateTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek(), bean.getReportValues());
+	}
 	
 	/**
 	 * Removes a time report from the database.
@@ -169,11 +169,11 @@ public class BeanTransaction {
 	 * should be deleted (group, user and week in the bean).
 	 * @return true if the time report is deleted, else false.
 	 */
-	/*public boolean removeTimeReport(ReportBean bean){
-		return db.removeTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek());
-	}*/
+	public static boolean removeTimeReport(ReportBean bean){
+		return new DatabaseHandler().removeTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek());
+	}
 	
-	/* UserServlet */
+	/* UserServlet
 	
 	/**
 	 * Changes the password for a user.
