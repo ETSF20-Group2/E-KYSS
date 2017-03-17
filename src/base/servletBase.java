@@ -92,6 +92,9 @@ public class servletBase extends HttpServlet {
 
                 case "/dashboard":
                     return isPL;
+
+                case "/user":
+                    return !username.equals("admin");
             }
         }
         return false;
