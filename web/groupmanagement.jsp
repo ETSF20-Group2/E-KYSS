@@ -46,6 +46,11 @@
         <button class="btn btn-default" type="submit">Ta bort</button>
     </c:if>
 </c:set>
+<c:set var="select_groups">
+    <c:forEach items="${bean.getAllGroups()}" var="group">
+        <option value="${group}">${group}</option>
+    </c:forEach>
+</c:set>
 <t:block pageTitle="Projektgrupphantering">
     <jsp:attribute name="stylesheets" />
     <jsp:attribute name="navigation" />
@@ -89,7 +94,25 @@
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="assign">
-
+                        <p>Koppla en användare till given projektgrupp.</p>
+                        <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                            <meta type="hidden" name="type" value="assign">
+                            <div class="form-group">
+                                <label for="inputUsername">Användarnamn</label>
+                                <select name="username" type="text" class="form-control" id="inputUsername">
+                                    <option value="x">x</option>
+                                    <option value="y">y</option>
+                                    <option value="z">z</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputGroup">Projektgrupp</label>
+                                <select name="f_group" type="text" class="form-control" id="inputGroup">
+                                    ${select_groups}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-default">Tilldela</button>
+                        </form>
                     </div>
 
                 </div>
