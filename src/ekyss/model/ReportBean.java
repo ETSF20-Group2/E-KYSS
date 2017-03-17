@@ -8,6 +8,7 @@ public class ReportBean implements Serializable {
     private String user;
     private String group;
     private int week;
+    private String type = null;
     private Map<String, Integer> reportValues = new HashMap<String, Integer>();
 
     public String getUser() {
@@ -44,5 +45,13 @@ public class ReportBean implements Serializable {
 
     public void setReportValues(String column, int value){
         reportValues.put(column, value);
+    }
+
+    public void setType(String type){
+        this.type = type;
+    }
+
+    public String getType(){
+        return type;
     }
 }

@@ -46,6 +46,10 @@ public class BeanFactory {
 		);
 	}
 
+	public static boolean isProjectLeader(LoginBean bean){
+		return new DatabaseHandler().isProjectLeader(bean.getUsername(),bean.getSelectedGroup());
+	}
+
 
 
 
