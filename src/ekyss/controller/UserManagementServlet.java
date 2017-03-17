@@ -50,11 +50,6 @@ public class UserManagementServlet extends servletBase {
         return password.toString();
     }
 
-    protected boolean validateInput(UserManagementBean umb)
-    {
-        return true;
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         if(true) {
@@ -81,31 +76,11 @@ public class UserManagementServlet extends servletBase {
 
             System.out.println("sendRedirect");
             response.sendRedirect("/");
-        UserManagementBean umb = BeanFactory.getUserManagementBean();
-        BeanUtilities.populateBean(umb,request);
-        if(validateInput(umb)) { // TODO: IMPLEMENT validateInput(UserManagementBean)
-            String pw = generatePassword();
-            umb.setPassword(pw);
-            System.out.print(umb.getUsername());
-            MailHandler.sendPassword(umb.getEmail(), pw);
-            BeanTransaction.addUser(umb);
-        }
-        else {
-            System.out.print("Error validating bean!");
         }
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("doGet");
-        UserManagementBean bean = BeanFactory.getUserManagementBean();
-        System.out.println("bean created");
-        System.out.println(bean.getAllUsers().toString());
-        forwardToView(request, response, "/usermanagement.jsp",bean);
-        System.out.println("forwarded to view");
-
-        // hantering av flera path gets, dvs om man ska t.ex. tilldela roll / grupp istället.
-
         System.out.println("doGet");
         UserManagementBean bean = BeanFactory.getUserManagementBean();
         System.out.println("bean created");
