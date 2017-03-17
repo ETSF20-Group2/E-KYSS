@@ -1,4 +1,6 @@
-package ekyss.model;
+package test.ekyss.model;
+
+import ekyss.model.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;

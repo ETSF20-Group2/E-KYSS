@@ -1,8 +1,9 @@
-package ekyss.model;
+package test.ekyss.model;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ekyss.model.*;
 
 import java.util.ArrayList;
 
