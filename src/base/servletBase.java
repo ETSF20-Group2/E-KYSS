@@ -112,5 +112,36 @@ public class servletBase extends HttpServlet {
 
 
     }
+	
+    /**
+     * Kollar om användaren är inloggad och har behörighet att visa sidan.
+     * ((( Vad jag kan se är det bara dessa servlets som behöver någon specialbehandling beroende på roll )))
+     * @param request
+     * @return true om användaren har behörighet, annars false.
+     */
+    protected boolean securityCheck(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("user");
+        boolean isPL = (boolean) session.getAttribute("ProjectLeader");
+        if(loggedIn(request)) {
+            switch (request.getServletPath().toLowerCase()){
+                case "/groupmanagement":
+                    return username.equals("admin");
+
+                case "/usermanagement":
+                    return username.equals("admin");
+
+                case "/reportmanagement":
+                    return isPL;
+
+                case "/dashboard":
+                    return isPL;
+
+                case "/user":
+                    return !username.equals("admin");
+            }
+        }
+        return false;
+    }
 
 }
