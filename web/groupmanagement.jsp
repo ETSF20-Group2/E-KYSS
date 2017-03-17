@@ -54,24 +54,46 @@
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
+
                 <h2 class="form-signin-heading">Hantering av projektgrupper</h2>
-                <p class="form-signin-heading">Lägg till en ny projektgrupp.</p>
-                <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                    <input type="hidden" name="type" value="add">
-                    <div class="input-group">
-                        <input type="text" name="groupName" class="form-control" placeholder="Ange önskat projektgruppsnamn">
-                        <span class="input-group-btn">
+                <p class="form-signin-heading">Lägg till nya projektgrupper, ta bort existerande projektgrupper eller koppla användare till projektgrupp</p>
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#add" aria-controls="add" role="tab" data-toggle="tab">Lägg till projektgrupp</a></li>
+                    <li role="presentation"><a href="#delete" aria-controls="delete" role="tab" data-toggle="tab">Ta bort projektgrupp</a></li>
+                    <li role="presentation"><a href="#assign" aria-controls="assign" role="tab" data-toggle="tab">Tilldela projektgrupp</a></li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <div role="tabpanel" class="tab-pane active" id="add">
+                        <p>Lägg till en ny projektgrupp.</p>
+                        <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                            <input type="hidden" name="type" value="add">
+                            <div class="input-group">
+                                <input type="text" name="groupName" class="form-control" placeholder="Ange önskat projektgruppsnamn">
+                                <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Skapa</button>
                         </span>
+                            </div>
+                                ${infoMsg}
+                        </form>
                     </div>
-                    ${infoMsg}
-                </form>
-                <br>
-                <p class="form-signin-heading">Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
-                <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                    <input type="hidden" name="type" value="delete">
-                    ${groups}
-                </form>
+
+                    <div role="tabpanel" class="tab-pane" id="delete">
+                        <p>Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
+                        <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                            <input type="hidden" name="type" value="delete">
+                                ${groups}
+                        </form>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="assign">
+
+                    </div>
+
+                </div>
+
             </div>
             <div class="col-md-3"></div>
         </div>
