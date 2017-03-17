@@ -12,7 +12,7 @@
                 <h2 class="form-signin-heading">Användarinställningar</h2>
                 <p class="form-signin-heading">Här kan du ändra dina inställningar för ditt användarkonto.</p>
                 <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/settings/user">
-                    <meta type="hidden" name="type" value="changeInfo">
+                    <input type="hidden" name="type" value="changeInfo">
                     <div class="form-group">
                         <label for="inputUsername">Användarnamn</label>
                         <input type="text" class="form-control" id="inputUsername" placeholder="Användarnamn">
@@ -27,7 +27,7 @@
                     <label><br><br><br></label>
                 </div>
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/settings/user">
-                    <meta type="hidden" name="type" value="changePass">
+                    <input type="hidden" name="type" value="changePass">
                     <div class="form-group">
                         <label for="inputOldPass">Gammalt lösenord</label>
                         <input name="oldPassword" type="password" style="width: 200px" class="form-control" id="inputOldPass" placeholder="Gammalt lösenord">
