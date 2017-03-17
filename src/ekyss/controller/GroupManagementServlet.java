@@ -32,39 +32,39 @@ public class GroupManagementServlet extends servletBase {
             // Användaren är inloggad och har behörighet
             GroupManagementBean bean = BeanFactory.getGroupManagementBean();
             BeanUtilities.populateBean(bean, request);
-            if (bean.getType() != null) {
-                if (bean.getType().equals(TYPE_ADD)) {
-                    // Förfrågning kommer från add-formuläret
-                    if (!bean.getAllGroups().contains(bean.getGroupName())) {
-                        // Gruppnamnet finns inte i databasen.
-                        if (!bean.getGroupName().isEmpty() || !bean.getGroupName().equals("")) {
-                            // Vi har här ett unikt gruppnamn som ska sparas i databasen
-                            new BeanTransaction();
-                            BeanTransaction.createNewProjectGroup(bean.getGroupName());
-                        } else {
-                            // Gruppnamnet är tomt
-                            bean.setErrorCode(ERR_GROUP_EMPTY);
-                            forwardToView(request, response, "/groupmanagement.jsp", bean);
-                            return;
-                        }
+            if (bean.getType().equals(TYPE_ADD)) {
+                // Förfrågning kommer från add-formuläret
+                if (!bean.getAllGroups().contains(bean.getGroupName())) {
+                    // Gruppnamnet finns inte i databasen.
+                    if (!bean.getGroupName().isEmpty() || !bean.getGroupName().equals("")) {
+                        // Vi har här ett unikt gruppnamn som ska sparas i databasen
+                        new BeanTransaction();
+                        BeanTransaction.createNewProjectGroup(bean.getGroupName());
                     } else {
-                        // Gruppnamnet finns redan i databasen.
-                        bean.setErrorCode(ERR_GROUP_EXISTS);
+                        // Gruppnamnet är tomt
+                        bean.setErrorCode(ERR_GROUP_EMPTY);
                         forwardToView(request, response, "/groupmanagement.jsp", bean);
                         return;
                     }
-
-                } else if (bean.getType().equals(TYPE_DELETE)) {
-                    // Förfrågning kommer från delete-formuläret
-                    if (bean.getDeleteGroup() != null) {
-                        // Användaren tryckte 'ta bort' med en eller flera grupper som ska tas bort.
-                        new BeanTransaction();
-                        BeanTransaction.deleteProjectGroup(bean.getDeleteGroup());
-                    } else {
-                        // Användaren tryckte 'ta bort' utan att markera nån grupp.
-                        // TODO: implementera ett felmeddelande
-                    }
+                } else {
+                    // Gruppnamnet finns redan i databasen.
+                    bean.setErrorCode(ERR_GROUP_EXISTS);
+                    forwardToView(request, response, "/groupmanagement.jsp", bean);
+                    return;
                 }
+
+            } else if (bean.getType().equals(TYPE_DELETE)) {
+                // Förfrågning kommer från delete-formuläret
+                if (bean.getDeleteGroup() != null) {
+                    // Användaren tryckte 'ta bort' med en eller flera grupper som ska tas bort.
+                    new BeanTransaction();
+                    BeanTransaction.deleteProjectGroup(bean.getDeleteGroup());
+                } else {
+                    // Användaren tryckte 'ta bort' utan att markera nån grupp.
+                    // TODO: implementera ett felmeddelande
+                }
+            } else {
+                System.out.println("Förmulärtyp okänd! Inputattributet 'type' saknas vid POST-anrop.");
             }
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet

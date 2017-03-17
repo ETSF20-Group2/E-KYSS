@@ -15,6 +15,14 @@ public class BeanTransaction {
 		new DatabaseHandler().deleteGroups(groups);
 	}
 
+	/**
+	 * Adds a user to the database. Username must be unique.
+	 * @param bean A UserManagementBean that contains UserName, Email and Password for the new user.
+	 * @return true if the user is added, else false.
+	 */
+	public static void addUser(UserManagementBean bean){
+		new DatabaseHandler().addUser(bean.getUsername(), bean.getEmail(), bean.getPassword());
+	}
 
 	
 	/* LoginServlet */
@@ -63,15 +71,7 @@ public class BeanTransaction {
 	
 	
 	/* UserManagementServlet */
-	
-	/**
-	 * Adds a user to the database. Username must be unique.
-	 * @param bean A UserManagementBean that contains UserName, Email and Password for the new user.
-	 * @return true if the user is added, else false.
-	 */
-	/*public boolean addUser(UserManagementBean bean){
-		return db.addUser(bean.getUserName(), bean.getEmail(), bean.getPassword());
-	}*/
+
 	
 	/** 
 	 * Deletes one or many users from the database.
