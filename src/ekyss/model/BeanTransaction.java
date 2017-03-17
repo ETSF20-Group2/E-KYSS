@@ -17,6 +17,9 @@ public class BeanTransaction {
 
 	public static void deleteUsers(String[] users) { new DatabaseHandler().deleteUsers(users); }
 
+	public static boolean changePassword(UserBean b) {
+		return new DatabaseHandler().changePassword(b.getUserName(), b.getOldPassword(), b.getNewPassword1());
+	}
 
 	/**
 	 * Adds a user to the database. Username must be unique.

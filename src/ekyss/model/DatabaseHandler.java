@@ -550,15 +550,22 @@ public class DatabaseHandler {
      * password attributes in the bean).
      * @return true if the password is changed, else false.
      */
-    public boolean changePassword(String userName, String newPassword){
+    public boolean changePassword(String userName, String oldPassword, String newPassword){
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE Users SET password = ? WHERE userName = ?");
-            ps.setString(1, newPassword);
-            ps.setString(2, userName);
-            print(ps);
-            if(ps.executeUpdate() > 0){
-                return true;
+            ps = conn.prepareStatement("SELECT password FROM Users WHERE username = ?");
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                if (rs.getString("password").equals(oldPassword)) {
+                    ps = conn.prepareStatement("UPDATE Users SET password = ? WHERE userName = ?");
+                    ps.setString(1, newPassword);
+                    ps.setString(2, userName);
+                    print(ps);
+                    if (ps.executeUpdate() > 0) {
+                        return true;
+                    }
+                }
             }
         } catch (SQLException e){
             printError(e);
