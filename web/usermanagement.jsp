@@ -52,11 +52,11 @@
                     <meta type="hidden" name="type" value="add">
                     <div class="form-group">
                         <label for="inputUsername">Användarnamn</label>
-                        <input type="text" class="form-control" id="inputUsername" placeholder="Användarnamn">
+                        <input name="username" type="text" class="form-control" id="inputUsername" placeholder="Användarnamn">
                     </div>
                     <div class="form-group">
                         <label for="inputEmail">E-postadress</label>
-                        <input type="text" class="form-control" id="inputEmail" placeholder="E-post">
+                        <input name="email" type="text" class="form-control" id="inputEmail" placeholder="E-post">
                     </div>
                     <button type="submit" class="btn btn-default">Skapa</button>
                 </form>
