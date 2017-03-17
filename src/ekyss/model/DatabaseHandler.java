@@ -42,28 +42,36 @@ public class DatabaseHandler {
      */
     public boolean loginUser(String username, String password, String group){
         PreparedStatement ps = null;
-        if(username == "admin" && password == "admino" && group == null)
-        	return true;
-        
-        try{
-            ps = conn.prepareStatement("SELECT * FROM Users LEFT JOIN MemberOf ON member = userName WHERE userName = ? AND password = ? AND groupName = ?");
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ps.setString(3, group);
-            ResultSet rs = ps.executeQuery();
-            print(ps);
-            if(rs.next()){
-				System.out.print(rs.getString("username") + "\t");
-				System.out.print(rs.getString("password") + "\t");
-				System.out.println(rs.getString("groupName"));
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(group);
+        if(group == null) {
+            if (username.equals("admin") && password.equals("adminp")) {
                 return true;
+            } else {
+                return false;
             }
-            return false;
-        } catch (SQLException e){
-            System.out.println(e.getMessage());
-            System.out.println(e.getSQLState());
-            System.out.println(e.getErrorCode());
-            return false;
+        } else {
+            try {
+                ps = conn.prepareStatement("SELECT * FROM Users LEFT JOIN MemberOf ON member = userName WHERE userName = ? AND password = ? AND groupName = ?");
+                ps.setString(1, username);
+                ps.setString(2, password);
+                ps.setString(3, group);
+                ResultSet rs = ps.executeQuery();
+                print(ps);
+                if (rs.next()) {
+                    System.out.print(rs.getString("username") + "\t");
+                    System.out.print(rs.getString("password") + "\t");
+                    System.out.println(rs.getString("groupName"));
+                    return true;
+                }
+                return false;
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                System.out.println(e.getSQLState());
+                System.out.println(e.getErrorCode());
+                return false;
+            }
         }
     }
 
@@ -72,7 +80,7 @@ public class DatabaseHandler {
 
     /**
      * Function that adds a group to the database. Group name must be unique.
-     * @param bean A GroupManagementBean that contains the groupName (group attribute in bean).
+     * @param group A GroupManagementBean that contains the groupName (group attribute in bean).
      * @return true if the group is added, else false (most likely because the group name already
      * exists).
      */
@@ -92,11 +100,11 @@ public class DatabaseHandler {
 
     /**
      * Deletes one or many groups from the database.
-     * @param bean A GroupManagementBean that contains a list of groups (groups attribute in the bean)
+     * @param groups A GroupManagementBean that contains a list of groups (groups attribute in the bean)
      * @return true if the group(s) is deleted, else false (most likely because some of the groups doesn't
      * exist in the database.
      */
-    public boolean deleteGroups(List<String> groups){
+    public boolean deleteGroups(String[] groups){
         String sql = "WHERE ";
         for(String s:groups){
             sql += "GroupName = ? OR ";
@@ -123,7 +131,8 @@ public class DatabaseHandler {
 
     /**
      * Assigns a leader to a group. The user must be a member of the group.
-     * @param bean A GroupManagementBean that contains the Leader and Group attributes.
+     * @param group The Leader attributes.
+     * @param leader The Leader attributes.
      * @return true if the user is assigned leader, else false (most likely because
      * the user is not in the group).
      */
@@ -171,6 +180,25 @@ public class DatabaseHandler {
         return list;
     }
 
+    public List<String[]> getUserTable() {
+        List<String[]> list = new ArrayList<>();
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement("SELECT * FROM Users");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String[] user = new String[3];
+                user[0] = rs.getString("userName");
+                user[1] = rs.getString("password");
+                user[2] = rs.getString("email");
+                list.add(user);
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return list;
+    }
+
     /**
      * Function that is used to fetch a list of all the users in the database.
      * @return A GroupManagementBean that contains a List<String> of all the users (as the users
@@ -196,7 +224,9 @@ public class DatabaseHandler {
 
     /**
      * A function that adds a user to the database. Username must be unique.
-     * @param bean A UserManagementBean that contains UserName, Email and Password for the new user.
+     * @param userName
+     * @param email
+     * @param password
      * @return true if the user is added, else false.
      */
     public boolean addUser(String userName, String email, String password){
@@ -219,7 +249,7 @@ public class DatabaseHandler {
 
     /**
      * Deletes one or many users from the database.
-     * @param bean A bean that contains a List of the users to be deleted (userList attribute in the Bean).
+     * @param users A list of the users to be deleted.
      * @return true if all the users are deleted, else false.
      */
     public boolean deleteUsers(List<String> users){

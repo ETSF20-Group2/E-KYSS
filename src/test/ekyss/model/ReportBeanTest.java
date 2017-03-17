@@ -8,8 +8,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import beans.ReportBean;
-
 public class ReportBeanTest {
 	
 	private ReportBean bean = new ReportBean();

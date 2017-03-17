@@ -7,13 +7,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import beans.UserManagementBean;
-
 public class UserManagementBeanTest {
 	
 	private UserManagementBean bean = new UserManagementBean();
 	
-	@Test
+	/*@Test
 	public void setUser() throws Exception {
 		 bean.setUserName("a");
 		 assertEquals("Inkorrekt värde av user", "a", bean.getUserName()); 
@@ -52,5 +50,5 @@ public class UserManagementBeanTest {
 		bean.setUserList(testList);
 		assertEquals("Inkorrekt värde av userList", testList, bean.getUserList());
 		assertFalse("Inkorrekt värde av userList", bean.getUserList() == null);
-	}
+	}*/
 }

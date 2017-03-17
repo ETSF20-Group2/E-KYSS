@@ -36,7 +36,7 @@
         <c:when test="${empty bean.getAllGroups() and not bean.getAdminLogin()}">
             <div class="alert alert-info" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                Systemet är nere för underhåll. Om du är administratör, gå till <a href="${pageContext.request.contextPath}">inloggningssidan för administratör</a>.
+                Systemet är nere för underhåll. Om du är administratör, gå till <a href="${pageContext.request.contextPath}/login">inloggningssidan för administratör</a>.
             </div>
         </c:when>
         <c:otherwise>
