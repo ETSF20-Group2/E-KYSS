@@ -21,7 +21,6 @@ public class BeanTransaction {
 		return new DatabaseHandler().changePassword(b.getUserName(), b.getOldPassword(), b.getNewPassword1());
 	}
 
-
 	/**
 	 * Adds a user to the database. Username must be unique.
 	 * @param bean A UserManagementBean that contains UserName, Email and Password for the new user.

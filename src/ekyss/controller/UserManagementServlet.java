@@ -20,13 +20,9 @@ import java.util.Random;
 public class UserManagementServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;
-<<<<<<< HEAD
     private final String TYPE_CREATE = "add";
     private final String TYPE_DELETE = "delete";
-=======
     private static final long MAXPASSWORDLENGTH = 6;
-
->>>>>>> 6eea33e1925af652b0a48375ecdad08783c7edf5
 
     protected boolean validateInput(UserManagementBean umb) {
         if (umb.getUsername().length() >= 5 && umb.getUsername().length() <= 10) {
@@ -60,7 +56,6 @@ public class UserManagementServlet extends servletBase {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-<<<<<<< HEAD
 
         if(true) {
             UserManagementBean umb = BeanFactory.getUserManagementBean();
@@ -86,7 +81,6 @@ public class UserManagementServlet extends servletBase {
 
             System.out.println("sendRedirect");
             response.sendRedirect("/");
-=======
         UserManagementBean umb = BeanFactory.getUserManagementBean();
         BeanUtilities.populateBean(umb,request);
         if(validateInput(umb)) { // TODO: IMPLEMENT validateInput(UserManagementBean)
@@ -98,14 +92,11 @@ public class UserManagementServlet extends servletBase {
         }
         else {
             System.out.print("Error validating bean!");
->>>>>>> 6eea33e1925af652b0a48375ecdad08783c7edf5
         }
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-<<<<<<< HEAD
-
         System.out.println("doGet");
         UserManagementBean bean = BeanFactory.getUserManagementBean();
         System.out.println("bean created");
@@ -113,11 +104,14 @@ public class UserManagementServlet extends servletBase {
         forwardToView(request, response, "/usermanagement.jsp",bean);
         System.out.println("forwarded to view");
 
-=======
         // hantering av flera path gets, dvs om man ska t.ex. tilldela roll / grupp istället.
+
+        System.out.println("doGet");
         UserManagementBean bean = BeanFactory.getUserManagementBean();
+        System.out.println("bean created");
+        System.out.println(bean.getAllUsers().toString());
         forwardToView(request, response, "/usermanagement.jsp",bean);
->>>>>>> 6eea33e1925af652b0a48375ecdad08783c7edf5
+        System.out.println("forwarded to view");
     }
 
 }
