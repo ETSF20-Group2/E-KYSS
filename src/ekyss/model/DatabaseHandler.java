@@ -1,8 +1,10 @@
 package ekyss.model;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,24 @@ public class DatabaseHandler {
 	/*------  LoginServlet ----------------*/
 		/* BeanTransaction */
 
+
+    public boolean isProjectLeader(String userName, String group){
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement("SELECT role FROM MemberOf WHERE member = ? AND groupName = ?");
+            ps.setString(1, userName);
+            ps.setString(2, group);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                if(rs.getString("role").equals("PG"))
+                    return true;
+                return false;
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return false;
+    }
     /**
      * Function that checks if the user is able to log in (If username is in database and matches
      * with the entered password and the selected group).
@@ -280,7 +300,7 @@ public class DatabaseHandler {
     /**
      * Assigns an user to a group. A user can be a member of many groups, but only one time
      * to the same group.
-     * @param bean A UserManagementBean that contains an username and the group the user should be
+     * @param group A UserManagementBean that contains an username and the group the user should be
      * assigned to (group and userName attribute in the bean).
      * @return true if the user is assigned to the group, else false.
      */
@@ -301,7 +321,7 @@ public class DatabaseHandler {
 
     /**
      * Assigns a role to a user in a group.
-     * @param bean A UserManagementBean that contains the role, username and group for which the role
+     * @param group A UserManagementBean that contains the role, username and group for which the role
      * should be assigned (role, group and userName attributes in the bean).
      * @return true if the role is assigned, else false.
      */
@@ -323,7 +343,7 @@ public class DatabaseHandler {
 
     /**
      * Deletes a user from a group.
-     * @param bean A UserManagementBean that contains the username and the group from which the
+     * @param group A UserManagementBean that contains the username and the group from which the
      * user should be deleted (userName and group attributes in the bean).
      * @return true if the user is deleted from the group, else false.
      */
@@ -371,7 +391,7 @@ public class DatabaseHandler {
 
     /**
      * Signs one or many time reports. Only the project leader should be able to use this.
-     * @param bean A ReportManagementBean that contains the group name and a map for which weeks
+     * @param group A ReportManagementBean that contains the group name and a map for which weeks
      * to sign for each user (group and signMap attributes in the bean).
      * <br><br>
      * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
@@ -409,7 +429,7 @@ public class DatabaseHandler {
 
     /**
      * Unsigns one or many reports. Only the project leader should be able to do this.
-     * @param bean A ReportManagementBean that contains the group name and a map for which weeks
+     * @param group A ReportManagementBean that contains the group name and a map for which weeks
      * to unsign for each user (group and signMap attributes in the bean).
      * <br><br>
      * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
@@ -450,7 +470,7 @@ public class DatabaseHandler {
 
     /**
      * Adds a time report to the database. Only adds the values that is in the report Map
-     * @param bean A ReportBean containing username, group, week, and all the columns that
+     * @param group A ReportBean containing username, group, week, and all the columns that
      * should be added to the database (user, group, week and reportValues in the bean).
      * @return true if the time report is added, else false.
      */
@@ -488,7 +508,7 @@ public class DatabaseHandler {
 
     /**
      * Updates a time report in the database with new values.
-     * @param bean A ReportBean containing username, group, week and all the columns that
+     * @param group A ReportBean containing username, group, week and all the columns that
      * should be updated in the database (user, group, week and reportValues in the bean).
      * @return true if the time report is updated, else false.
      */
@@ -498,7 +518,7 @@ public class DatabaseHandler {
 
     /**
      * Removes a time report from the database.
-     * @param bean A ReportBean that contains group, username and week for which the time report
+     * @param group A ReportBean that contains group, username and week for which the time report
      * should be deleted (group, user and week in the bean).
      * @return true if the time report is deleted, else false.
      */
@@ -523,7 +543,7 @@ public class DatabaseHandler {
 
     /**
      * Changes the password for a user.
-     * @param bean A UserBean that contains username and the new password to use (userName and
+     * @param userName A UserBean that contains username and the new password to use (userName and
      * password attributes in the bean).
      * @return true if the password is changed, else false.
      */

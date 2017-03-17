@@ -15,7 +15,7 @@ public class MailHandler {
         MailHandler.sendMail("puspekyss@gmail.com", "etsf202017", recipient, payload);
     }
 
-    public static void sendMail(String username, String password, String to, String payload) {
+    public static void sendMail(final String username, final String password, String to, String payload) {
         String from = "puspekyss@gmail.com";
         String host = "smtp.gmail.com";
         Properties props = new Properties();
