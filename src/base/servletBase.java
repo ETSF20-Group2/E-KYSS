@@ -122,28 +122,29 @@ public class servletBase extends HttpServlet {
         String username = "";
         boolean isPL = false;
 
-        if((String) session.getAttribute("user") != null){
-            username = (String) session.getAttribute("user");
-        };
+        if((String) session.getAttribute("name") != null){
+            username = (String) session.getAttribute("name");
+        }
+
         if(session.getAttribute("ProjectLeader") != null){
             isPL = (boolean) session.getAttribute("ProjectLeader");
         }
         if(!username.equals("")) {
-            switch (request.getServletPath().toLowerCase()){
-                case "/groupmanagement":
-                    return username.equals("admin");
+            String path = request.getServletPath();
+            System.out.println(path);
+            if(path.endsWith("/groupmanagement")) {
+                return username.equals("admin");
+            } else if(path.endsWith("/usermanagement")){
+                return username.equals("admin");
+            } else if(path.endsWith("/reportmanagement")){
+                return isPL;
+            } else if(path.endsWith("/dashboard")){
+                return isPL;
+            } else if(path.endsWith("/user")){
 
-                case "/usermanagement":
-                    return username.equals("admin");
-
-                case "/reportmanagement":
-                    return isPL;
-
-                case "/dashboard":
-                    return isPL;
-
-                case "/user":
-                    return !username.equals("admin");
+                return !username.equals("admin");
+            } else{
+                return true;
             }
         }
         return false;
