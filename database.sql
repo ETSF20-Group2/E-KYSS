@@ -38,25 +38,25 @@ groupName varChar(100),
 week Integer NOT NULL,
 role varChar(10),
 total Integer DEFAULT 0,
-11_d Integer DEFAULT 0, 11_i Integer DEFAULT 0, 11_f Integer DEFAULT 0, 11_r Integer DEFAULT 0, 11_t Integer DEFAULT 0,
-12_d Integer DEFAULT 0, 12_i Integer DEFAULT 0, 12_f Integer DEFAULT 0, 12_r Integer DEFAULT 0, 12_t Integer DEFAULT 0,
-13_d Integer DEFAULT 0, 13_i Integer DEFAULT 0, 13_f Integer DEFAULT 0, 13_r Integer DEFAULT 0, 13_t Integer DEFAULT 0,
-14_d Integer DEFAULT 0, 14_i Integer DEFAULT 0, 14_f Integer DEFAULT 0, 14_r Integer DEFAULT 0, 14_t Integer DEFAULT 0, 
-15_d Integer DEFAULT 0, 15_i Integer DEFAULT 0, 15_f Integer DEFAULT 0, 15_r Integer DEFAULT 0, 15_t Integer DEFAULT 0,
-16_d Integer DEFAULT 0, 16_i Integer DEFAULT 0, 16_f Integer DEFAULT 0, 16_r Integer DEFAULT 0, 16_t Integer DEFAULT 0, 
-17_d Integer DEFAULT 0, 17_i Integer DEFAULT 0, 17_f Integer DEFAULT 0, 17_r Integer DEFAULT 0, 17_t Integer DEFAULT 0,
-18_d Integer DEFAULT 0, 18_i Integer DEFAULT 0, 18_f Integer DEFAULT 0, 18_r Integer DEFAULT 0, 18_t Integer DEFAULT 0,
-19_d Integer DEFAULT 0, 19_i Integer DEFAULT 0, 19_f Integer DEFAULT 0, 19_r Integer DEFAULT 0, 19_t Integer DEFAULT 0,
-21_t Integer DEFAULT 0,
-22_t Integer DEFAULT 0,
-23_t Integer DEFAULT 0,
-30_t Integer DEFAULT 0,
-41_t Integer DEFAULT 0,
-42_t Integer DEFAULT 0,
-43_t Integer DEFAULT 0,
-44_t Integer DEFAULT 0,
-100_t Integer DEFAULT 0,
-d_t Integer DEFAULT 0, i_t Integer DEFAULT 0, f_t Integer DEFAULT 0, r_t Integer DEFAULT 0,
+d_11 Integer DEFAULT 0, i_11 Integer DEFAULT 0, f_11 Integer DEFAULT 0, r_11 Integer DEFAULT 0, t_11 Integer DEFAULT 0,
+d_12 Integer DEFAULT 0, i_12 Integer DEFAULT 0, f_12 Integer DEFAULT 0, r_12 Integer DEFAULT 0, t_12 Integer DEFAULT 0,
+d_13 Integer DEFAULT 0, i_13 Integer DEFAULT 0, f_13 Integer DEFAULT 0, r_13 Integer DEFAULT 0, t_13 Integer DEFAULT 0,
+d_14 Integer DEFAULT 0, i_14 Integer DEFAULT 0, f_14 Integer DEFAULT 0, r_14 Integer DEFAULT 0, t_14 Integer DEFAULT 0, 
+d_15 Integer DEFAULT 0, i_15 Integer DEFAULT 0, f_15 Integer DEFAULT 0, r_15 Integer DEFAULT 0, t_15 Integer DEFAULT 0,
+d_16 Integer DEFAULT 0, i_16 Integer DEFAULT 0, f_16 Integer DEFAULT 0, r_16 Integer DEFAULT 0, t_16 Integer DEFAULT 0, 
+d_17 Integer DEFAULT 0, i_17 Integer DEFAULT 0, f_17 Integer DEFAULT 0, r_17 Integer DEFAULT 0, t_17 Integer DEFAULT 0,
+d_18 Integer DEFAULT 0, i_18 Integer DEFAULT 0, f_18 Integer DEFAULT 0, r_18 Integer DEFAULT 0, t_18 Integer DEFAULT 0,
+d_19 Integer DEFAULT 0, i_19 Integer DEFAULT 0, f_19 Integer DEFAULT 0, r_19 Integer DEFAULT 0, t_19 Integer DEFAULT 0,
+t_21 Integer DEFAULT 0,
+t_22 Integer DEFAULT 0,
+t_23 Integer DEFAULT 0,
+t_30 Integer DEFAULT 0,
+t_41 Integer DEFAULT 0,
+t_42 Integer DEFAULT 0,
+t_43 Integer DEFAULT 0,
+t_44 Integer DEFAULT 0,
+t_100 Integer DEFAULT 0,
+t_d Integer DEFAULT 0, t_i Integer DEFAULT 0, t_f Integer DEFAULT 0, t_r Integer DEFAULT 0,
 signed boolean DEFAULT FALSE,
 FOREIGN KEY (user) REFERENCES Users(userName) ON UPDATE CASCADE ON DELETE CASCADE, -- !!!Hela tidsrapporten tas borst. kanske bättre med SET NULL
 FOREIGN KEY (groupName) REFERENCES ProjectGroups(groupName) ON UPDATE CASCADE ON DELETE CASCADE, -- !!! SOM OVAN
@@ -90,11 +90,11 @@ SET i := 10;
 WHILE i <> 19 DO
 SET i := i+1;
 -- Bygger en varChar som ska användas i prepared statement. Kommer sätta in alla värden som går för 11-19. var kan vara olika beroende på parametrar.
-SET @s := CONCAT('UPDATE temp_t SET ', i, '_d := (SELECT sum(', i,'_d)', var, '),'
-' ', i, '_i := (SELECT sum(', i,'_i)', var, '),'
-' ', i, '_f := (SELECT sum(', i,'_f)', var, '),'
-' ', i, '_r := (SELECT sum(', i,'_r)', var, '),'
-' ', i, '_t := (SELECT sum(', i,'_t)', var, ')');
+SET @s := CONCAT('UPDATE temp_t SET d_', i, ' := (SELECT sum(d_', i, ')', var, '),'
+' i_', i, ' := (SELECT sum(i_', i,')', var, '),'
+' f_', i, ' := (SELECT sum(f_', i,')', var, '),'
+' r_', i, ' := (SELECT sum(r_', i,')', var, '),'
+' t_', i, ' := (SELECT sum(t_', i,')', var, ')');
 PREPARE stmt FROM @s;
 EXECUTE stmt;
 END WHILE;
@@ -108,7 +108,7 @@ ELSEIF i = 31 THEN SET i = 41; -- Om i = 31 ska den bli 41
 ELSEIF i = 45 THEN SET i = 100; -- Om i = 45 ska den bli 100
 END IF;
 -- Bygger prepared statement
-SET @s := CONCAT('UPDATE temp_t SET ', i, '_t := (SELECT sum(', i, '_t)', var, ')');
+SET @s := CONCAT('UPDATE temp_t SET t_', i, ' := (SELECT sum(t_', i, ')', var, ')');
 PREPARE stmt FROM @s;
 EXECUTE stmt;
 END WHILE;
@@ -119,10 +119,10 @@ PREPARE stmt FROM @s;
 EXECUTE stmt;
 
 -- Uppdaterar subaktivitetarnas totala.
-SET @s := CONCAT('UPDATE temp_t SET d_t := (SELECT sum(d_t)', var, '),'
-' ', 'i_t := (SELECT sum(i_t)', var, '),'
-' ', 'f_t := (SELECT sum(f_t)', var, '),'
-' ', 'r_t := (SELECT sum(r_t)', var, ')');
+SET @s := CONCAT('UPDATE temp_t SET t_d := (SELECT sum(t_d)', var, '),'
+' ', 't_i := (SELECT sum(t_i)', var, '),'
+' ', 't_f := (SELECT sum(t_f)', var, '),'
+' ', 't_r := (SELECT sum(t_r)', var, ')');
 PREPARE stmt from @s;
 EXECUTE stmt;
 
@@ -142,20 +142,20 @@ FOR EACH ROW
 BEGIN
 SET NEW.date = NOW();
 SET NEW.role = (select role from MemberOf where groupName = NEW.groupName AND userName = NEW.user);
-SET NEW.11_t = NEW.11_d + NEW.11_i + NEW.11_f + NEW.11_r;
-SET NEW.12_t = NEW.12_d + NEW.12_i + NEW.12_f + NEW.12_r;
-SET NEW.13_t = NEW.13_d + NEW.13_i + NEW.13_f + NEW.13_r;
-SET NEW.14_t = NEW.14_d + NEW.14_i + NEW.14_f + NEW.14_r;
-SET NEW.15_t = NEW.15_d + NEW.15_i + NEW.15_f + NEW.15_r;
-SET NEW.16_t = NEW.16_d + NEW.16_i + NEW.16_f + NEW.16_r;
-SET NEW.17_t = NEW.17_d + NEW.17_i + NEW.17_f + NEW.17_r;
-SET NEW.18_t = NEW.18_d + NEW.18_i + NEW.18_f + NEW.18_r;
-SET NEW.19_t = NEW.19_d + NEW.19_i + NEW.19_f + NEW.19_r;
-SET NEW.d_t = NEW.11_d + NEW.12_d + NEW.13_d + NEW.14_d + NEW.15_d + NEW.16_d + NEW.17_d + NEW.18_d + NEW.19_d;
-SET NEW.i_t = NEW.11_i + NEW.12_i + NEW.13_i + NEW.14_i + NEW.15_i + NEW.16_i + NEW.17_i + NEW.18_i + NEW.19_i;
-SET NEW.f_t = NEW.11_f + NEW.12_f + NEW.13_f + NEW.14_f + NEW.15_f + NEW.16_f + NEW.17_f + NEW.18_f + NEW.19_f;
-SET NEW.r_t = NEW.11_r + NEW.12_r + NEW.13_r + NEW.14_r + NEW.15_r + NEW.16_r + NEW.17_r + NEW.18_r + NEW.19_r;
-SET NEW.total = NEW.d_t + NEW.i_t + NEW.f_t + NEW.r_t + NEW.21_t + NEW.22_t + NEW.23_t + NEW.30_t + NEW.41_t + NEW.42_t + NEW.43_t + NEW.44_t + NEW.100_t;
+SET NEW.t_11 = NEW.d_11 + NEW.i_11 + NEW.f_11 + NEW.r_11;
+SET NEW.t_12 = NEW.d_12 + NEW.i_12 + NEW.f_12 + NEW.r_12;
+SET NEW.t_13 = NEW.d_13 + NEW.i_13 + NEW.f_13 + NEW.r_13;
+SET NEW.t_14 = NEW.d_14 + NEW.i_14 + NEW.f_14 + NEW.r_14;
+SET NEW.t_15 = NEW.d_15 + NEW.i_15 + NEW.f_15 + NEW.r_15;
+SET NEW.t_16 = NEW.d_16 + NEW.i_16 + NEW.f_16 + NEW.r_16;
+SET NEW.t_17 = NEW.d_17 + NEW.i_17 + NEW.f_17 + NEW.r_17;
+SET NEW.t_18 = NEW.d_18 + NEW.i_18 + NEW.f_18 + NEW.r_18;
+SET NEW.t_19 = NEW.d_19 + NEW.i_19 + NEW.f_19 + NEW.r_19;
+SET NEW.t_d = NEW.d_11 + NEW.d_12 + NEW.d_13 + NEW.d_14 + NEW.d_15 + NEW.d_16 + NEW.d_17 + NEW.d_18 + NEW.d_19;
+SET NEW.t_i = NEW.i_11 + NEW.i_12 + NEW.i_13 + NEW.i_14 + NEW.i_15 + NEW.i_16 + NEW.i_17 + NEW.i_18 + NEW.i_19;
+SET NEW.t_f = NEW.f_11 + NEW.f_12 + NEW.f_13 + NEW.f_14 + NEW.f_15 + NEW.f_16 + NEW.f_17 + NEW.f_18 + NEW.f_19;
+SET NEW.t_r = NEW.r_11 + NEW.r_12 + NEW.r_13 + NEW.r_14 + NEW.r_15 + NEW.r_16 + NEW.r_17 + NEW.r_18 + NEW.r_19;
+SET NEW.total = NEW.t_d + NEW.t_i + NEW.t_f + NEW.t_r + NEW.t_21 + NEW.t_22 + NEW.t_23 + NEW.t_30 + NEW.t_41 + NEW.t_42 + NEW.t_43 + NEW.t_44 + NEW.t_100;
 END$$
 DELIMITER ;
 
@@ -169,20 +169,20 @@ FOR EACH ROW
 BEGIN
 SET NEW.date = NOW();
 SET NEW.role = (select role from MemberOf where groupName = NEW.groupName AND userName = NEW.user);
-SET NEW.11_t = NEW.11_d + NEW.11_i + NEW.11_f + NEW.11_r;
-SET NEW.12_t = NEW.12_d + NEW.12_i + NEW.12_f + NEW.12_r;
-SET NEW.13_t = NEW.13_d + NEW.13_i + NEW.13_f + NEW.13_r;
-SET NEW.14_t = NEW.14_d + NEW.14_i + NEW.14_f + NEW.14_r;
-SET NEW.15_t = NEW.15_d + NEW.15_i + NEW.15_f + NEW.15_r;
-SET NEW.16_t = NEW.16_d + NEW.16_i + NEW.16_f + NEW.16_r;
-SET NEW.17_t = NEW.17_d + NEW.17_i + NEW.17_f + NEW.17_r;
-SET NEW.18_t = NEW.18_d + NEW.18_i + NEW.18_f + NEW.18_r;
-SET NEW.19_t = NEW.19_d + NEW.19_i + NEW.19_f + NEW.19_r;
-SET NEW.d_t = NEW.11_d + NEW.12_d + NEW.13_d + NEW.14_d + NEW.15_d + NEW.16_d + NEW.17_d + NEW.18_d + NEW.19_d;
-SET NEW.i_t = NEW.11_i + NEW.12_i + NEW.13_i + NEW.14_i + NEW.15_i + NEW.16_i + NEW.17_i + NEW.18_i + NEW.19_i;
-SET NEW.f_t = NEW.11_f + NEW.12_f + NEW.13_f + NEW.14_f + NEW.15_f + NEW.16_f + NEW.17_f + NEW.18_f + NEW.19_f;
-SET NEW.r_t = NEW.11_r + NEW.12_r + NEW.13_r + NEW.14_r + NEW.15_r + NEW.16_r + NEW.17_r + NEW.18_r + NEW.19_r;
-SET NEW.total = NEW.d_t + NEW.i_t + NEW.f_t + NEW.r_t + NEW.21_t + NEW.22_t + NEW.23_t + NEW.30_t + NEW.41_t + NEW.42_t + NEW.43_t + NEW.44_t + NEW.100_t;
+SET NEW.t_11 = NEW.d_11 + NEW.i_11 + NEW.f_11 + NEW.r_11;
+SET NEW.t_12 = NEW.d_12 + NEW.i_12 + NEW.f_12 + NEW.r_12;
+SET NEW.t_13 = NEW.d_13 + NEW.i_13 + NEW.f_13 + NEW.r_13;
+SET NEW.t_14 = NEW.d_14 + NEW.i_14 + NEW.f_14 + NEW.r_14;
+SET NEW.t_15 = NEW.d_15 + NEW.i_15 + NEW.f_15 + NEW.r_15;
+SET NEW.t_16 = NEW.d_16 + NEW.i_16 + NEW.f_16 + NEW.r_16;
+SET NEW.t_17 = NEW.d_17 + NEW.i_17 + NEW.f_17 + NEW.r_17;
+SET NEW.t_18 = NEW.d_18 + NEW.i_18 + NEW.f_18 + NEW.r_18;
+SET NEW.t_19 = NEW.d_19 + NEW.i_19 + NEW.f_19 + NEW.r_19;
+SET NEW.t_d = NEW.d_11 + NEW.d_12 + NEW.d_13 + NEW.d_14 + NEW.d_15 + NEW.d_16 + NEW.d_17 + NEW.d_18 + NEW.d_19;
+SET NEW.t_i = NEW.i_11 + NEW.i_12 + NEW.i_13 + NEW.i_14 + NEW.i_15 + NEW.i_16 + NEW.i_17 + NEW.i_18 + NEW.i_19;
+SET NEW.t_f = NEW.f_11 + NEW.f_12 + NEW.f_13 + NEW.f_14 + NEW.f_15 + NEW.f_16 + NEW.f_17 + NEW.f_18 + NEW.f_19;
+SET NEW.t_r = NEW.r_11 + NEW.r_12 + NEW.r_13 + NEW.r_14 + NEW.r_15 + NEW.r_16 + NEW.r_17 + NEW.r_18 + NEW.r_19;
+SET NEW.total = NEW.t_d + NEW.t_i + NEW.t_f + NEW.t_r + NEW.t_21 + NEW.t_22 + NEW.t_23 + NEW.t_30 + NEW.t_41 + NEW.t_42 + NEW.t_43 + NEW.t_44 + NEW.t_100;
 END$$
 DELIMITER ;
 
