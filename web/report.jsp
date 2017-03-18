@@ -43,8 +43,8 @@
         <script src="${pageContext.request.contextPath}/assets/js/formvalidation.js"></script>
     </jsp:attribute>
     <jsp:body>
-        <form name="input" method="GET" action="timereport.jsp">
-            <input type="hidden" name="user" value="{username}">
+        <form name="input" method="POST" action="${pageContext.request.contextPath}/report">
+            <input type="hidden" name="type" value="create">
 
             <table class="table table-bordered">
                 <tbody>
@@ -112,12 +112,19 @@
                     </c:if>
                     <tr>
                         <td>${activity.key}</td>
-                        <td>${activity.value}</td>
-                        <td><input type="text" name="${activity.key}d" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
-                        <td><input type="text" name="${activity.key}i" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
-                        <td><input type="text" name="${activity.key}f" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
-                        <td><input type="text" name="${activity.key}r" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
-                        <td><input type="text" name="${activity.key}s" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
+                        <c:if test="${activity.key lt 20}">
+                            <td>${activity.value}</td>
+                            <td><input type="text" name="d_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
+                            <td><input type="text" name="i_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
+                            <td><input type="text" name="f_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
+                            <td><input type="text" name="r_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
+                            <td><input type="text" name="t_${activity.key}" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
+                        </c:if>
+                        <c:if test="${activity.key gt 20}">
+                            <td colspan="5">${activity.value}</td>
+                            <td><input type="text" name="t_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
+
+                        </c:if>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -141,25 +148,25 @@
                     <td>Utveckling och dokumentation</td>
                     <td>D</td>
                     <td>n/a</td>
-                    <td><input type="text" name="ds" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
+                    <td><input type="text" name="t_d" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                 </tr>
                 <tr>
                     <td>n/a</td>
                     <td>I</td>
                     <td>n/a</td>
-                    <td><input type="text" name="is" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
+                    <td><input type="text" name="t_i" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                 </tr>
                 <tr>
                     <td>n/a</td>
                     <td>F</td>
                     <td>n/a</td>
-                    <td><input type="text" name="fs" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
+                    <td><input type="text" name="t_f" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                 </tr>
                 <tr>
                     <td>n/a</td>
                     <td>R</td>
                     <td>n/a</td>
-                    <td><input type="text" name="rs" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
+                    <td><input type="text" name="t_r" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                 </tr>
                 </tbody>
             </table>
