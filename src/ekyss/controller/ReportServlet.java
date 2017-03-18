@@ -25,12 +25,10 @@ public class ReportServlet extends servletBase {
     private final String TYPE_REMOVE = "remove";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-        ReportBean rb = new ReportBean();
-        BeanUtilities.populateBean(rb, request);
-        // TODO Kolla om användare är inloggad och har behörighet att visa sidan.
-        if(true) {
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
+            ReportBean rb = new ReportBean();
+            BeanUtilities.populateBean(rb, request);
             if (rb.getType().equals(TYPE_CREATE)) {
                 BeanTransaction.createTimeReport(rb);
             } else if (rb.getType().equals(TYPE_UPDATE)) {
@@ -38,20 +36,20 @@ public class ReportServlet extends servletBase {
             } else if (rb.getType().equals(TYPE_REMOVE)) {
                 BeanTransaction.removeTimeReport(rb);
             }
-        }
-        else {
+        } else {
+            // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
         }
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: Kolla om användaren är inloggad, samt att användaren har behörighet att visa sidan.
-        if(true) {
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
             ReportBean bean = new ReportBean();
             forwardToView(request, response, "/report.jsp", bean);
-        }
-        else{
+        } else {
+            // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
         }
 

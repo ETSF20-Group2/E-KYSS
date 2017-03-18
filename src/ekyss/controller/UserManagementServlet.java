@@ -51,8 +51,8 @@ public class UserManagementServlet extends servletBase {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        if(true) {
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
             UserManagementBean umb = BeanFactory.getUserManagementBean();
             BeanUtilities.populateBean(umb,request);
             System.out.println("Type = " + umb.getType());
@@ -73,7 +73,7 @@ public class UserManagementServlet extends servletBase {
                 System.out.println("Deleted user: " + Arrays.toString(umb.getDeleteUserList()));
             }
         } else {
-
+            // Användaren är ej inloggad eller användaren har ej behörighet
             System.out.println("sendRedirect");
             response.sendRedirect("/");
         }
@@ -81,12 +81,18 @@ public class UserManagementServlet extends servletBase {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("doGet");
-        UserManagementBean bean = BeanFactory.getUserManagementBean();
-        System.out.println("bean created");
-        System.out.println(bean.getAllUsers().toString());
-        forwardToView(request, response, "/usermanagement.jsp",bean);
-        System.out.println("forwarded to view");
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
+            System.out.println("doGet");
+            UserManagementBean bean = BeanFactory.getUserManagementBean();
+            System.out.println("bean created");
+            System.out.println(bean.getAllUsers().toString());
+            forwardToView(request, response, "/usermanagement.jsp",bean);
+            System.out.println("forwarded to view");
+        } else {
+            // Användaren är ej inloggad eller användaren har ej behörighet
+            response.sendRedirect("/");
+        }
     }
 
 }
