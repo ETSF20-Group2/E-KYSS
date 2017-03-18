@@ -29,8 +29,7 @@ public class GroupManagementServlet extends servletBase {
     private final int ERR_GROUP_EMPTY = 2;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: Kolla om användaren är inloggad, samt att användaren har behörighet att visa sidan.
-        if (true) {
+        if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             GroupManagementBean bean = BeanFactory.getGroupManagementBean();
             BeanUtilities.populateBean(bean, request);
@@ -76,8 +75,7 @@ public class GroupManagementServlet extends servletBase {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: Kolla om användaren är inloggad, samt att användaren har behörighet att visa sidan.
-        if (true) {
+        if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             GroupManagementBean bean = BeanFactory.getGroupManagementBean();
             forwardToView(request, response, "/groupmanagement.jsp", bean);
