@@ -30,6 +30,16 @@ public class BeanTransaction {
 		new DatabaseHandler().addUser(bean.getUsername(), bean.getEmail(), bean.getPassword());
 	}
 
+	/**
+	 * Kopllar användare till en projektgrupp.
+	 * @param bean
+	 * @return true om lyckas parning, annars false
+	 */
+	public static boolean assignUserToGroup(GroupManagementBean bean) {
+
+		return new DatabaseHandler().assignGroup(bean);
+	}
+
 	
 	/* LoginServlet */
 	
