@@ -3,6 +3,13 @@ package ekyss.model;
 public class BeanFactory {
 	DatabaseHandler db = new DatabaseHandler();
 
+	public static UserBean getUserBean(String user){
+		UserBean bean = new UserBean();
+		bean.setUserName(user);
+		bean.setGroupList(new DatabaseHandler().getMemberOf(user));
+		return bean;
+	}
+
 	/**
 	 * Returnerar en standardböna av typen LoginBean.
 	 * @return LoginBean

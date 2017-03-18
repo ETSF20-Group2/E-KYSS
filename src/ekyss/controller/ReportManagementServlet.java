@@ -25,16 +25,14 @@ public class ReportManagementServlet extends servletBase {
     private final String TYPE_REMOVE = "remove";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        // TODO: Kolla om användaren är inloggad, samt att användaren har behörighet att visa sidan (PL).
-        if(true){
+        if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             ReportManagementBean rmb = new ReportManagementBean();
             BeanUtilities.populateBean(rmb, request);
             if(rmb.getType().equals(TYPE_SIGN)){
                 BeanTransaction.signReports(rmb);
             }
-            else if(rmb.getType().equals(TYPE_UNSIGN)){
+            else if(rmb.getType().equals(TYPE_UNSIGN)) {
                 BeanTransaction.unsignReport(rmb);
             }
         } else {
@@ -46,8 +44,8 @@ public class ReportManagementServlet extends servletBase {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: Kolla om användaren är inloggad, samt att användaren har behörighet att visa sidan.
-        if(true) {
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
             ReportManagementBean bean = new ReportManagementBean();
             forwardToView(request, response, "/reportmanagement.jsp", bean);
         } else {

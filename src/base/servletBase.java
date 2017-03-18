@@ -1,10 +1,5 @@
 package base;
 
-import java.io.IOException;
-
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,34 +7,37 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 /**
- *  This class is the superclass for all servlets in the application. 
- *  It includes basic functionality required by many servlets, like for example a page head 
- *  written by all servlets, and the connection to the database. 
- *  
+ *  This class is the superclass for all servlets in the application.
+ *  It includes basic functionality required by many servlets, like for example a page head
+ *  written by all servlets, and the connection to the database.
+ *
  *  This application requires a database.
  *  For username and password, see the constructor in this class.
- *  
- *  <p>The database can be created with the following SQL command: 
+ *
+ *  <p>The database can be created with the following SQL command:
  *  mysql> create database base;
  *  <p>The required table can be created with created with:
  *  mysql> create table users(name varchar(10), password varchar(10), primary key (name));
  *  <p>The administrator can be added with:
- *  mysql> insert into users (name, password) values('admin', 'adminp'); 
- *  
+ *  mysql> insert into users (name, password) values('admin', 'adminp');
+ *
  *  @author Martin Host
  *  @version 1.0
- *  
+ *
  */
 public class servletBase extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
-	
-	// Define states
-	protected static final int LOGIN_FALSE = 0;
-	protected static final int LOGIN_TRUE = 1;
+    private static final long serialVersionUID = 1L;
+
+    // Define states
+    protected static final int LOGIN_FALSE = 0;
+    protected static final int LOGIN_TRUE = 1;
     protected static final int LOGIN_LOGOUT_TOO_LONG = 2;
     protected static final long MAXINTERVAL = 15; // maxinterval mellan aktivitet på sidan.
 
@@ -49,12 +47,12 @@ public class servletBase extends HttpServlet {
      * @return true if the user is logged in, otherwise false.
      */
     protected boolean loggedIn(HttpServletRequest request) {
-    	HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(true);
         int state = LOGIN_FALSE;
-    	Object objectState = session.getAttribute("state");
-		if (objectState != null) 
-			state = (Integer) objectState; 
-		return (state == LOGIN_TRUE);
+        Object objectState = session.getAttribute("state");
+        if (objectState != null)
+            state = (Integer) objectState;
+        return (state == LOGIN_TRUE);
     }
 
     /**
@@ -112,7 +110,7 @@ public class servletBase extends HttpServlet {
 
 
     }
-	
+
     /**
      * Kollar om användaren är inloggad och har behörighet att visa sidan.
      * ((( Vad jag kan se är det bara dessa servlets som behöver någon specialbehandling beroende på roll )))
@@ -120,27 +118,31 @@ public class servletBase extends HttpServlet {
      * @return true om användaren har behörighet, annars false.
      */
     protected boolean securityCheck(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("user");
-        boolean isPL = (boolean) session.getAttribute("ProjectLeader");
-        if(loggedIn(request)) {
-            switch (request.getServletPath().toLowerCase()){
-                case "/groupmanagement":
-                    return username.equals("admin");
+        HttpSession session = request.getSession(true);
+        String username = (String) session.getAttribute("name");
 
-                case "/usermanagement":
-                    return username.equals("admin");
+        if (username != null && loggedIn(request)) {
+            boolean isPL = (boolean) session.getAttribute("ProjectLeader");
+            String path = request.getServletPath();
 
-                case "/reportmanagement":
-                    return isPL;
-
+            switch (path) {
                 case "/dashboard":
+                    return true;
+                case "/management/groups":
+                    return username.equals("admin");
+                case "/management/reports":
                     return isPL;
-
-                case "/user":
+                case "/report":
                     return !username.equals("admin");
+                case "/management/users":
+                    return username.equals("admin") || isPL;
+                case "/settings/user":
+                    return true;
+                default:
+                    return false;
             }
         }
+
         return false;
     }
 
