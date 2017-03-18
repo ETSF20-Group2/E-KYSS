@@ -64,20 +64,19 @@ public class GroupManagementServlet extends servletBase {
     }
 
     private void doAssign(GroupManagementBean bean, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println();
         if (bean.getAssignUser() != null || bean.getAssignGroup() != null) {
             // Användaren tryckte 'tilldela' med vald användare som ska kopplas till vald projektgrupp
             new BeanTransaction();
-            boolean assigned = BeanTransaction.assignUserToGroup(bean);
-            System.out.println("assignUserToGroup: " + assigned);
-            if (assigned) {
+            if (BeanTransaction.assignUserToGroup(bean)) {
                 // Lyckad tilldelning
                 bean.setErrorCode(ERR_ASSIGN_SUCCESS);
+                System.out.println("### doAssign_err_code: " + bean.getErrorCode());
                 forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
             } else {
                 // Tilldelningen är lyckad - användaren tillhör redan given projektgrupp
                 bean.setErrorCode(ERR_ASSIGN_EXISTS);
+                System.out.println("### doAssign_err_code: " + bean.getErrorCode());
                 forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
             }
@@ -95,17 +94,14 @@ public class GroupManagementServlet extends servletBase {
             if (bean.getType().equals(TYPE_ADD)) {
                 // Förfrågning kommer från add-formuläret
                 bean.setTab("add");
-                System.out.println("###" + bean.getTab());
                 doAdd(bean, request, response);
             } else if (bean.getType().equals(TYPE_DELETE)) {
                 // Förfrågning kommer från delete-formuläret
                 bean.setTab("delete");
-                System.out.println("###" + bean.getTab());
                 doDelete(bean);
             } else if (bean.getType().equals(TYPE_ASSIGN)) {
                 // Förfrågning kommer från assign-formuläret
                 bean.setTab("assign");
-                System.out.println("###" + bean.getTab());
                 doAssign(bean, request, response);
             } else {
                 System.out.println("Förmulärtyp okänd! Inputattributet 'type' saknas vid POST-anrop: getParameter: [" + request.getParameter("type") + "]; getText: [" + bean.getType() + "]");
