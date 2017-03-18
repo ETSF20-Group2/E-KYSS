@@ -36,8 +36,7 @@ public class BeanTransaction {
 	 * @return true om lyckas parning, annars false
 	 */
 	public static boolean assignUserToGroup(GroupManagementBean bean) {
-
-		return new DatabaseHandler().assignGroup(bean);
+		return new DatabaseHandler().assignGroup(bean.getAssignUser(), bean.getAssignGroup());
 	}
 
 	
