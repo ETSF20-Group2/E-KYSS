@@ -581,16 +581,21 @@ public class DatabaseHandler {
      * @return A UserBean that contains a list of all groups the user is member of (groupList attribute
      * in the bean).
      */
-    public List<String> getMemberOf(String user){
-    	List<String> groups = new ArrayList<String>();
+    public List<String[]> getMemberOf(String user){
+    	List<String[]> groups = new ArrayList<String[]>();
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("SELECT groupName FROM memberOf WHERE userName = ?");
+            ps = conn.prepareStatement("SELECT groupName, role FROM MemberOf WHERE member = ?");
             ps.setString(1, user);
             print(ps);
             ResultSet rs = ps.executeQuery();
-            while(rs.next())
-                groups.add(rs.getString("groupName"));
+            while(rs.next()) {
+                String[] s = new String[2];
+                s[0] = rs.getString("groupName");
+                s[1] = rs.getString("role");
+                groups.add(s);
+            }
+
         } catch (SQLException e){
             printError(e);
         }
