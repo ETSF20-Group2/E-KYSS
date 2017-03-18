@@ -14,6 +14,7 @@ public class GroupManagementBean implements Serializable {
     private String[] deleteGroup;
     private String assignedGroup;
     private String assignedUser;
+    private String tab = null;
 
     /**
      * Sätter en lista innehållandes samtliga existerande grupper i databasen.
@@ -115,5 +116,13 @@ public class GroupManagementBean implements Serializable {
 
     public String getAssignGroup() {
         return assignedGroup;
+    }
+
+    public void setTab(String tab) {
+        this.tab = tab;
+    }
+
+    public String getTab() {
+        return tab;
     }
 }
