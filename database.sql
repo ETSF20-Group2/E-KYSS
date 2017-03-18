@@ -141,7 +141,7 @@ CREATE TRIGGER updateTotUpdt BEFORE UPDATE ON TimeReports
 FOR EACH ROW
 BEGIN
 SET NEW.date = NOW();
-SET NEW.role = (select role from MemberOf where groupName = NEW.groupName AND userName = NEW.user);
+SET NEW.role = (select role from MemberOf where groupName = NEW.groupName AND member = NEW.user);
 SET NEW.t_11 = NEW.d_11 + NEW.i_11 + NEW.f_11 + NEW.r_11;
 SET NEW.t_12 = NEW.d_12 + NEW.i_12 + NEW.f_12 + NEW.r_12;
 SET NEW.t_13 = NEW.d_13 + NEW.i_13 + NEW.f_13 + NEW.r_13;
@@ -168,7 +168,7 @@ CREATE TRIGGER updateTotInsrt BEFORE INSERT ON TimeReports
 FOR EACH ROW
 BEGIN
 SET NEW.date = NOW();
-SET NEW.role = (select role from MemberOf where groupName = NEW.groupName AND userName = NEW.user);
+SET NEW.role = (select role from MemberOf where groupName = NEW.groupName AND member = NEW.user);
 SET NEW.t_11 = NEW.d_11 + NEW.i_11 + NEW.f_11 + NEW.r_11;
 SET NEW.t_12 = NEW.d_12 + NEW.i_12 + NEW.f_12 + NEW.r_12;
 SET NEW.t_13 = NEW.d_13 + NEW.i_13 + NEW.f_13 + NEW.r_13;
