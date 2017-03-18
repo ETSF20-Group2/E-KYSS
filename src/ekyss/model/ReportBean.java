@@ -11,6 +11,425 @@ public class ReportBean implements Serializable {
     private String type = null;
     private Map<String, Integer> reportValues = new HashMap<String, Integer>();
 
+    private int d_11, i_11, f_11, r_11;
+    private int d_12, i_12, f_12, r_12;
+    private int d_13, i_13, f_13, r_13;
+    private int d_14, i_14, f_14, r_14;
+    private int d_15, i_15, f_15, r_15;
+    private int d_16, i_16, f_16, r_16;
+    private int d_17, i_17, f_17, r_17;
+    private int d_18, i_18, f_18, r_18;
+    private int d_19, i_19, f_19, r_19;
+    private int t_21, t_22, t_23;
+    private int t_30;
+    private int t_41, t_42, t_43, t_44;
+    private int t_100;
+
+    public int getD_11() {
+        return d_11;
+    }
+
+    public void setD_11(int d_11) {
+        this.d_11 = d_11;
+        reportValues.put("d_11", d_11);
+    }
+
+    public int getI_11() {
+        return i_11;
+    }
+
+    public void setI_11(int i_11) {
+        this.i_11 = i_11;
+        reportValues.put("i_11", i_11);
+    }
+
+    public int getF_11() {
+        return f_11;
+    }
+
+    public void setF_11(int f_11) {
+        this.f_11 = f_11;
+        reportValues.put("f_11", f_11);
+    }
+
+    public int getR_11() {
+        return r_11;
+    }
+
+    public void setR_11(int r_11) {
+        this.r_11 = r_11;
+        reportValues.put("r_11", r_11);
+    }
+
+    public int getD_12() {
+        return d_12;
+    }
+
+    public void setD_12(int d_12) {
+        this.d_12 = d_12;
+        reportValues.put("d_12", d_12);
+    }
+
+    public int getI_12() {
+        return i_12;
+    }
+
+    public void setI_12(int i_12) {
+        this.i_12 = i_12;
+        reportValues.put("i_12", i_12);
+    }
+
+    public int getF_12() {
+        return f_12;
+    }
+
+    public void setF_12(int f_12) {
+        this.f_12 = f_12;
+        reportValues.put("f_12", f_12);
+    }
+
+    public int getR_12() {
+        return r_12;
+    }
+
+    public void setR_12(int r_12) {
+        this.r_12 = r_12;
+        reportValues.put("r_12", r_12);
+    }
+
+    public int getD_13() {
+        return d_13;
+    }
+
+    public void setD_13(int d_13) {
+        this.d_13 = d_13;
+        reportValues.put("d_13", d_13);
+    }
+
+    public int getI_13() {
+        return i_13;
+    }
+
+    public void setI_13(int i_13) {
+        this.i_13 = i_13;
+        reportValues.put("i_13", i_13);
+    }
+
+    public int getF_13() {
+        return f_13;
+    }
+
+    public void setF_13(int f_13) {
+        this.f_13 = f_13;
+        reportValues.put("f_13", f_13);
+    }
+
+    public int getR_13() {
+        return r_13;
+    }
+
+    public void setR_13(int r_13) {
+        this.r_13 = r_13;
+        reportValues.put("r_13", r_13);
+    }
+
+    public int getD_14() {
+        return d_14;
+    }
+
+    public void setD_14(int d_14) {
+        this.d_14 = d_14;
+        reportValues.put("d_14", d_14);
+    }
+
+    public int getI_14() {
+        return i_14;
+    }
+
+    public void setI_14(int i_14) {
+        this.i_14 = i_14;
+        reportValues.put("i_14", i_14);
+    }
+
+    public int getF_14() {
+        return f_14;
+    }
+
+    public void setF_14(int f_14) {
+        this.f_14 = f_14;
+        reportValues.put("f_14", f_14);
+    }
+
+    public int getR_14() {
+        return r_14;
+    }
+
+    public void setR_14(int r_14) {
+        this.r_14 = r_14;
+        reportValues.put("r_14", r_14);
+    }
+
+    public int getD_15() {
+        return d_15;
+    }
+
+    public void setD_15(int d_15) {
+        this.d_15 = d_15;
+        reportValues.put("d_15", d_15);
+    }
+
+    public int getI_15() {
+        return i_15;
+    }
+
+    public void setI_15(int i_15) {
+        this.i_15 = i_15;
+        reportValues.put("i_15", i_15);
+    }
+
+    public int getF_15() {
+        return f_15;
+    }
+
+    public void setF_15(int f_15) {
+        this.f_15 = f_15;
+        reportValues.put("f_15", f_15);
+    }
+
+    public int getR_15() {
+        return r_15;
+    }
+
+    public void setR_15(int r_15) {
+        this.r_15 = r_15;
+        reportValues.put("r_15", r_15);
+    }
+
+    public int getD_16() {
+        return d_16;
+    }
+
+    public void setD_16(int d_16) {
+        this.d_16 = d_16;
+        reportValues.put("d_16", d_16);
+    }
+
+    public int getI_16() {
+        return i_16;
+    }
+
+    public void setI_16(int i_16) {
+        this.i_16 = i_16;
+        reportValues.put("i_16", i_16);
+    }
+
+    public int getF_16() {
+        return f_16;
+    }
+
+    public void setF_16(int f_16) {
+        this.f_16 = f_16;
+        reportValues.put("f_16", f_16);
+    }
+
+    public int getR_16() {
+        return r_16;
+    }
+
+    public void setR_16(int r_16) {
+        this.r_16 = r_16;
+        reportValues.put("r_16", r_16);
+    }
+
+    public int getD_17() {
+        return d_17;
+    }
+
+    public void setD_17(int d_17) {
+        this.d_17 = d_17;
+        reportValues.put("d_17", d_17);
+    }
+
+    public int getI_17() {
+        return i_17;
+    }
+
+    public void setI_17(int i_17) {
+        this.i_17 = i_17;
+        reportValues.put("i_17", i_17);
+    }
+
+    public int getF_17() {
+        return f_17;
+    }
+
+    public void setF_17(int f_17) {
+        this.f_17 = f_17;
+        reportValues.put("f_17", f_17);
+    }
+
+    public int getR_17() {
+        return r_17;
+    }
+
+    public void setR_17(int r_17) {
+        this.r_17 = r_17;
+        reportValues.put("r_17", r_17);
+    }
+
+    public int getD_18() {
+        return d_18;
+    }
+
+    public void setD_18(int d_18) {
+        this.d_18 = d_18;
+        reportValues.put("d_18", d_18);
+    }
+
+    public int getI_18() {
+        return i_18;
+    }
+
+    public void setI_18(int i_18) {
+        this.i_18 = i_18;
+        reportValues.put("i_18", i_18);
+    }
+
+    public int getF_18() {
+        return f_18;
+    }
+
+    public void setF_18(int f_18) {
+        this.f_18 = f_18;
+        reportValues.put("f_18", f_18);
+    }
+
+    public int getR_18() {
+        return r_18;
+    }
+
+    public void setR_18(int r_18) {
+        this.r_18 = r_18;
+        reportValues.put("r_18", r_18);
+    }
+
+    public int getD_19() {
+        return d_19;
+    }
+
+    public void setD_19(int d_19) {
+        this.d_19 = d_19;
+        reportValues.put("d_19", d_19);
+    }
+
+    public int getI_19() {
+        return i_19;
+    }
+
+    public void setI_19(int i_19) {
+        this.i_19 = i_19;
+        reportValues.put("i_19", i_19);
+    }
+
+    public int getF_19() {
+        return f_19;
+    }
+
+    public void setF_19(int f_19) {
+        this.f_19 = f_19;
+        reportValues.put("f_19", f_19);
+    }
+
+    public int getR_19() {
+        return r_19;
+    }
+
+    public void setR_19(int r_19) {
+        this.r_19 = r_19;
+        reportValues.put("r_19", r_19);
+    }
+
+    public int getT_21() {
+        return t_21;
+    }
+
+    public void setT_21(int t_21) {
+        this.t_21 = t_21;
+        reportValues.put("t_21", t_21);
+    }
+
+    public int getT_22() {
+        return t_22;
+    }
+
+    public void setT_22(int t_22) {
+        this.t_22 = t_22;
+        reportValues.put("t_22", t_22);
+    }
+
+    public int getT_23() {
+        return t_23;
+    }
+
+    public void setT_23(int t_23) {
+        this.t_23 = t_23;
+        reportValues.put("t_23", t_23);
+    }
+
+    public int getT_30() {
+        return t_30;
+    }
+
+    public void setT_30(int t_30) {
+        this.t_30 = t_30;
+        reportValues.put("t_30", t_30);
+    }
+
+    public int getT_41() {
+        return t_41;
+    }
+
+    public void setT_41(int t_41) {
+        this.t_41 = t_41;
+        reportValues.put("t_41", t_41);
+    }
+
+    public int getT_42() {
+        return t_42;
+    }
+
+    public void setT_42(int t_42) {
+        this.t_42 = t_42;
+        reportValues.put("t_42", t_42);
+    }
+
+    public int getT_43() {
+        return t_43;
+    }
+
+    public void setT_43(int t_43) {
+        this.t_43 = t_43;
+        reportValues.put("t_43", t_43);
+    }
+
+    public int getT_44() {
+        return t_44;
+    }
+
+    public void setT_44(int t_44) {
+        this.t_44 = t_44;
+        reportValues.put("t_44", t_44);
+    }
+
+    public int getT_100() {
+        return t_100;
+    }
+
+    public void setT_100(int t_100) {
+        this.t_100 = t_100;
+        reportValues.put("t_100", t_100);
+    }
+
     public String getUser() {
         return user;
     }

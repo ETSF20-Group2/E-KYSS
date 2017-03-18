@@ -11,17 +11,17 @@ import java.util.Map;
 public class DatabaseHandler {
     Database db;
     Connection conn;
-    private final String[] TIMEREPORTCOLUMNS = {"11_d", "11_i", "11_f", "11_r", "11_t",
-            "12_d", "12_i", "12_f", "12_r", "12_t",
-            "13_d", "13_i", "13_f", "13_r", "13_t",
-            "14_d", "14_i", "14_f", "14_r", "14_t",
-            "15_d", "15_i", "15_f", "15_r", "15_t",
-            "16_d", "16_i", "16_f", "16_r", "16_t",
-            "17_d", "17_i", "17_f", "17_r", "17_t",
-            "18_d", "18_i", "18_f", "18_r", "18_t",
-            "19_d", "19_i", "19_f", "19_r", "19_t",
-            "21_t", "22_t", "23_t", "30_t", "41_t",
-            "42_t", "43_t", "44_t", "100_t"};
+    private final String[] TIMEREPORTCOLUMNS = {"d_11", "i_11", "f_11", "r_11", "t_11",
+            "d_12", "i_12", "f_12", "r_12", "t_12",
+            "d_13", "i_13", "f_13", "r_13", "t_13",
+            "d_14", "i_14", "f_14", "r_14", "t_14",
+            "d_15", "i_15", "f_15", "r_15", "t_15",
+            "d_16", "i_16", "f_16", "r_16", "t_16",
+            "d_17", "i_17", "f_17", "r_17", "t_17",
+            "d_18", "i_18", "f_18", "r_18", "t_18",
+            "d_19", "i_19", "f_19", "r_19", "t_19",
+            "t_21", "t_22", "t_23", "t_30", "t_41",
+            "t_42", "t_43", "t_44", "t_100"};
 
     public DatabaseHandler(){
 		/* Endast för test, vet inte riktigt hur det ska se ut här. Tänker att man har
@@ -301,14 +301,19 @@ public class DatabaseHandler {
     /**
      * Assigns an user to a group. A user can be a member of many groups, but only one time
      * to the same group.
-     * @param group A UserManagementBean that contains an username and the group the user should be
+     * @param bean A GroupManagementBean that contains an username and the group the user should be
      * assigned to (group and userName attribute in the bean).
      * @return true if the user is assigned to the group, else false.
      */
-    public boolean assignGroup(String group, String userName){
+    public boolean assignGroup(GroupManagementBean bean){
+        String userName = bean.getAssignUser();
+        String group = bean.getAssignGroup();
+
+        System.out.println("### assignGroup - username: " + userName + " group: " + group);
+
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("INSERT INTO memberOf(groupName, userName) VALUES(?,?)");
+            ps = conn.prepareStatement("INSERT INTO MemberOf(groupName, userName) VALUES(?,?)");
             ps.setString(1, group);
             ps.setString(2, userName);
             print(ps);

@@ -73,7 +73,17 @@
 <t:block pageTitle="Projektgrupphantering">
     <jsp:attribute name="stylesheets" />
     <jsp:attribute name="navigation" />
-    <jsp:attribute name="javascript" />
+    <jsp:attribute name="javascript">
+        <script>
+            $(document).ready(function(){
+                activaTab('${bean.getTab()}');
+            });
+
+            function activaTab(tab){
+                $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+            };
+        </script>
+    </jsp:attribute>
     <jsp:body>
         <div class="row">
             <div class="col-md-3"></div>
@@ -115,7 +125,7 @@
                     <div role="tabpanel" class="tab-pane" id="assign">
                         <p>Koppla en användare till given projektgrupp.</p>
                         <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                            <meta type="hidden" name="type" value="assign">
+                            <input type="hidden" name="type" value="assign">
                             <div class="form-group">
                                 <label for="inputUsername">Användarnamn</label>
                                 <select name="assignUser" type="text" class="form-control" id="inputUsername">
