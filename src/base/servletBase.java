@@ -118,35 +118,31 @@ public class servletBase extends HttpServlet {
      * @return true om användaren har behörighet, annars false.
      */
     protected boolean securityCheck(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String username = "";
-        boolean isPL = false;
+        HttpSession session = request.getSession(true);
+        String username = (String) session.getAttribute("name");
 
-        if((String) session.getAttribute("name") != null){
-            username = (String) session.getAttribute("name");
-        }
-
-        if(session.getAttribute("ProjectLeader") != null){
-            isPL = (boolean) session.getAttribute("ProjectLeader");
-        }
-        if(!username.equals("")) {
+        if (username != null && loggedIn(request)) {
+            boolean isPL = (boolean) session.getAttribute("ProjectLeader");
             String path = request.getServletPath();
-            System.out.println(path);
-            if(path.endsWith("/groupmanagement")) {
-                return username.equals("admin");
-            } else if(path.endsWith("/usermanagement")){
-                return username.equals("admin");
-            } else if(path.endsWith("/reportmanagement")){
-                return isPL;
-            } else if(path.endsWith("/dashboard")){
-                return isPL;
-            } else if(path.endsWith("/user")){
 
-                return !username.equals("admin");
-            } else{
-                return true;
+            switch (path) {
+                case "/dashboard":
+                    return true;
+                case "/management/groups":
+                    return username.equals("admin");
+                case "/management/reports":
+                    return isPL;
+                case "/report":
+                    return !username.equals("admin");
+                case "/management/users":
+                    return username.equals("admin") || isPL;
+                case "/settings/user":
+                    return true;
+                default:
+                    return false;
             }
         }
+
         return false;
     }
 
