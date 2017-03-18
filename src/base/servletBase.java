@@ -119,9 +119,16 @@ public class servletBase extends HttpServlet {
      */
     protected boolean securityCheck(HttpServletRequest request){
         HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("user");
-        boolean isPL = (boolean) session.getAttribute("ProjectLeader");
-        if(loggedIn(request)) {
+        String username = "";
+        boolean isPL = false;
+
+        if((String) session.getAttribute("user") != null){
+            username = (String) session.getAttribute("user");
+        };
+        if((boolean) session.getAttribute("ProjectLeader") != null){
+            isPL = (boolean) session.getAttribute("ProjectLeader");
+        }
+        if(!username.equals("")) {
             switch (request.getServletPath().toLowerCase()){
                 case "/groupmanagement":
                     return username.equals("admin");
