@@ -9,13 +9,30 @@ public class UserBean implements Serializable {
     private String email;
     private String group;
     private String role;
-    private List<String> groupList = new ArrayList<String>();
+    private List<String[]> groupList = new ArrayList<String[]>();
+    private int err_code = 0;
 
     private String type;
 
     private String oldPassword;
     private String newPassword1;
     private String newPassword2;
+
+    /**
+     * Sätter felkod, som används för att visa upp meddelanden i vy-nivån.
+     * @param err_code 0 = inget felmeddelande,
+     *                 1 = Fel lösenord
+     *                 2 = Lösenorden matchar inte.
+     */
+    public void setErrorCode(int err_code) {
+      // if ( (err_code-0)*(err_code-2) <= 0 ) {
+            this.err_code = err_code;
+      //  }
+    }
+
+    public int getErrorCode() {
+        return err_code;
+    }
 
     public String getUserName() {
         return userName;
@@ -49,16 +66,12 @@ public class UserBean implements Serializable {
         this.role = role;
     }
 
-    public List<String> getGroupList() {
+    public List<String[]> getGroupList() {
         return groupList;
     }
 
-    public void setGroupList(List<String> groupList) {
+    public void setGroupList(List<String[]> groupList) {
         this.groupList = groupList;
-    }
-
-    public void setGroupList(String group){
-        groupList.add(group);
     }
 
     public String getType(){

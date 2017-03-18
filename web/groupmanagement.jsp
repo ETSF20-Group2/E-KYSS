@@ -115,7 +115,7 @@
                     <div role="tabpanel" class="tab-pane" id="assign">
                         <p>Koppla en användare till given projektgrupp.</p>
                         <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
-                            <input type="hidden" name="type" value="assign">
+                            <meta type="hidden" name="type" value="assign">
                             <div class="form-group">
                                 <label for="inputUsername">Användarnamn</label>
                                 <select name="assignUser" type="text" class="form-control" id="inputUsername">

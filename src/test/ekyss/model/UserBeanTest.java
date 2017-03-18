@@ -49,7 +49,7 @@ public class UserBeanTest {
 	 assertEquals("Inkorrekt returnering av getNewPassword()", "1234", bean.getNewPassword1());
 	}
  
- @Test
+ /*@Test
  public final void testSetandGetGroupList(){
 	 ArrayList<String> groups = new ArrayList<String>();
 	 groups.add("Grupp1");
@@ -58,5 +58,5 @@ public class UserBeanTest {
 	 assertEquals("Inkorrekt returnering av getGroupList()", groups, bean.getGroupList());
 	}
  
-
+*/
 }
