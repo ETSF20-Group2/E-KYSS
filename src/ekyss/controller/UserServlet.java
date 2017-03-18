@@ -41,25 +41,26 @@ public class UserServlet extends servletBase {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        UserBean bean = BeanFactory.getUserBean((String) session.getAttribute("name"));
-        BeanUtilities.populateBean(bean, request);
-        if(securityCheck(request)){
-                if(!bean.getNewPassword1().equals(bean.getNewPassword2())){
-                    bean.setErrorCode(ERR_NOT_MATCHING);
-                } else if(!validateNewPass(bean.getNewPassword1())){
-                    bean.setErrorCode(ERR_WRONG_FORMAT);
-                } else if(bean.getOldPassword().equals(bean.getNewPassword1())){
-                    bean.setErrorCode(3);
-                } else if(BeanTransaction.changePassword(bean)){
-                    bean.setErrorCode(5);
-                } else {
-                    bean.setErrorCode(4);
-                }
-                forwardToView(request, response, "/user.jsp", bean);
-
-                return;
-        } else{
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
+            HttpSession session = request.getSession(true);
+            UserBean bean = BeanFactory.getUserBean((String) session.getAttribute("name"));
+            BeanUtilities.populateBean(bean, request);
+            if(!bean.getNewPassword1().equals(bean.getNewPassword2())){
+                bean.setErrorCode(ERR_NOT_MATCHING);
+            } else if(!validateNewPass(bean.getNewPassword1())){
+                bean.setErrorCode(ERR_WRONG_FORMAT);
+            } else if(bean.getOldPassword().equals(bean.getNewPassword1())){
+                bean.setErrorCode(3);
+            } else if(BeanTransaction.changePassword(bean)){
+                bean.setErrorCode(5);
+            } else {
+                bean.setErrorCode(4);
+            }
+            forwardToView(request, response, "/user.jsp", bean);
+            return;
+        } else {
+            // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
         }
         doGet(request, response);
@@ -67,11 +68,15 @@ public class UserServlet extends servletBase {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(securityCheck(request)) {
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
             HttpSession session = request.getSession(true);
             String user = (String) session.getAttribute("name");
             UserBean bean = BeanFactory.getUserBean(user);
             forwardToView(request, response, "/user.jsp", bean);
+        } else {
+            // Användaren är ej inloggad eller användaren har ej behörighet
+            response.sendRedirect("/");
         }
 
     }

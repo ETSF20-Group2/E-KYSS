@@ -24,16 +24,25 @@ public class DashboardServlet extends servletBase {
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
+            doGet(request, response);
+        } else {
+            // Användaren är ej inloggad eller användaren har ej behörighet
+            response.sendRedirect("/");
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        DashboardBean bean = null;
-
-        HttpSession session = request.getSession(true);
-
-        forwardToView(request, response, "/dashboard.jsp",bean);
+        if (securityCheck(request)) {
+            // Användaren är inloggad och har behörighet
+            DashboardBean bean = null;
+            HttpSession session = request.getSession(true);
+            forwardToView(request, response, "/dashboard.jsp",bean);
+        } else {
+            // Användaren är ej inloggad eller användaren har ej behörighet
+            response.sendRedirect("/");
+        }
     }
 
 }
