@@ -34,7 +34,7 @@ public class ReportManagementServlet extends servletBase {
             if(rmb.getType().equals(TYPE_SIGN)){
                 BeanTransaction.signReports(rmb);
             }
-            else if(rmb.getType().equals(TYPE_UNSIGN)){
+            else if(rmb.getType().equals(TYPE_UNSIGN)) {
                 BeanTransaction.unsignReport(rmb);
             }
         } else {

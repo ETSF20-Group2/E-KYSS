@@ -1,9 +1,7 @@
 package ekyss.controller;
 
 import base.servletBase;
-import ekyss.model.BeanTransaction;
-import ekyss.model.BeanUtilities;
-import ekyss.model.UserBean;
+import ekyss.model.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,10 +21,16 @@ public class UserServlet extends servletBase {
     private static final long serialVersionUID = 1L;
     private final String TYPE_CHANGEINFO = "changeInfo";
     private final String TYPE_CHANGEPASS = "changePass";
+    private final int ERR_NO_MSG = 0;
+    private final int ERR_NOT_MATCHING = 1;
+    private final int ERR_WRONG_FORMAT = 2;
+    private final int ERR_SAME_AS_OLD = 3;
+    private final int ERR_WRONG_PASS = 4;
+    private final int SUCCESS = 5;
 
-    private boolean validateNewPass(String pass1, String pass2){
-        if(pass1.equals(pass2) && pass1.length() == 6){
-            for(char c:pass1.toCharArray()){
+    private boolean validateNewPass(String pass){
+        if(pass.length() == 6){
+            for(char c:pass.toCharArray()){
                 if((int) c < 97 || (int) c > 122){
                     return false;
                 }
@@ -37,28 +41,36 @@ public class UserServlet extends servletBase {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-        UserBean ub = new UserBean();
-        BeanUtilities.populateBean(ub, request);
         HttpSession session = request.getSession(true);
-        ub.setUserName((String) session.getAttribute("name"));
-        if(true){
-            if(ub.getType().equals(TYPE_CHANGEPASS)){
-                if(validateNewPass(ub.getNewPassword1(), ub.getNewPassword2())) {
-                    BeanTransaction.changePassword(ub);
+        UserBean bean = BeanFactory.getUserBean((String) session.getAttribute("name"));
+        BeanUtilities.populateBean(bean, request);
+        if(securityCheck(request)){
+                if(!bean.getNewPassword1().equals(bean.getNewPassword2())){
+                    bean.setErrorCode(ERR_NOT_MATCHING);
+                } else if(!validateNewPass(bean.getNewPassword1())){
+                    bean.setErrorCode(ERR_WRONG_FORMAT);
+                } else if(bean.getOldPassword().equals(bean.getNewPassword1())){
+                    bean.setErrorCode(3);
+                } else if(BeanTransaction.changePassword(bean)){
+                    bean.setErrorCode(5);
+                } else {
+                    bean.setErrorCode(4);
                 }
-                // Kommer behövas errorcodes här, t ex om lösen är för långt etc.
-            }
+                forwardToView(request, response, "/user.jsp", bean);
 
+                return;
         } else{
             response.sendRedirect("/");
         }
+        doGet(request, response);
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(true) {
-            UserBean bean = new UserBean();
+        if(securityCheck(request)) {
+            HttpSession session = request.getSession(true);
+            String user = (String) session.getAttribute("name");
+            UserBean bean = BeanFactory.getUserBean(user);
             forwardToView(request, response, "/user.jsp", bean);
         }
 
