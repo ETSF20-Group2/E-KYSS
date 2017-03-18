@@ -125,7 +125,7 @@ public class servletBase extends HttpServlet {
         if((String) session.getAttribute("user") != null){
             username = (String) session.getAttribute("user");
         };
-        if((boolean) session.getAttribute("ProjectLeader") != null){
+        if(session.getAttribute("ProjectLeader") != null){
             isPL = (boolean) session.getAttribute("ProjectLeader");
         }
         if(!username.equals("")) {
