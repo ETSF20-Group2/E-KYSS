@@ -5,7 +5,7 @@
     <c:if test="${bean.getErrorCode() eq 1}">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            Du har anget felaktigt användarnamn och/eller lösenord.
+            Du har anget felaktigt användarnamn och/eller lösenord och/eller projektgrupp.
         </div>
     </c:if>
     <c:if test="${bean.getErrorCode() eq 2}">
