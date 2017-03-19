@@ -1,6 +1,8 @@
 package ekyss.controller;
 
 import base.servletBase;
+import ekyss.model.BeanFactory;
+import ekyss.model.BeanTransaction;
 import ekyss.model.DashboardBean;
 
 import javax.servlet.ServletContext;
@@ -36,7 +38,8 @@ public class DashboardServlet extends servletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
-            DashboardBean bean = null;
+            DashboardBean bean = BeanFactory.getDashboardBean();
+
             HttpSession session = request.getSession(true);
             forwardToView(request, response, "/dashboard.jsp",bean);
         } else {

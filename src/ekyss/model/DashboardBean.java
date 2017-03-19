@@ -5,13 +5,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DashboardBean implements Serializable {
+
+
+    private Integer summary = null;
+    private Map<String, Integer> reportValuesSum = new HashMap<>();
+
+
+    public void setReportValuesSum(Map<String, Integer> reportValuesSum) {
+        this.reportValuesSum = reportValuesSum;
+    }
+
+    public Map<String, Integer> getReportValuesSum() {
+        return reportValuesSum;
+    }
+
+    /*
     private String user;
     private String group;
     private int week;
     private int documentSummary;
     private int activitySummary;
     private Map<String, Integer> reportValues = new HashMap<String, Integer>();
-
 
     public String getUser() {
         return user;
@@ -49,14 +63,12 @@ public class DashboardBean implements Serializable {
     public void setReportValues(Map<String, Integer> reportValues) {
         this.reportValues = reportValues;
     }
-
     public void setReportValues(String col, int value){
         reportValues.put(col, value);
     }
-
     public int getReportValues(String col){
         return reportValues.get(col);
     }
-
+    */
 
 }

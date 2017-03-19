@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class DashBoardBeanTest {
-	
+	/*
 	private DashboardBean bean = new DashboardBean();
 	
 	@Test
@@ -50,4 +50,5 @@ public class DashBoardBeanTest {
 		assertEquals("Fel värden hämtas", 10, bean.getReportValues("a"));
 		assertEquals("Fel värden hämtas", 11, bean.getReportValues("b"));
 	}
+	*/
 }
