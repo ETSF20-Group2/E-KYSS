@@ -1,7 +1,6 @@
 var LETTERS = ["d_", "i_", "f_", "r_"];
 var CODES = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "23", "30",
     "41", "42", "43", "44", "100"];
-
 /**
  * Sum the row, with activity code act_code, and place value inside the sum column.
  * @param act_code
@@ -12,9 +11,9 @@ function validateRow(act_code) {
     var res = TextFieldArray.reduce(((acc, cur) => acc + parseCell(cur, function(name) {
             return document.getElementsByName(name)[0];
         })), 0);
-    console.log(res);
     document.getElementsByName(total + act_code)[0].value = res;
 }
+
 
 /**
  * Target column to sum. if target column is "sum" (i.e. total sum), sum the sum columns
@@ -44,7 +43,7 @@ function validateCol(col) {
  * passes "this" as parameter. Validates input in cell, then calculates row && column accordlingly.
  * @param ref
  */
-function checkValidTimeInput(ref) {
+function checkValidTI(ref) {
     var code = ref.name.substring(2,ref.name.length);
     var tag = ref.name.charAt(0);
     if(parseInt(code) < 21) {
@@ -67,12 +66,17 @@ function checkValidTimeInput(ref) {
 function parseCell(e, ifGetElem) {
     var res;
     var elem;
-    if((elem = ifGetElem(e)) != (null || undefined))
-        if((res = parseInt(elem.value)) >= 0){
+    if((elem = ifGetElem(e)) != undefined)
+        if ((res = parseInt(Math.abs(elem.value))) >= 0) {
+            elem.style.color = "black";
+            elem.style["box-shadow"] = "";
+            elem.style["border"] = "";
             return res;
         }
         else {
-        elem.
+            elem.style["color"] = "red";
+            elem.style["box-shadow"] = "0 0 5px rgba(255, 0, 0, 1)";
+            elem.style["border"] = "2px solid rgba(255, 2, 2, 1)";
         }
     return 0;
 }
