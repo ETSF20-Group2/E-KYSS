@@ -43,20 +43,13 @@ public class ReportServlet extends servletBase {
             BeanUtilities.populateBean(rb, request);
             rb.setUser(user);
             rb.setGroup(group);
-            System.out.println("---- ReportServlet.doPost --------");
-            System.out.println(request.getParameter("week"));
-            System.out.println("User: " + rb.getUser() + " | Group: " + rb.getGroup() + " | Week: " + rb.getWeek());
-            System.out.println("Type: " + rb.getType());
             if (rb.getType().equals(TYPE_CREATE)) {
-                System.out.println("In CREATE");
                 BeanTransaction.createTimeReport(rb);
                 err_code = ERR_CREATED;
             } else if (rb.getType().equals(TYPE_UPDATE)) {
-                System.out.println("In UPDATE");
                 BeanTransaction.updateTimeReport(rb);
                 err_code = ERR_UPDATED;
             } else if (rb.getType().equals(TYPE_REMOVE)) {
-                System.out.println("In REMOVE");
                 BeanTransaction.removeTimeReport(rb);
                 err_code = ERR_REMOVED;
             }
@@ -65,7 +58,6 @@ public class ReportServlet extends servletBase {
             // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
         }
-        System.out.println("---------------------------------");
         doGet(request, response);
     }
 
@@ -79,13 +71,11 @@ public class ReportServlet extends servletBase {
             ReportBean bean = BeanFactory.getReportBean(user, group);
             BeanUtilities.populateBean(bean, request);
             bean.setErr_code(err_code);
-            System.out.println("WEEK = " + bean.getWeek());
             if(bean.getType().equals(TYPE_SELECT)){
                 bean = BeanFactory.fillReportBean(bean, user, group, bean.getWeek());
             }
             forwardToView(request, response, "/report.jsp", bean);
             err_code = 0;
-            System.out.println("d_11 = " + bean.getReportValues().get("d_11"));
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");

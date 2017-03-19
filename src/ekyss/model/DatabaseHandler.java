@@ -534,10 +534,7 @@ public class DatabaseHandler {
      * @return true if the time report is updated, else false.
      */
     public boolean updateTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
-        System.out.println("UPDATING TIME REPORT!");
-        boolean done = removeTimeReport(user, group, week) && createTimeReport(user, group, week, reportValues);
-        System.out.println("DONE!");
-        return done;
+        return removeTimeReport(user, group, week) && createTimeReport(user, group, week, reportValues);
     }
 
     /**
