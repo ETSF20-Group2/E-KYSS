@@ -3,6 +3,25 @@ package ekyss.model;
 public class BeanFactory {
 	DatabaseHandler db = new DatabaseHandler();
 
+	/**
+	 * Returnerar en ReportBean där allWeeks är fylld med veckorna en användare har raporterar till en projekgrupp
+	 * @param user användarnamnet
+	 * @param group gruppnamnet
+	 * @return ReportBean
+	 */
+	public static ReportBean getReportBean(String user, String group){
+		ReportBean bean = new ReportBean();
+		bean.setUser(user);
+		bean.setGroup(group);
+		bean.setAllWeeks(new DatabaseHandler().getAllReportWeeks(user, group));
+		return bean;
+	}
+
+	public static ReportBean fillReportBean(ReportBean bean, String user, String group, int week){
+		bean.setReportValues(new DatabaseHandler().getTimeReport(group, user, "", week));
+		return bean;
+	}
+
 	public static UserBean getUserBean(String user){
 		UserBean bean = new UserBean();
 		bean.setUserName(user);
