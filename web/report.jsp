@@ -76,6 +76,15 @@
     <jsp:attribute name="navigation" />
     <jsp:attribute name="javascript">
         <script src="${pageContext.request.contextPath}/assets/js/formvalidation.js"></script>
+        <script>
+            $(document).ready(function(){
+                activaTab('${bean.getTab()}');
+            });
+
+            function activaTab(tab){
+                $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+            };
+        </script>
     </jsp:attribute>
     <jsp:body>
         <ul class="nav nav-tabs" role="tablist">

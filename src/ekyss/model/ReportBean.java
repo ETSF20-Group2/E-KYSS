@@ -14,6 +14,7 @@ public class ReportBean implements Serializable {
     private Map<String, Integer> reportValues = new HashMap<String, Integer>();
     private List<String> allWeeks = new ArrayList<String>();
     private int err_code = 0;
+    private String tab = null;
 
     private int d_11 = 0, i_11 = 0, f_11 = 0, r_11 = 0;
     private int d_12 = 0, i_12 = 0, f_12 = 0, r_12 = 0;
@@ -492,5 +493,13 @@ public class ReportBean implements Serializable {
 
     public String getType(){
         return type;
+    }
+
+    public String getTab() {
+        return tab;
+    }
+
+    public void setTab(String tab) {
+        this.tab = tab;
     }
 }

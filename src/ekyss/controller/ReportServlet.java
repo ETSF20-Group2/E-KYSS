@@ -31,6 +31,8 @@ public class ReportServlet extends servletBase {
     private final int ERR_UPDATED = 2;
     private final int ERR_REMOVED = 3;
 
+    private String tab = "create";
+
     private int err_code = 0;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,12 +47,15 @@ public class ReportServlet extends servletBase {
             rb.setGroup(group);
             if (rb.getType().equals(TYPE_CREATE)) {
                 BeanTransaction.createTimeReport(rb);
+                tab = "create";
                 err_code = ERR_CREATED;
             } else if (rb.getType().equals(TYPE_UPDATE)) {
                 BeanTransaction.updateTimeReport(rb);
+                tab = "update";
                 err_code = ERR_UPDATED;
             } else if (rb.getType().equals(TYPE_REMOVE)) {
                 BeanTransaction.removeTimeReport(rb);
+                tab = "remove";
                 err_code = ERR_REMOVED;
             }
             System.out.println("ERROR CODE: " + err_code);
@@ -73,7 +78,10 @@ public class ReportServlet extends servletBase {
             bean.setErr_code(err_code);
             if(bean.getType().equals(TYPE_SELECT)){
                 bean = BeanFactory.fillReportBean(bean, user, group, bean.getWeek());
+                tab = "update";
             }
+
+            bean.setTab(tab);
             forwardToView(request, response, "/report.jsp", bean);
             err_code = 0;
         } else {
