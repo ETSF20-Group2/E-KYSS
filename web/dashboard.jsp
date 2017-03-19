@@ -1,6 +1,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<jsp:useBean id="reportActivityList" class="java.util.LinkedHashMap"/>
+<c:set target="${reportActivityList}" property="11" value="SDP" />
+<c:set target="${reportActivityList}" property="12" value="SRS" />
+<c:set target="${reportActivityList}" property="13" value="SVVS" />
+<c:set target="${reportActivityList}" property="14" value="STLDD" />
+<c:set target="${reportActivityList}" property="15" value="SVVI" />
+<c:set target="${reportActivityList}" property="16" value="SDDD" />
+<c:set target="${reportActivityList}" property="17" value="SVVR" />
+<c:set target="${reportActivityList}" property="18" value="SSD" />
+<c:set target="${reportActivityList}" property="19" value="Slutrapport" />
+<c:set target="${reportActivityList}" property="21" value="Funktionstest" />
+<c:set target="${reportActivityList}" property="22" value="Systemtest" />
+<c:set target="${reportActivityList}" property="23" value="Regresionstest" />
+<c:set target="${reportActivityList}" property="30" value="Möten" />
+<c:set target="${reportActivityList}" property="41" value="Lektion" />
+<c:set target="${reportActivityList}" property="42" value="Övning" />
+<c:set target="${reportActivityList}" property="43" value="Datorövning" />
+<c:set target="${reportActivityList}" property="44" value="Hemläseri" />
+<c:set target="${reportActivityList}" property="100" value="Annat" />
+
 <c:set var="container_admin">
     <c:if test="${sessionScope.name eq 'admin'}">
         <h2 class="form-signin-heading">Välkommen, administratör!</h2>
@@ -127,7 +148,20 @@
     ${container_others}
 </c:set>
 <t:block pageTitle="Översiktsidan">
-    <jsp:attribute name="stylesheets" />
+    <jsp:attribute name="stylesheets">
+        <style>
+            table {
+                max-width: 600px;
+                width: 100%;
+            }
+            th {
+                background-color: #F2F2F2;
+            }
+            th, td {
+                vertical-align: middle;
+            }
+        </style>
+    </jsp:attribute>
     <jsp:attribute name="navigation" />
     <jsp:attribute name="javascript" />
     <jsp:body>
