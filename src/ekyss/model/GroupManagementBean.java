@@ -59,9 +59,11 @@ public class GroupManagementBean implements Serializable {
      * @param err_code 0 = inget felmeddelande,
      *                 1 = gruppnamn existerar redan
      *                 2 = gruppnamn är tomt
+     *                 3 = lyckad tilldelning av använder till grupp
+     *                 4 = ej lyckad tilldelning av användare till grupp
      */
     public void setErrorCode(int err_code) {
-        if ( (err_code-0)*(err_code-2) <= 0 ) {
+        if ( (err_code-0)*(err_code-4) <= 0 ) {
             this.err_code = err_code;
         }
     }
@@ -98,7 +100,7 @@ public class GroupManagementBean implements Serializable {
      * Markerar vilken användare som ska kopplas till en viss projektgrupp
      * @param user
      */
-    public void setAssignedUser(String user) {
+    public void setAssignUser(String user) {
         assignedUser = user;
     }
 
@@ -110,7 +112,7 @@ public class GroupManagementBean implements Serializable {
      * Markerar vilken projektgrupp en viss användare ska kopplas till.
      * @param group
      */
-    public void setAssignedGroup(String group) {
+    public void setAssignGroup(String group) {
         assignedGroup = group;
     }
 

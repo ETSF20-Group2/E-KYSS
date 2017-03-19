@@ -301,19 +301,14 @@ public class DatabaseHandler {
     /**
      * Assigns an user to a group. A user can be a member of many groups, but only one time
      * to the same group.
-     * @param bean A GroupManagementBean that contains an username and the group the user should be
-     * assigned to (group and userName attribute in the bean).
+     * @param userName an username
+     * @param group the group the user should be assigned to.
      * @return true if the user is assigned to the group, else false.
      */
-    public boolean assignGroup(GroupManagementBean bean){
-        String userName = bean.getAssignUser();
-        String group = bean.getAssignGroup();
-
-        System.out.println("### assignGroup - username: " + userName + " group: " + group);
-
+    public boolean assignGroup(String userName, String group){
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("INSERT INTO MemberOf(groupName, userName) VALUES(?,?)");
+            ps = conn.prepareStatement("INSERT INTO MemberOf(groupName, member) VALUES(?,?)");
             ps.setString(1, group);
             ps.setString(2, userName);
             print(ps);
