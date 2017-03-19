@@ -393,13 +393,13 @@
         <div role="tabpanel" class="tab-pane" id="remove">
             <h3>Ta bort tidrapport</h3>
             ${infoMsgRemove}
-            <form class="form" name="input" method="POST" action="${pageContext.request.contextPath}/report">
-                <input type="hidden" name="type" value="remove">
-                <label for="inputWeeks2">Vecka</label>
-                <select name="week" type="text" class="form-control" id="inputWeeks2">
-                        ${select_weeks}
-                </select>
-                <input type="submit" value="Ta bort" class="btn btn center-block">
+            <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/report">
+                    <input type="hidden" name="type" value="remove">
+                    <label for="inputWeeks2">Vecka</label>
+                    <select name="week" type="text" class="form-control" id="inputWeeks2">
+                            ${select_weeks}
+                    </select>
+                    <input type="submit" value="Ta bort" class="btn btn-alert">
             </form>
         </div>
 
