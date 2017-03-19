@@ -55,6 +55,7 @@ function checkValidTimeInput(ref) {
 }
 
 
+
 /**
  * Parses a "cell element", of type <input> in the timereport.jsp form, with callback function ifGetElem
  * and returns the value contained, if element exists. Returns 0 if parsing fails, or if the DOM element can not
