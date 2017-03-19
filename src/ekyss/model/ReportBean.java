@@ -1,29 +1,50 @@
 package ekyss.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ReportBean implements Serializable {
     private String user;
     private String group;
-    private int week;
-    private String type = null;
+    private int week = 0;
+    private String type = "";
     private Map<String, Integer> reportValues = new HashMap<String, Integer>();
+    private List<String> allWeeks = new ArrayList<String>();
+    private int err_code = 0;
+    private String tab = null;
 
-    private int d_11, i_11, f_11, r_11;
-    private int d_12, i_12, f_12, r_12;
-    private int d_13, i_13, f_13, r_13;
-    private int d_14, i_14, f_14, r_14;
-    private int d_15, i_15, f_15, r_15;
-    private int d_16, i_16, f_16, r_16;
-    private int d_17, i_17, f_17, r_17;
-    private int d_18, i_18, f_18, r_18;
-    private int d_19, i_19, f_19, r_19;
-    private int t_21, t_22, t_23;
-    private int t_30;
-    private int t_41, t_42, t_43, t_44;
-    private int t_100;
+    private int d_11 = 0, i_11 = 0, f_11 = 0, r_11 = 0;
+    private int d_12 = 0, i_12 = 0, f_12 = 0, r_12 = 0;
+    private int d_13 = 0, i_13 = 0, f_13 = 0, r_13 = 0;
+    private int d_14 = 0, i_14 = 0, f_14 = 0, r_14 = 0;
+    private int d_15 = 0, i_15 = 0, f_15 = 0, r_15 = 0;
+    private int d_16 = 0, i_16 = 0, f_16 = 0, r_16 = 0;
+    private int d_17 = 0, i_17 = 0, f_17 = 0, r_17 = 0;
+    private int d_18 = 0, i_18 = 0, f_18 = 0, r_18 = 0;
+    private int d_19 = 0, i_19 = 0, f_19 = 0, r_19 = 0;
+    private int t_21 = 0, t_22 = 0, t_23 = 0;
+    private int t_30 = 0;
+    private int t_41 = 0, t_42 = 0, t_43 = 0, t_44 = 0;
+    private int t_100 = 0;
+
+    public void setErr_code(int err_code){
+        this.err_code=err_code;
+    }
+
+    public int getErr_code(){
+        return err_code;
+    }
+
+    public void setAllWeeks(List<String> allWeeks){
+        this.allWeeks = allWeeks;
+    }
+
+    public List<String> getAllWeeks(){
+        return allWeeks;
+    }
 
     public int getD_11() {
         return d_11;
@@ -472,5 +493,13 @@ public class ReportBean implements Serializable {
 
     public String getType(){
         return type;
+    }
+
+    public String getTab() {
+        return tab;
+    }
+
+    public void setTab(String tab) {
+        this.tab = tab;
     }
 }
