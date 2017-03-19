@@ -41,6 +41,13 @@
             Rapporten har skapats.
         </div>
     </c:if>
+    <c:if test="${bean.getErr_code() eq 4}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Du har redan rapporterat för den valda veckan. Om du vill ändra rapporten gå till "Ändra tidrapport"
+             eller kontakta projektledaren för annulering av signerad tidrapport.
+        </div>
+    </c:if>
 </c:set>
 <c:set var="infoMsgUpdate">
     <c:if test="${bean.getErr_code() eq 2}">

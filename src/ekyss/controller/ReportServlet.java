@@ -30,6 +30,7 @@ public class ReportServlet extends servletBase {
     private final int ERR_CREATED = 1;
     private final int ERR_UPDATED = 2;
     private final int ERR_REMOVED = 3;
+    private final int ERR_DUPLICATE = 4;
 
     private String tab = "create";
 
@@ -46,9 +47,12 @@ public class ReportServlet extends servletBase {
             rb.setUser(user);
             rb.setGroup(group);
             if (rb.getType().equals(TYPE_CREATE)) {
-                BeanTransaction.createTimeReport(rb);
+                if(BeanTransaction.createTimeReport(rb)){
+                    err_code = ERR_CREATED;
+                } else{
+                    err_code = ERR_DUPLICATE;
+                }
                 tab = "create";
-                err_code = ERR_CREATED;
             } else if (rb.getType().equals(TYPE_UPDATE)) {
                 BeanTransaction.updateTimeReport(rb);
                 tab = "update";
