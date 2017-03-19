@@ -140,7 +140,7 @@ public class BeanTransaction {
 	 * @return true if all the reports are signed, else false.
 	 */
 	public static boolean signReports(ReportManagementBean bean){
-		return new DatabaseHandler().signReports(bean.getGroup(), bean.getSignMap());
+		return new DatabaseHandler().signReports(bean.getGroup(), bean.getSignReport());
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class BeanTransaction {
 	 * @return true if all the reports are unsigned, else false.
 	 */
 	public static boolean unsignReport(ReportManagementBean bean){
-		return new DatabaseHandler().unsignReports(bean.getGroup(), bean.getSignMap());
+		return new DatabaseHandler().unsignReports(bean.getGroup(), bean.getUnsignReport());
 	}
 	
 	

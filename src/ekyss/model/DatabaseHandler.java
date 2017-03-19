@@ -400,28 +400,26 @@ public class DatabaseHandler {
      * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
      * @return true if all the reports are signed, else false.
      */
-    public boolean signReports(String group, Map<String, List<Integer>> signMap){
+    public boolean signReports(String group, String[] sign){
         PreparedStatement ps = null;
         String where = " WHERE";
-        for(String s:signMap.keySet()){
-            for(int i:signMap.get(s)){
+        for(String s:sign){
                 where += " groupName = ? AND user = ? AND Week = ? OR";
-            }
         }
+
         if(where.endsWith("OR"))
             where = where.substring(0, where.length()-2);
-        try{
+        try {
             ps = conn.prepareStatement("UPDATE TimeReports SET Signed = TRUE" + where);
             int c = 1;
-            for(String s:signMap.keySet()){
-                for(int i:signMap.get(s)){
-                    ps.setString(c++, group);
-                    ps.setString(c++, s);
-                    ps.setInt(c++, i);
-                }
+            for (String s : sign) {
+                String[] s1 = s.split("\\s");
+                ps.setString(c++, group);
+                ps.setString(c++, s1[1]);
+                ps.setInt(c++, Integer.parseInt(s1[0]));
             }
             print(ps);
-            if(ps.executeUpdate() > 0){
+            if (ps.executeUpdate() > 0) {
                 return true;
             }
         } catch (SQLException e){
@@ -438,25 +436,22 @@ public class DatabaseHandler {
      * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
      * @return true if all the reports are unsigned, else false.
      */
-    public boolean unsignReports(String group, Map<String, List<Integer>> signMap){
+    public boolean unsignReports(String group, String[] unsign){
         PreparedStatement ps = null;
         String where = " WHERE";
-        for(String s:signMap.keySet()){
-            for(int i:signMap.get(s)){
-                where += " groupName = ? AND user = ? AND Week = ? OR";
-            }
+        for(String s : unsign){
+            where += " groupName = ? AND user = ? AND Week = ? OR";
         }
         if(where.endsWith("OR"))
             where = where.substring(0, where.length()-2);
         try{
             ps = conn.prepareStatement("UPDATE TimeReports SET Signed = FALSE" + where);
             int c = 1;
-            for(String s:signMap.keySet()){
-                for(int i:signMap.get(s)){
-                    ps.setString(c++, group);
-                    ps.setString(c++, s);
-                    ps.setInt(c++, i);
-                }
+            for(String s:unsign){
+                String s1[] = s.split("\\s");
+                ps.setString(c++, group);
+                ps.setString(c++, s1[1]);
+                ps.setInt(c++, Integer.parseInt(s1[0]));
             }
             print(ps);
             if(ps.executeUpdate() > 0){
@@ -765,6 +760,66 @@ public class DatabaseHandler {
             printError(e);
         }
         return sum;
+    }
+
+    public List<String[]> getSignedReports(String group){
+        PreparedStatement ps = null;
+        List<String[]> reports = new ArrayList<String[]>();
+        try{
+            ps = conn.prepareStatement("SELECT week, user, t_d, t_i, t_f, t_r, total FROM TimeReports WHERE groupName = ? AND signed = TRUE");
+            ps.setString(1, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String[] s = new String[8];
+                int t_d = rs.getInt("t_d");
+                int t_i = rs.getInt("t_i");
+                int t_f = rs.getInt("t_f");
+                int t_r = rs.getInt("t_r");
+                int total = rs.getInt("total");
+                s[0] = rs.getString("week");
+                s[1] = rs.getString("user");
+                s[2] = String.valueOf(t_d);
+                s[3] = String.valueOf(t_i);
+                s[4] = String.valueOf(t_f);
+                s[5] = String.valueOf(t_r);
+                s[6] = String.valueOf(total-t_d-t_i-t_f-t_r);
+                s[7] = String.valueOf(total);
+                reports.add(s);
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return reports;
+    }
+
+    public List<String[]> getUnsignedReports(String group){
+        PreparedStatement ps = null;
+        List<String[]> reports = new ArrayList<String[]>();
+        try{
+            ps = conn.prepareStatement("SELECT week, user, t_d, t_i, t_f, t_r, total FROM TimeReports WHERE groupName = ? AND signed = FALSE");
+            ps.setString(1, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String[] s = new String[8];
+                int t_d = rs.getInt("t_d");
+                int t_i = rs.getInt("t_i");
+                int t_f = rs.getInt("t_f");
+                int t_r = rs.getInt("t_r");
+                int total = rs.getInt("total");
+                s[0] = rs.getString("week");
+                s[1] = rs.getString("user");
+                s[2] = String.valueOf(t_d);
+                s[3] = String.valueOf(t_i);
+                s[4] = String.valueOf(t_f);
+                s[5] = String.valueOf(t_r);
+                s[6] = String.valueOf(total-t_d-t_i-t_f-t_r);
+                s[7] = String.valueOf(total);
+                reports.add(s);
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return reports;
     }
 
 
