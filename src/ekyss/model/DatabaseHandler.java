@@ -509,6 +509,24 @@ public class DatabaseHandler {
         return false;
     }
 
+
+    public List<String> getAllReportWeeks(String user, String group){
+        List<String> allWeeks = new ArrayList<String>();
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement("SELECT week FROM TimeReports WHERE user = ? AND groupName = ?");
+            ps.setString(1, user);
+            ps.setString(2, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                allWeeks.add(rs.getString("week"));
+            }
+        } catch (SQLException e){
+            printError(e);
+        }
+        return allWeeks;
+    }
+
     /**
      * Updates a time report in the database with new values.
      * @param group A ReportBean containing username, group, week and all the columns that
@@ -532,6 +550,7 @@ public class DatabaseHandler {
             ps.setString(1, group);
             ps.setString(2, user);
             ps.setInt(3, week);
+            print(ps);
             if(ps.executeUpdate() > 0){
                 return true;
             }
