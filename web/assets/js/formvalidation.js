@@ -14,7 +14,6 @@ function validateRow(act_code) {
     document.getElementsByName(total + act_code)[0].value = res;
 }
 
-
 /**
  * Target column to sum. if target column is "sum" (i.e. total sum), sum the sum columns
  * and save in DOM element with name=sum. Important to note; the DOM element name sum must be unique
@@ -50,7 +49,7 @@ function checkValidTI(ref) {
         validateRow(code); // validate && calculate row
         validateCol(tag);   // validate && calculate col
     }
-    calculateSum('t_') // sum all fields with name beginning  with t_
+    calculateSum('t_'); // sum all fields with name beginning  with t_
 }
 
 

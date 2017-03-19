@@ -478,30 +478,53 @@ public class DatabaseHandler {
      * @return true if the time report is added, else false.
      */
     public boolean createTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
-        String columns = "(user, groupname, week,";
-        String values = "VALUES(?, ?, ?,";
-        for(String s:reportValues.keySet()){
-            columns += s + ", ";
-            values += "?,";
-        }
+       boolean pl = false;
 
-        values = values.substring(0, values.lastIndexOf("?")+1);
-        columns = columns.substring(0, columns.lastIndexOf(","));
-        columns += ")";
-        values += ")";
         PreparedStatement ps = null;
         try{
+            // Kolla om användaren är Projektledare.
+            ps = conn.prepareStatement("SELECT role FROM MemberOf WHERE member = ? AND groupName = ?");
+            ps.setString(1, user);
+            ps.setString(2, group);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                pl = "pl".equals(rs.getString("role").toLowerCase());
+            }
+
+            String columns = "(user, groupname, week,";
+            String values = "VALUES(?, ?, ?,";
+            // Om användaren är projektledare, lägg till signed i columns och ett ? i values.
+            if(pl){
+                columns += " signed,";
+                values += " ?,";
+            }
+            for(String s:reportValues.keySet()){
+                columns += s + ", ";
+                values += "?,";
+            }
+            values = values.substring(0, values.lastIndexOf("?")+1);
+            columns = columns.substring(0, columns.lastIndexOf(","));
+            columns += ")";
+            values += ")";
+
+
             ps = conn.prepareStatement("INSERT INTO TimeReports" + columns + " " + values);
             int i = 1;
             ps.setString(i++, user);
             ps.setString(i++, group);
             ps.setInt(i++, week);
+            // Om användaren är pl måste det extra ? sättas (till true)
+            if(pl){
+                ps.setBoolean(i++, true);
+            }
             for(String s : reportValues.keySet()){
                 ps.setInt(i++, reportValues.get(s));
             }
             print(ps);
-            if(ps.executeUpdate()>0)
+            if(ps.executeUpdate()>0){
                 return true;
+            }
+
 
         } catch (SQLException e){
             printError(e);
@@ -509,12 +532,40 @@ public class DatabaseHandler {
         return false;
     }
 
-
-    public List<String> getAllReportWeeks(String user, String group){
+    /**
+     * Returnerar en lista med alla veckor en användare har rapporterat för som inte är signerade än.
+     * @param user Användaren det gäller.
+     * @param group Gruppen det gäller.
+     * @return En lista med alla veckor som inte är signerade.
+     */
+    public List<String> getUnsignedReportWeeks(String user, String group){
         List<String> allWeeks = new ArrayList<String>();
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("SELECT week FROM TimeReports WHERE user = ? AND groupName = ?");
+            ps = conn.prepareStatement("SELECT week FROM TimeReports WHERE user = ? AND groupName = ? AND signed = FALSE");
+            ps.setString(1, user);
+            ps.setString(2, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                allWeeks.add(rs.getString("week"));
+            }
+        } catch (SQLException e){
+            printError(e);
+        }
+        return allWeeks;
+    }
+
+    /**
+     * Returnerar en lista med alla veckor en användare har rapporterat för som är signerade.
+     * @param user Användaren det gäller.
+     * @param group Gruppen det gäller.
+     * @return En lista med alla veckor som är signerade.
+     */
+    public List<String> getSignedReportWeeks(String user, String group){
+        List<String> allWeeks = new ArrayList<String>();
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement("SELECT week FROM TimeReports WHERE user = ? AND groupName = ? AND signed = TRUE");
             ps.setString(1, user);
             ps.setString(2, group);
             ResultSet rs = ps.executeQuery();
