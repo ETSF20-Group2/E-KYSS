@@ -1,7 +1,34 @@
 package ekyss.model;
 
+import java.util.Comparator;
+
 public class BeanFactory {
 	DatabaseHandler db = new DatabaseHandler();
+
+	/**
+	 * Skapar en ReportManagementBean som är fylld med en sorterad lista av alla användares rapporter (förenklat)
+	 *
+	 */
+	public static ReportManagementBean getReportManagementBean(String group){
+		Comparator<String[]> reportComparator = new Comparator<String[]>() {
+				@Override
+				public int compare(String[] o1, String[] o2) {
+					Integer f = Integer.parseInt(o1[0]);
+					Integer s = Integer.parseInt(o2[0]);
+					return f.compareTo(s);
+				}
+			};
+
+		ReportManagementBean bean = new ReportManagementBean();
+		bean.setAllSignedReports(new DatabaseHandler().getSignedReports(group));
+		bean.setAllUnsignedReports(new DatabaseHandler().getUnsignedReports(group));
+		bean.getAllSignedReports().sort(reportComparator);
+		bean.getAllUnsignedReports().sort(reportComparator);
+		return bean;
+	}
+
+
+
 
 	/**
 	 * Returnerar en ReportBean där allWeeks är fylld med veckorna en användare har raporterar till en projekgrupp
@@ -77,8 +104,9 @@ public class BeanFactory {
 		return new DatabaseHandler().isProjectLeader(bean.getUsername(),bean.getSelectedGroup());
 	}
 
-
-
+	public static DashboardBean getDashboardBean() {
+		return new DashboardBean();
+	}
 
 
 
