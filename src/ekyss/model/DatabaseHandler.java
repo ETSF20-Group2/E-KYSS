@@ -34,7 +34,12 @@ public class DatabaseHandler {
 	/*------  LoginServlet ----------------*/
 		/* BeanTransaction */
 
-
+    /**
+     * Visar om en viss användare är projektledare för en viss grupp.
+     * @param userName användaren
+     * @param group gruppen
+     * @return true om användaren är projektledare, annars false.
+     */
     public boolean isProjectLeader(String userName, String group){
         PreparedStatement ps = null;
         try{
@@ -54,12 +59,11 @@ public class DatabaseHandler {
         return false;
     }
     /**
-     * Function that checks if the user is able to log in (If username is in database and matches
-     * with the entered password and the selected group).
-     * @param username The username
-     * @param password The password
-     * @param group The selected group (if the user is not admin)
-     * @return True if the user is able to log in, else false.
+     * Kollar om användaren får logga in (rätt användarnamn, lösenord och grupp)
+     * @param username Användarnamnet
+     * @param password Lösenordet
+     * @param group Den valda gruppen (om username != admin)
+     * @return true om användaren får logga in, annars false.
      */
     public boolean loginUser(String username, String password, String group){
         PreparedStatement ps = null;
@@ -88,9 +92,7 @@ public class DatabaseHandler {
                 }
                 return false;
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                System.out.println(e.getSQLState());
-                System.out.println(e.getErrorCode());
+                printError(e);
                 return false;
             }
         }
@@ -100,10 +102,9 @@ public class DatabaseHandler {
 		/* BeanTransaction */
 
     /**
-     * Function that adds a group to the database. Group name must be unique.
-     * @param group A GroupManagementBean that contains the groupName (group attribute in bean).
-     * @return true if the group is added, else false (most likely because the group name already
-     * exists).
+     * Lägger till en projektgrupp i databasen. Gruppnamnet måste vara unikt.
+     * @param group Namnet på gruppen som ska skapas.
+     * @return true om gruppen kan skapas, annars false (gruppnamn är inte unikt).
      */
     public boolean addGroup(String group){
         try{
@@ -120,10 +121,9 @@ public class DatabaseHandler {
     }
 
     /**
-     * Deletes one or many groups from the database.
-     * @param groups A GroupManagementBean that contains a list of groups (groups attribute in the bean)
-     * @return true if the group(s) is deleted, else false (most likely because some of the groups doesn't
-     * exist in the database.
+     * Tar bort en eller flera grupper från databasen.
+     * @param groups En vektor med namnen på grupperna som ska raderas.
+     * @return true om grupperna raderats, annars false.
      */
     public boolean deleteGroups(String[] groups){
         String sql = "WHERE ";
@@ -151,11 +151,10 @@ public class DatabaseHandler {
     }
 
     /**
-     * Assigns a leader to a group. The user must be a member of the group.
-     * @param group The Leader attributes.
-     * @param leader The Leader attributes.
-     * @return true if the user is assigned leader, else false (most likely because
-     * the user is not in the group).
+     * Utser rollen PL (Projektledare) till en användare. Användaren blir då projektledare för en specifik grupp.
+     * @param group Namnet på gruppen användaren ska vara ledare för.
+     * @param leader Användarnamnet för ledaren.
+     * @return true om användaren blev tilldelad rollen PL, annars false.
      */
     public boolean assignLeader(String group, String leader){
         PreparedStatement ps = null;
@@ -174,17 +173,15 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException e){
-            System.out.println(e.getMessage());
-            System.out.println(e.getSQLState());
-            System.out.println(e.getErrorCode());
+            printError(e);
         }
         return false;
     }
 
 	/* BeanFactory */
     /**
-     * Function that is used to fetch a list of all the groups in the database.
-     * @return A List<String> of all the groups.
+     * Hämtar en lista med alla gruppnamn som finns i databasen
+     * @return En lista som innehåller namn på alla grupper.
      */
     public List<String> getAllGroupsList(){
         PreparedStatement ps = null;
@@ -201,6 +198,11 @@ public class DatabaseHandler {
         return list;
     }
 
+    /**
+     * Hämtar en lista med all info om alla användare. Varje list-item är en vektor där [] är användarnamn,
+     * [1] är lösenord och [2] är email.
+     * @return En lista som innehåller all info om användarna.
+     */
     public List<String[]> getUserTable() {
         List<String[]> list = new ArrayList<>();
         PreparedStatement ps = null;
@@ -221,7 +223,7 @@ public class DatabaseHandler {
     }
 
     /**
-     * Function that is used to fetch a list of all the users in the database.
+     * Hämtar en
      * @return A GroupManagementBean that contains a List<String> of all the users (as the users
      * attribute in bean).
      */
@@ -244,11 +246,11 @@ public class DatabaseHandler {
 		/* BeanTransaction */
 
     /**
-     * A function that adds a user to the database. Username must be unique.
-     * @param userName
-     * @param email
-     * @param password
-     * @return true if the user is added, else false.
+     * Lägger till en användare i databasen. Användarnamnet måste vara unikt.
+     * @param userName Användarnamn
+     * @param email E-post
+     * @param password Lösenord
+     * @return true om användaren har lagts till, annars false (användarnamet fanns redan i databasen).
      */
     public boolean addUser(String userName, String email, String password){
         PreparedStatement ps = null;
@@ -261,17 +263,15 @@ public class DatabaseHandler {
             if(ps.executeUpdate() > 0)
                 return true;
         } catch(SQLException e){
-            System.out.println(e.getMessage());
-            System.out.println(e.getSQLState());
-            System.out.println(e.getErrorCode());
+            printError(e);
         }
         return false;
     }
 
     /**
-     * Deletes one or many users from the database.
-     * @param users A list of the users to be deleted.
-     * @return true if all the users are deleted, else false.
+     * Tar bort en eller flera användare från databasen
+     * @param users En vektor som innehåller namnet på användarna som ska tas bort.
+     * @return true om alla användare har raderats, annars false.
      */
     public boolean deleteUsers(String[] users){
         String where = " WHERE";
@@ -299,11 +299,11 @@ public class DatabaseHandler {
     }
 
     /**
-     * Assigns an user to a group. A user can be a member of many groups, but only one time
-     * to the same group.
-     * @param userName an username
-     * @param group the group the user should be assigned to.
-     * @return true if the user is assigned to the group, else false.
+     * Tilldelar en grupp till en användare. En användare kan vara medlem i flera grupper, men
+     * bara en gång per grupp.
+     * @param userName användarnamn på den som ska bli tilldelad.
+     * @param group namn på gruppen som användaren ska tilldelas.
+     * @return true om användaren tilldelades gruppen, annars false.
      */
     public boolean assignGroup(String userName, String group){
         PreparedStatement ps = null;
@@ -321,10 +321,11 @@ public class DatabaseHandler {
     }
 
     /**
-     * Assigns a role to a user in a group.
-     * @param group A UserManagementBean that contains the role, username and group for which the role
-     * should be assigned (role, group and userName attributes in the bean).
-     * @return true if the role is assigned, else false.
+     * Tilldelar en roll till en användare i en grupp.
+     * @param group Den aktuella gruppen.
+     * @param userName Den aktuella användaren.
+     * @param role Rollen som ska tilldelas.
+     * @return true om tilldelningen lyckades, annars false.
      */
     public boolean assignRole(String group, String userName, String role){
         PreparedStatement ps = null;
@@ -343,10 +344,10 @@ public class DatabaseHandler {
     }
 
     /**
-     * Deletes a user from a group.
-     * @param group A UserManagementBean that contains the username and the group from which the
-     * user should be deleted (userName and group attributes in the bean).
-     * @return true if the user is deleted from the group, else false.
+     * Tar bort en användare från en grupp.
+     * @param userName Användaren som ska tas bort.
+     * @param group Gruppen användaren ska tas bort ifrån
+     * @return true om användaren är borttagen, annars false.
      */
     public boolean deleteFromGroup(String userName, String group){
         PreparedStatement ps = null;
@@ -367,9 +368,8 @@ public class DatabaseHandler {
 		/* BeanFactory */
 
     /**
-     * Gets a list of all the users in the database.
-     * @return A UserManagementBean containing a list of all the users (userList attribute in
-     * the bean).
+     * Hämtar en lista med alla användarnamn som finns i databasen.
+     * @return En lista som innehåller alla användarnamn.
      */
     public List<String> getUserList(){
         List<String> users = new ArrayList<String>();
@@ -393,35 +393,33 @@ public class DatabaseHandler {
 			/* BeanTransaction */
 
     /**
-     * Signs one or many time reports. Only the project leader should be able to use this.
-     * @param group A ReportManagementBean that contains the group name and a map for which weeks
-     * to sign for each user (group and signMap attributes in the bean).
-     * <br><br>
-     * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
-     * @return true if all the reports are signed, else false.
+     * Signerar en eller flera tidrapporter. Bara projektledaren kan göra detta.
+     * @param group gruppen det gäller.
+     * @param sign En vektor som innehåller strängar i formatet "<b><u>vecka</u></b> <b><u>användarnamn</u></b>"
+     *             (t.ex. "<b><u>11</u></b> <b><u>Kalle</u></b>").
+     *             <br> Beskriver vilka rapporter som ska signeras.
+     * @return true om alla rapporter signerats, annars false.
      */
-    public boolean signReports(String group, Map<String, List<Integer>> signMap){
+    public boolean signReports(String group, String[] sign){
         PreparedStatement ps = null;
         String where = " WHERE";
-        for(String s:signMap.keySet()){
-            for(int i:signMap.get(s)){
+        for(String s:sign){
                 where += " groupName = ? AND user = ? AND Week = ? OR";
-            }
         }
+
         if(where.endsWith("OR"))
             where = where.substring(0, where.length()-2);
-        try{
+        try {
             ps = conn.prepareStatement("UPDATE TimeReports SET Signed = TRUE" + where);
             int c = 1;
-            for(String s:signMap.keySet()){
-                for(int i:signMap.get(s)){
-                    ps.setString(c++, group);
-                    ps.setString(c++, s);
-                    ps.setInt(c++, i);
-                }
+            for (String s : sign) {
+                String[] s1 = s.split("\\s");
+                ps.setString(c++, group);
+                ps.setString(c++, s1[1]);
+                ps.setInt(c++, Integer.parseInt(s1[0]));
             }
             print(ps);
-            if(ps.executeUpdate() > 0){
+            if (ps.executeUpdate() > 0) {
                 return true;
             }
         } catch (SQLException e){
@@ -431,32 +429,29 @@ public class DatabaseHandler {
     }
 
     /**
-     * Unsigns one or many reports. Only the project leader should be able to do this.
-     * @param group A ReportManagementBean that contains the group name and a map for which weeks
-     * to unsign for each user (group and signMap attributes in the bean).
-     * <br><br>
-     * << NOTE >> In the map, the key is a username and the value is a List< Integer> containing all weeks.
-     * @return true if all the reports are unsigned, else false.
+     * Annullerar en eller flera tidrapporter. Bara projektledaren kan göra detta.
+     * @param group gruppen det gäller.
+     * @param unsign En vektor som innehåller strängar i formatet "<b><u>vecka</u></b> <b><u>användarnamn</u></b>"
+     *             (t.ex. "<b><u>11</u></b> <b><u>Kalle</u></b>").
+     *             <br> Beskriver vilka rapporter som ska annulleras.
+     * @return true om alla rapporter annullerats, annars false.
      */
-    public boolean unsignReports(String group, Map<String, List<Integer>> signMap){
+    public boolean unsignReports(String group, String[] unsign){
         PreparedStatement ps = null;
         String where = " WHERE";
-        for(String s:signMap.keySet()){
-            for(int i:signMap.get(s)){
-                where += " groupName = ? AND user = ? AND Week = ? OR";
-            }
+        for(String s : unsign){
+            where += " groupName = ? AND user = ? AND Week = ? OR";
         }
         if(where.endsWith("OR"))
             where = where.substring(0, where.length()-2);
         try{
             ps = conn.prepareStatement("UPDATE TimeReports SET Signed = FALSE" + where);
             int c = 1;
-            for(String s:signMap.keySet()){
-                for(int i:signMap.get(s)){
-                    ps.setString(c++, group);
-                    ps.setString(c++, s);
-                    ps.setInt(c++, i);
-                }
+            for(String s:unsign){
+                String s1[] = s.split("\\s");
+                ps.setString(c++, group);
+                ps.setString(c++, s1[1]);
+                ps.setInt(c++, Integer.parseInt(s1[0]));
             }
             print(ps);
             if(ps.executeUpdate() > 0){
@@ -471,37 +466,64 @@ public class DatabaseHandler {
 	/*------ ReportServlet ----------------*/
 			/* BeanTransaction */
 
+
     /**
-     * Adds a time report to the database. Only adds the values that is in the report Map
-     * @param group A ReportBean containing username, group, week, and all the columns that
-     * should be added to the database (user, group, week and reportValues in the bean).
-     * @return true if the time report is added, else false.
+     * Lägger till en tidrapport i databasen. Om det är projektledarens rapport så signeras den automatiskt.
+     * @param user Användaren som rapporten gäller för.
+     * @param group Gruppen som rapporten gäller för.
+     * @param week Veckan som rapporten gäller för.
+     * @param reportValues En Map som beskriver vilka kolumner(aktiviteter) som ska rapporteras.
+     *                     <br> Nyckeln är kolumnnamnet och värdet är antalet minuter.
+     * @return true om tidrapporten skapats, annars false (fanns redan användare-vecka-grupp par i databasen).
      */
     public boolean createTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
-        String columns = "(user, groupname, week,";
-        String values = "VALUES(?, ?, ?,";
-        for(String s:reportValues.keySet()){
-            columns += s + ", ";
-            values += "?,";
-        }
+       boolean pl = false;
 
-        values = values.substring(0, values.lastIndexOf("?")+1);
-        columns = columns.substring(0, columns.lastIndexOf(","));
-        columns += ")";
-        values += ")";
         PreparedStatement ps = null;
         try{
+            // Kolla om användaren är Projektledare.
+            ps = conn.prepareStatement("SELECT role FROM MemberOf WHERE member = ? AND groupName = ?");
+            ps.setString(1, user);
+            ps.setString(2, group);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                pl = "pl".equals(rs.getString("role").toLowerCase());
+            }
+
+            String columns = "(user, groupname, week,";
+            String values = "VALUES(?, ?, ?,";
+            // Om användaren är projektledare, lägg till signed i columns och ett ? i values.
+            if(pl){
+                columns += " signed,";
+                values += " ?,";
+            }
+            for(String s:reportValues.keySet()){
+                columns += s + ", ";
+                values += "?,";
+            }
+            values = values.substring(0, values.lastIndexOf("?")+1);
+            columns = columns.substring(0, columns.lastIndexOf(","));
+            columns += ")";
+            values += ")";
+
+
             ps = conn.prepareStatement("INSERT INTO TimeReports" + columns + " " + values);
             int i = 1;
             ps.setString(i++, user);
             ps.setString(i++, group);
             ps.setInt(i++, week);
+            // Om användaren är pl måste det extra ? sättas (till true)
+            if(pl){
+                ps.setBoolean(i++, true);
+            }
             for(String s : reportValues.keySet()){
                 ps.setInt(i++, reportValues.get(s));
             }
             print(ps);
-            if(ps.executeUpdate()>0)
+            if(ps.executeUpdate()>0){
                 return true;
+            }
+
 
         } catch (SQLException e){
             printError(e);
@@ -509,12 +531,17 @@ public class DatabaseHandler {
         return false;
     }
 
-
-    public List<String> getAllReportWeeks(String user, String group){
+    /**
+     * Returnerar en lista med alla veckor en användare har rapporterat för som inte är signerade än.
+     * @param user Användaren det gäller.
+     * @param group Gruppen det gäller.
+     * @return En lista med alla veckor som inte är signerade.
+     */
+    public List<String> getUnsignedReportWeeks(String user, String group){
         List<String> allWeeks = new ArrayList<String>();
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("SELECT week FROM TimeReports WHERE user = ? AND groupName = ?");
+            ps = conn.prepareStatement("SELECT week FROM TimeReports WHERE user = ? AND groupName = ? AND signed = FALSE");
             ps.setString(1, user);
             ps.setString(2, group);
             ResultSet rs = ps.executeQuery();
@@ -528,20 +555,49 @@ public class DatabaseHandler {
     }
 
     /**
-     * Updates a time report in the database with new values.
-     * @param group A ReportBean containing username, group, week and all the columns that
-     * should be updated in the database (user, group, week and reportValues in the bean).
-     * @return true if the time report is updated, else false.
+     * Returnerar en lista med alla veckor en användare har rapporterat för som är signerade.
+     * @param user Användaren det gäller.
+     * @param group Gruppen det gäller.
+     * @return En lista med alla veckor som är signerade.
+     */
+    public List<String> getSignedReportWeeks(String user, String group){
+        List<String> allWeeks = new ArrayList<String>();
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement("SELECT week FROM TimeReports WHERE user = ? AND groupName = ? AND signed = TRUE");
+            ps.setString(1, user);
+            ps.setString(2, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                allWeeks.add(rs.getString("week"));
+            }
+        } catch (SQLException e){
+            printError(e);
+        }
+        return allWeeks;
+    }
+
+
+    /**
+     * Uppdaterar en tidrapport i databasen med nya värden.
+     * @param user Användaren som rapporten gäller för.
+     * @param group Gruppen som rapporten gäller för.
+     * @param week Veckan som rapporten gäller för.
+     * @param reportValues En Map som beskriver vilka kolumner(aktiviteter) som ska ändras (även värden som inte ska
+     *                     ändras finns med här).
+     *                     <br> Nyckeln är kolumnnamnet och värdet är antalet minuter.
+     * @return true om rapporten uppdateras, annars false.
      */
     public boolean updateTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
         return removeTimeReport(user, group, week) && createTimeReport(user, group, week, reportValues);
     }
 
     /**
-     * Removes a time report from the database.
-     * @param group A ReportBean that contains group, username and week for which the time report
-     * should be deleted (group, user and week in the bean).
-     * @return true if the time report is deleted, else false.
+     * Tar bort en tidrapport från databasen.
+     * @param user Användaren som rapporten gäller för.
+     * @param group Gruppen som rapporten gäller för.
+     * @param week Veckan som rapporten gäller för.
+     * @return true om rapporten tagits bort, annars false.
      */
     public boolean removeTimeReport(String user, String group, int week){
         PreparedStatement ps = null;
@@ -564,10 +620,11 @@ public class DatabaseHandler {
 		/* BeanTransaction */
 
     /**
-     * Changes the password for a user.
-     * @param userName A UserBean that contains username and the new password to use (userName and
-     * password attributes in the bean).
-     * @return true if the password is changed, else false.
+     * Byter lösenord för en användare.
+     * @param userName Användaren det gäller.
+     * @param oldPassword Det gamla lösenordet.
+     * @param newPassword Det nya lösenordet.
+     * @return true om lösenordet har ändrats, annars false (gamla lösenordet var inte rätt).
      */
     public boolean changePassword(String userName, String oldPassword, String newPassword){
         PreparedStatement ps = null;
@@ -595,10 +652,9 @@ public class DatabaseHandler {
 		/* BeanFactory */
 
     /**
-     * Returns a list containing all groups a user is a member of.
-     * @param user the user for which to give the list.
-     * @return A UserBean that contains a list of all groups the user is member of (groupList attribute
-     * in the bean).
+     * Hämtar en lista med alla grupper en användare är medlem i och användarens roll i gruppen.
+     * @param user Användaren som man vill veta grupperna och rollerna för.
+     * @return En lista av vektorer där [0] är gruppnamnet och [1] är användarens roll i den gruppen.
      */
     public List<String[]> getMemberOf(String user){
     	List<String[]> groups = new ArrayList<String[]>();
@@ -625,16 +681,13 @@ public class DatabaseHandler {
 	/*------ DashboardServlet -------------*/
 		/* BeanFactory */
     /**
-     * Gets a time report or a time report summary. This method can be called in
-     * a number of different ways and give different results. This depends on which
-     * parameters are filled.
-     * @param group The group for which the summary is to. <b><i><u>(This parameter should always be filled)</u></i></b>.
-     * @param user The user for which the summary are formed after. <i>(This parameter can be marked as unfilled with <u>""</u>)</i>
-     * @param role The role for which the summary are formed after. <i>(This parameter can be marked as unfilled with <u>""</u>)</i>
-     * @param week The week for which the summary are formed after. <i>(This parameter can be marked as unfilled with <u>0</u>)</i>
-     * @return A DashboardBean containing all columns that are present in a time report (even those with values 0).
-     * The columns are placed in a Map with the column as the key and the amount of time as the value (reportValues attribute
-     * in the bean).
+     * Hämtar en tidrapport (eller sammanställning) från databasen. Kan hämta på flera olika sätt beroende på vilka parametrar som är ifyllda.
+     * @param group Gruppen som rapporten är för. <b><i><u>(Denna parameter bör alltid vara ifylld)</u></i></b>.
+     * @param user Användaren som rapporten ska formas efter. <i>(Denna parameter kan markeras som oifylld med <u>""</u>)</i>
+     * @param role Rollen som rapporten ska formas efter. <i>(Denna parameter kan markeras som oifylld med <u>""</u>)</i>
+     * @param week Veckan som rapporten ska formas efter. <i>(Denna parameter kan markeras som oifylld med <u>0</u>)</i>
+     * @return En Map som innehåller alla kolumner som finns i en tidrapport (även de med value 0).
+     * Key i Map är namnet på kolumnen och value är antalet minuter.
      */
     public Map<String, Integer> getTimeReport(String group, String user, String role, int week){
         Map<String, Integer> reportValues = new HashMap<String, Integer>();
@@ -662,11 +715,10 @@ public class DatabaseHandler {
     }
 
     /**
-     * Gives all time reported to a specific document (e.g 11,12...)
-     * @param group the group for which to summarize the document.
-     * @param document the number for the document.
-     * @return A DashboardBean containing an integer describing the time reported to the document (
-     * documentSummary attribute in the bean).
+     * Ger all tid rapporterad för ett specifikt dokument (11,12,...) inom en viss grupp.
+     * @param group Gruppen det gäller.
+     * @param document Numret på dokumentet.
+     * @return Antalet minuter rapporterad för dokumentet.
      */
     public int getDocumentSummary(String group, int document){
         int docSummary = 0;
@@ -687,9 +739,9 @@ public class DatabaseHandler {
     }
 
     /**
-     * Gives all time reported to a specific activity (e.g d, i,....)
-     * @param group the group for which to summarize the document.
-     * @param activity the letter for the activity.
+     * Ger all tid rapporterad för ett specifikt dokument (d,i,f,r) inom en viss grupp.
+     * @param group Gruppen det gäller.
+     * @param activity Bokstaven för aktiviteten.
      * @return A DashboardBean containing an integer describing the time reported to the activity (
      * activitySummary attribute in the bean).
      */
@@ -699,7 +751,7 @@ public class DatabaseHandler {
         PreparedStatement ps = null;
         int sum = 0;
         try{
-            ps = conn.prepareStatement("SELECT SUM(?_" + activity + ") as sum FROM TimeReports WHERE groupName = ?");
+            ps = conn.prepareStatement("SELECT SUM(" + activity + "_?) as sum FROM TimeReports WHERE groupName = ?");
             ps.setString(2, group);
             ResultSet rs = null;
             for(int i = 11; i<20; i++){
@@ -717,6 +769,94 @@ public class DatabaseHandler {
     }
 
 
+    /**
+     * Returnerar alla signerade rapporter för en viss grupp.
+     * @param group Gruppen det gäller.
+     * @return En lista med Sträng-vektorer. I vektorn är:
+     * <b>[0]</b> = veckan<br>
+     * <b>[1]</b> = användaren<br>
+     * <b>[2]</b> = tid rapporterad för t_d<br>
+     * <b>[3]</b> = tid rapporterad för t_i<br>
+     * <b>[4]</b> = tid rapporterad för t_f<br>
+     * <b>[5]</b> = tid rapporterad för t_r<br>
+     * <b>[6]</b> = tid rapporterad för övrigt (21-100)<br>
+     * <b>[7]</b> = total tid rapporterad.
+     */
+    public List<String[]> getSignedReports(String group){
+        PreparedStatement ps = null;
+        List<String[]> reports = new ArrayList<String[]>();
+        try{
+            ps = conn.prepareStatement("SELECT week, user, t_d, t_i, t_f, t_r, total FROM TimeReports WHERE groupName = ? AND signed = TRUE");
+            ps.setString(1, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String[] s = new String[8];
+                int t_d = rs.getInt("t_d");
+                int t_i = rs.getInt("t_i");
+                int t_f = rs.getInt("t_f");
+                int t_r = rs.getInt("t_r");
+                int total = rs.getInt("total");
+                s[0] = rs.getString("week");
+                s[1] = rs.getString("user");
+                s[2] = String.valueOf(t_d);
+                s[3] = String.valueOf(t_i);
+                s[4] = String.valueOf(t_f);
+                s[5] = String.valueOf(t_r);
+                s[6] = String.valueOf(total-t_d-t_i-t_f-t_r);
+                s[7] = String.valueOf(total);
+                reports.add(s);
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return reports;
+    }
+    /**
+     * Returnerar alla signerade rapporter för en viss grupp.
+     * @param group Gruppen det gäller.
+     * @return En lista med Sträng-vektorer. I vektorn är:
+     * <b>[0]</b> = veckan<br>
+     * <b>[1]</b> = användaren<br>
+     * <b>[2]</b> = tid rapporterad för t_d<br>
+     * <b>[3]</b> = tid rapporterad för t_i<br>
+     * <b>[4]</b> = tid rapporterad för t_f<br>
+     * <b>[5]</b> = tid rapporterad för t_r<br>
+     * <b>[6]</b> = tid rapporterad för övrigt (21-100)<br>
+     * <b>[7]</b> = total tid rapporterad.
+     */
+    public List<String[]> getUnsignedReports(String group){
+        PreparedStatement ps = null;
+        List<String[]> reports = new ArrayList<String[]>();
+        try{
+            ps = conn.prepareStatement("SELECT week, user, t_d, t_i, t_f, t_r, total FROM TimeReports WHERE groupName = ? AND signed = FALSE");
+            ps.setString(1, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String[] s = new String[8];
+                int t_d = rs.getInt("t_d");
+                int t_i = rs.getInt("t_i");
+                int t_f = rs.getInt("t_f");
+                int t_r = rs.getInt("t_r");
+                int total = rs.getInt("total");
+                s[0] = rs.getString("week");
+                s[1] = rs.getString("user");
+                s[2] = String.valueOf(t_d);
+                s[3] = String.valueOf(t_i);
+                s[4] = String.valueOf(t_f);
+                s[5] = String.valueOf(t_r);
+                s[6] = String.valueOf(total-t_d-t_i-t_f-t_r);
+                s[7] = String.valueOf(total);
+                reports.add(s);
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return reports;
+    }
+
+    /**
+     * Stänger anslutningen till databasen.
+     */
     public void disconnect(){
         db.close();
     }
