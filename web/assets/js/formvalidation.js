@@ -1,4 +1,4 @@
-var LETTERS = ["d", "i", "f", "r"];
+var LETTERS = ["d_", "i_", "f_", "r_"];
 var CODES = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "23", "30",
     "41", "42", "43", "44", "100"];
 
@@ -7,13 +7,13 @@ var CODES = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "
  * @param act_code
  */
 function validateRow(act_code) {
-    var target = 's';
-    var TextFieldArray = Array.from(LETTERS, (l) => act_code+l); // construct tag-id ‘11d’ t.ex.
+    var total = 't_';
+    var TextFieldArray = Array.from(LETTERS, (l) => l+act_code); // construct tag-id ‘11d’ t.ex.
     var res = TextFieldArray.reduce(((acc, cur) => acc + parseCell(cur, function(name) {
             return document.getElementsByName(name)[0];
         })), 0);
     console.log(res);
-    document.getElementsByName(act_code+target)[0].value = res;
+    document.getElementsByName(total + act_code)[0].value = res;
 }
 
 /**
@@ -22,34 +22,43 @@ function validateRow(act_code) {
  * or lest we enter inside the dark, scary terrain of the monsters we call undefined.
  * @param col
  */
-function validateCol(col) {
-    var TextFieldArray = Array.from(CODES, (l) => l+col);
+function calculateSum(col) {
+    var TextFieldArray = Array.from(CODES, (l) => col+l);
     var res = TextFieldArray.reduce(((accumulator, current) => accumulator + parseCell(current, function(name) {
             return document.getElementsByName(name)[0];
         })), 0);
-    if(col!='s') document.getElementsByName(col+'s')[0].value = res;
-    else if(col=='s') document.getElementsByName("sum")[0].value = res;
+    document.getElementsByName("sum")[0].value = res;
 }
 
+function validateCol(col) {
+    var TextFieldArray = Array.from(CODES, (code) => {
+        if(parseInt(code) < 21) return col+"_"+code;
+    });
+    var res = TextFieldArray.reduce(((accumulator, current) => accumulator + parseCell(current, function(name) {
+            return document.getElementsByName(name)[0];
+        })), 0);
+    document.getElementsByName("t_" + col)[0].value = res;
+}
 /**
  * Check, if valid time input, and update time report accordingly. The DOM element that triggers this function
- * passes "this" as parameter.
+ * passes "this" as parameter. Validates input in cell, then calculates row && column accordlingly.
  * @param ref
  */
-function checkValidTI(ref) {
-    var code = ref.name.substring(0,ref.name.length-1);
-    var tag = ref.name.charAt(ref.name.length-1);
-    console.log("code: " + code + " tag: " + tag);
-    validateRow(code);
-    validateCol(tag);
-    validateCol('s')
+function checkValidTimeInput(ref) {
+    var code = ref.name.substring(2,ref.name.length);
+    var tag = ref.name.charAt(0);
+    if(parseInt(code) < 21) {
+        validateRow(code); // validate && calculate row
+        validateCol(tag);   // validate && calculate col
+    }
+    calculateSum('t_') // sum all fields with name beginning  with t_
 }
+
 
 /**
  * Parses a "cell element", of type <input> in the timereport.jsp form, with callback function ifGetElem
  * and returns the value contained, if element exists. Returns 0 if parsing fails, or if the DOM element can not
  * be found or does not exist.
- * return 0 if
  * @param e
  * @param ifGetElem
  * @returns {*}
@@ -57,10 +66,12 @@ function checkValidTI(ref) {
 function parseCell(e, ifGetElem) {
     var res;
     var elem;
-    if((elem = ifGetElem(e)) != null) {
+    if((elem = ifGetElem(e)) != (null || undefined))
         if((res = parseInt(elem.value)) >= 0){
             return res;
         }
-    }
+        else {
+        elem.
+        }
     return 0;
 }
