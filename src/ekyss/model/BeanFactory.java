@@ -13,7 +13,7 @@ public class BeanFactory {
 		ReportBean bean = new ReportBean();
 		bean.setUser(user);
 		bean.setGroup(group);
-		bean.setAllWeeks(new DatabaseHandler().getAllReportWeeks(user, group));
+		bean.setAllWeeks(new DatabaseHandler().getUnsignedReportWeeks(user, group));
 		return bean;
 	}
 
