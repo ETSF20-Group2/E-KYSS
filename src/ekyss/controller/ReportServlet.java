@@ -1,6 +1,7 @@
 package ekyss.controller;
 
 import base.servletBase;
+import ekyss.model.BeanFactory;
 import ekyss.model.BeanTransaction;
 import ekyss.model.BeanUtilities;
 import ekyss.model.ReportBean;
@@ -24,6 +25,13 @@ public class ReportServlet extends servletBase {
     private final String TYPE_CREATE = "create";
     private final String TYPE_UPDATE = "update";
     private final String TYPE_REMOVE = "remove";
+    private final String TYPE_SELECT = "weekSelect";
+
+    private final int ERR_CREATED = 1;
+    private final int ERR_UPDATED = 2;
+    private final int ERR_REMOVED = 3;
+
+    private int err_code = 0;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (true) {
@@ -32,34 +40,52 @@ public class ReportServlet extends servletBase {
             String user = (String) session.getAttribute("name");
             String group = (String) session.getAttribute("group");
             ReportBean rb = new ReportBean();
-            System.out.println(1);
             BeanUtilities.populateBean(rb, request);
             rb.setUser(user);
             rb.setGroup(group);
-            System.out.print(rb.getType() + " ");
-            System.out.println(rb.getD_11());
-            System.out.println(rb.getGroup() + " " + rb.getUser() + " " + rb.getWeek());
+            System.out.println("---- ReportServlet.doPost --------");
+            System.out.println(request.getParameter("week"));
+            System.out.println("User: " + rb.getUser() + " | Group: " + rb.getGroup() + " | Week: " + rb.getWeek());
+            System.out.println("Type: " + rb.getType());
             if (rb.getType().equals(TYPE_CREATE)) {
-                System.out.println(2);
+                System.out.println("In CREATE");
                 BeanTransaction.createTimeReport(rb);
+                err_code = ERR_CREATED;
             } else if (rb.getType().equals(TYPE_UPDATE)) {
+                System.out.println("In UPDATE");
                 BeanTransaction.updateTimeReport(rb);
+                err_code = ERR_UPDATED;
             } else if (rb.getType().equals(TYPE_REMOVE)) {
+                System.out.println("In REMOVE");
                 BeanTransaction.removeTimeReport(rb);
+                err_code = ERR_REMOVED;
             }
+            System.out.println("ERROR CODE: " + err_code);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
         }
+        System.out.println("---------------------------------");
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(3);
+
         if (true) {
             // Användaren är inloggad och har behörighet
-            ReportBean bean = new ReportBean();
+            HttpSession session = request.getSession();
+            String user = (String) session.getAttribute("name");
+            String group = (String) session.getAttribute("group");
+            ReportBean bean = BeanFactory.getReportBean(user, group);
+            BeanUtilities.populateBean(bean, request);
+            bean.setErr_code(err_code);
+            System.out.println("WEEK = " + bean.getWeek());
+            if(bean.getType().equals(TYPE_SELECT)){
+                bean = BeanFactory.fillReportBean(bean, user, group, bean.getWeek());
+            }
             forwardToView(request, response, "/report.jsp", bean);
+            err_code = 0;
+            System.out.println("d_11 = " + bean.getReportValues().get("d_11"));
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
