@@ -431,7 +431,7 @@ public class DatabaseHandler {
     /**
      * Annullerar en eller flera tidrapporter. Bara projektledaren kan göra detta.
      * @param group gruppen det gäller.
-     * @param sign En vektor som innehåller strängar i formatet "<b><u>vecka</u></b> <b><u>användarnamn</u></b>"
+     * @param unsign En vektor som innehåller strängar i formatet "<b><u>vecka</u></b> <b><u>användarnamn</u></b>"
      *             (t.ex. "<b><u>11</u></b> <b><u>Kalle</u></b>").
      *             <br> Beskriver vilka rapporter som ska annulleras.
      * @return true om alla rapporter annullerats, annars false.
