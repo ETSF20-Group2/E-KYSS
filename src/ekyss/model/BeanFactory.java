@@ -104,8 +104,9 @@ public class BeanFactory {
 		return new DatabaseHandler().isProjectLeader(bean.getUsername(),bean.getSelectedGroup());
 	}
 
-
-
+	public static DashboardBean getDashboardBean() {
+		return new DashboardBean();
+	}
 
 
 
