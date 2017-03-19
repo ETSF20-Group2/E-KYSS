@@ -37,7 +37,7 @@ public class ReportServlet extends servletBase {
     private int err_code = 0;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (true) {
+        if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             HttpSession session = request.getSession();
             String user = (String) session.getAttribute("name");
@@ -72,7 +72,7 @@ public class ReportServlet extends servletBase {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        if (true) {
+        if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             HttpSession session = request.getSession();
             String user = (String) session.getAttribute("name");
