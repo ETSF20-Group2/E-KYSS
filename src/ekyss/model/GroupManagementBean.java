@@ -12,9 +12,13 @@ public class GroupManagementBean implements Serializable {
     private String groupName = null;
     private int err_code = 0;
     private String[] deleteGroup;
-    private String assignedGroup;
-    private String assignedUser;
+    private String assignGroup;
+    private String assignUser;
+    private String assignGroupPl;
+    private String assignUserPl;
     private String tab = null;
+    private List<String[]> allPl = new ArrayList<String[]>();
+    private String[] removePl;
 
     /**
      * Sätter en lista innehållandes samtliga existerande grupper i databasen.
@@ -101,11 +105,11 @@ public class GroupManagementBean implements Serializable {
      * @param user
      */
     public void setAssignUser(String user) {
-        assignedUser = user;
+        assignUser = user;
     }
 
     public String getAssignUser() {
-        return assignedUser;
+        return assignUser;
     }
 
     /**
@@ -113,11 +117,11 @@ public class GroupManagementBean implements Serializable {
      * @param group
      */
     public void setAssignGroup(String group) {
-        assignedGroup = group;
+        assignGroup = group;
     }
 
     public String getAssignGroup() {
-        return assignedGroup;
+        return assignGroup;
     }
 
     public void setTab(String tab) {
@@ -126,5 +130,37 @@ public class GroupManagementBean implements Serializable {
 
     public String getTab() {
         return tab;
+    }
+
+    public List<String[]> getAllPl() {
+        return allPl;
+    }
+
+    public void setAllPl(List<String[]> allPl) {
+        this.allPl = allPl;
+    }
+
+    public String[] getRemovePl() {
+        return removePl;
+    }
+
+    public void setRemovePl(String[] removePl) {
+        this.removePl = removePl;
+    }
+
+    public String getAssignGroupPl() {
+        return assignGroupPl;
+    }
+
+    public void setAssignGroupPl(String assignGroupPl) {
+        this.assignGroupPl = assignGroupPl;
+    }
+
+    public String getAssignUserPl() {
+        return assignUserPl;
+    }
+
+    public void setAssignUserPl(String assignUserPl) {
+        this.assignUserPl = assignUserPl;
     }
 }
