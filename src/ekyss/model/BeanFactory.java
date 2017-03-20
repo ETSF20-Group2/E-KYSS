@@ -1,7 +1,6 @@
 package ekyss.model;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 
 public class BeanFactory {
@@ -75,6 +74,7 @@ public class BeanFactory {
 		GroupManagementBean bean = new GroupManagementBean();
 		bean.setAllGroups(new DatabaseHandler().getAllGroupsList());
 		bean.setAllUsers(new DatabaseHandler().getUserList());
+		bean.setAllPl(new DatabaseHandler().getAllPl());
 		return bean;
 	}
 
