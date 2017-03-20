@@ -3,10 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DatabaseHandler {
     Database db;
@@ -159,7 +156,7 @@ public class DatabaseHandler {
     public boolean assignLeader(String group, String leader){
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("UPDATE MemberOf set role = 'PG' WHERE userName = ? AND groupName = ?");
+            ps = conn.prepareStatement("UPDATE MemberOf set role = 'PL' WHERE member = ? AND groupName = ?");
             ps.setString(1, leader);
             ps.setString(2, group);
             print(ps);
@@ -167,12 +164,41 @@ public class DatabaseHandler {
                 return true;
             }
             else{
-                ps = conn.prepareStatement("INSERT INTO MemberOf(groupName, userName, role) VALUES(?,?, 'PG')");
+                ps = conn.prepareStatement("INSERT INTO MemberOf(groupName, userName, role) VALUES(?,?, 'PL')");
                 if(ps.executeUpdate() > 0){
                     return true;
                 }
             }
         } catch (SQLException e){
+            printError(e);
+        }
+        return false;
+    }
+
+
+    public boolean unAssignLeaders(String[] deleteArray){
+        PreparedStatement ps = null;
+        String where = " WHERE";
+        for(String s:deleteArray){
+            where += " member = ? AND groupName = ? OR";
+        }
+        if(where.endsWith("OR")){
+            where = where.substring(0, where.lastIndexOf("OR"));
+        }
+        try{
+            ps = conn.prepareStatement("UPDATE MemberOf SET role = ''" + where);
+            int i = 1;
+            for(String s: deleteArray){
+                String s1[] = new String[2];
+                s1 = s.split("\\s");
+                ps.setString(i++, s1[1]);
+                ps.setString(i++,  s1[0]);
+            }
+            print(ps);
+            if(ps.executeUpdate() > 0){
+                return true;
+            }
+        } catch(SQLException e){
             printError(e);
         }
         return false;
@@ -832,6 +858,24 @@ public class DatabaseHandler {
             printError(e);
         }
         return reports;
+    }
+
+    public List<String[]> getAllPl(){
+        List<String[]> allPl = new ArrayList<String[]>();
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement("SELECT member, groupName from MemberOf WHERE role = 'pl'");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String s[] = new String[2];
+                s[0] = rs.getString("groupName");
+                s[1] = rs.getString("member");
+                allPl.add(s);
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return allPl;
     }
 
     /**

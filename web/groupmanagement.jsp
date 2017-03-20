@@ -60,6 +60,41 @@
         <button class="btn btn-default" type="submit">Ta bort</button>
     </c:if>
 </c:set>
+
+<c:set var="plGroups">
+    <table class="table table-hover">
+        <c:choose>
+            <c:when test="${empty bean.getAllPl()}">
+                <div class="alert alert-info" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Det finns inga projektgrupper att visa. Skapa en ny projektgrupp för att kunna se den här.
+                </div>
+            </c:when>
+            <c:otherwise>
+                <thead>
+                <tr>
+                    <th>Projektgrupp</th>
+                    <th>Användare</th>
+                    <th>Ta bort</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${bean.getAllPl()}" var="pl">
+                    <tr>
+                        <td>${pl[0]}</td>
+                        <td>${pl[1]}</td>
+                        <td><input name="removePl" type="checkbox" value="${pl[0].concat(" ".concat(pl[1]))}"></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </c:otherwise>
+        </c:choose>
+    </table>
+    <c:if test="${not empty bean.getAllPl()}">
+        <button class="btn btn-default" type="submit">Ta bort</button>
+    </c:if>
+</c:set>
+
 <c:set var="select_groups">
     <c:forEach items="${bean.getAllGroups()}" var="group">
         <option value="${group}">${group}</option>
@@ -96,6 +131,7 @@
                     <li role="presentation" class="active"><a href="#add" aria-controls="add" role="tab" data-toggle="tab">Lägg till projektgrupp</a></li>
                     <li role="presentation"><a href="#delete" aria-controls="delete" role="tab" data-toggle="tab">Ta bort projektgrupp</a></li>
                     <li role="presentation"><a href="#assign" aria-controls="assign" role="tab" data-toggle="tab">Tilldela projektgrupp</a></li>
+                    <li role="presentation"><a href="#assignPl" aria-controls="assignPl" role="tab" data-toggle="tab">Tilldela projektledare</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -141,6 +177,34 @@
                             <button type="submit" class="btn btn-default">Tilldela</button>
                             ${infoMsg_assign}
                         </form>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="assignPl">
+                        <p>Koppla en användare till given projektgrupp.</p>
+                        <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                            <input type="hidden" name="type" value="assignPl">
+                            <div class="form-group">
+                                <label for="inputUsernamePl">Användarnamn</label>
+                                <select name="assignUserPl" type="text" class="form-control" id="inputUsernamePl">
+                                        ${select_users}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputGroupPl">Projektgrupp</label>
+                                <select name="assignGroupPl" type="text" class="form-control" id="inputGroupPl">
+                                        ${select_groups}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-default">Tilldela</button>
+                                ${infoMsg_assign}
+                        </form>
+                        <h4>Nuvarande projektledare.</h4>
+                        <p><em>Ta bort rollen PL genom att markera användaren och klicka på ta bort-knappen.</em></p>
+                        <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                            <input type="hidden" name="type" value="deletePl">
+                                ${plGroups}
+                        </form>
+
                     </div>
 
                 </div>

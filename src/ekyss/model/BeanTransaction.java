@@ -3,6 +3,14 @@ package ekyss.model;
 public class BeanTransaction {
 
 
+	public static boolean assignPlToGroup(GroupManagementBean bean){
+		return new DatabaseHandler().assignLeader(bean.getAssignGroupPl(), bean.getAssignUserPl());
+	}
+
+	public static void deletePlGroup(String[] deleteArray){
+		new DatabaseHandler().unAssignLeaders(deleteArray);
+	}
+
 	/**
 	 * Skapar en ny projektgrupp
 	 * @param name Namn på projektgruppen
