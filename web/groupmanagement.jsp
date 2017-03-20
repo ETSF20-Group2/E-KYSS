@@ -172,8 +172,8 @@
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
 
                 <h2 class="form-signin-heading">Hantering av projektgrupper</h2>
                 <p class="form-signin-heading">Lägg till nya projektgrupper, ta bort existerande projektgrupper eller koppla användare till projektgrupp</p>
@@ -233,7 +233,7 @@
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="assignPl">
-                        <p>Koppla en användare till given projektgrupp.</p>
+                        <p>Koppla en användare till given projektgrupp. Användaren tilldelas även gruppen och den inte redan är medlem</p>
                         ${infoMsg_plAssign}
                         <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                             <input type="hidden" name="type" value="assignPl">
@@ -250,7 +250,7 @@
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-default">Tilldela</button>
-                                ${infoMsg_assign}
+
                         </form>
                         <h4>Nuvarande projektledare.</h4>
                         <p><em>Ta bort rollen PL genom att markera användaren och klicka på ta bort-knappen.</em></p>
@@ -265,7 +265,7 @@
                 </div>
 
             </div>
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
         </div>
     </jsp:body>
 </t:block>
