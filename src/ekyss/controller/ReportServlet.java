@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
 
 @WebServlet(
         name="ReportServlet",
@@ -37,23 +36,8 @@ public class ReportServlet extends servletBase {
 
     private int err_code = 0;
 
-    /**
-     * Validerar all input vid uppdatering av tidrapport.
-     * @param req
-     * @return
-     */
-    public boolean validate(HttpServletRequest req) {
-        Enumeration<String> stringEnumeration = req.getParameterNames();
-        while(stringEnumeration.hasMoreElements()) {
-            if((Integer.getInteger(req.getParameter(stringEnumeration.nextElement())) == null)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (securityCheck(request) && validate(request)) {
+        if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             HttpSession session = request.getSession();
             String user = (String) session.getAttribute("name");
