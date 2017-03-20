@@ -9,6 +9,8 @@ public class DashboardBean implements Serializable {
     private String user = null;
     private String group = null;
     private Map<String, Integer> reportValuesSum = new HashMap<>();
+    private Map<String, Integer> reportValuesSumPLtot = new HashMap<>();
+    private String tab = null;
 
     public void setGroup(String group) {
         this.group = group;
@@ -32,6 +34,22 @@ public class DashboardBean implements Serializable {
 
     public Map<String, Integer> getReportValuesSum() {
         return reportValuesSum;
+    }
+
+    public void setReportValuesSumPLtot(Map<String, Integer> reportValuesSumPLtot) {
+        this.reportValuesSumPLtot = reportValuesSumPLtot;
+    }
+
+    public Map<String, Integer> getReportValuesSumPLtot() {
+        return reportValuesSumPLtot;
+    }
+
+    public void setTab(String tab) {
+        this.tab = tab;
+    }
+
+    public String getTab() {
+        return tab;
     }
 
     /*

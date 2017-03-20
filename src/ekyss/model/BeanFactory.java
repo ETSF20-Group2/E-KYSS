@@ -81,9 +81,10 @@ public class BeanFactory {
 	/**
 	 * Returnerar en standardböna av typen UserManagementBean.
 	 */
-	public static UserManagementBean getUserManagementBean() {
+	public static UserManagementBean getUserManagementBean(String group) {
 		UserManagementBean bean = new UserManagementBean();
 		bean.setAllUsers(new DatabaseHandler().getUserTable());
+		bean.setPlUserList(new DatabaseHandler().getAllMembers(group));
 		return bean;
 	}
 
@@ -111,6 +112,12 @@ public class BeanFactory {
         Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
 		bean.setReportValuesSum(map);
 	    return bean;
+	}
+
+	public static DashboardBean getDashboardBeanPL(String tab) {
+		DashboardBean bean = new DashboardBean();
+		// TODO: implementera funktionaliteten för Dahboard för PL.
+		return bean;
 	}
 
 
