@@ -39,7 +39,14 @@ public class DashboardServlet extends servletBase {
         if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             HttpSession session = request.getSession(true);
-            DashboardBean bean = BeanFactory.getDashboardBean((String) session.getAttribute("name"), (String) session.getAttribute("group"));
+            DashboardBean bean = null;
+            if (session.getAttribute("name").equals("admin")) {
+                bean = new DashboardBean();
+            } else if ((boolean) session.getAttribute("ProjectLeader")) {
+                bean = BeanFactory.getDashboardBeanPL();
+            } else {
+                bean = BeanFactory.getDashboardBean((String) session.getAttribute("name"), (String) session.getAttribute("group"));
+            }
             forwardToView(request, response, "/dashboard.jsp",bean);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
