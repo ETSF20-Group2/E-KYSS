@@ -117,7 +117,7 @@
             <tr>
                 <td>Utveckling och dokumentation</td>
                 <td>D</td>
-                <td>Utveckling av ny kod, testfall och dokumentation, klusive systemdokumentering.</td>
+                <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
                 <td>9999</td>
             </tr>
             <tr>
