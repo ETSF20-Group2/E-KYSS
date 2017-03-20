@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 @WebServlet(
         name="GroupManagementServlet",
@@ -92,7 +91,6 @@ public class GroupManagementServlet extends servletBase {
     }
 
     private void doDeletePl(GroupManagementBean bean) {
-        System.out.println(Arrays.toString(bean.getRemovePl()));
         if (bean.getRemovePl() != null) {
             // Användaren tryckte 'ta bort' med en eller flera grupper som ska tas bort.
             new BeanTransaction();
@@ -114,7 +112,6 @@ public class GroupManagementServlet extends servletBase {
                 bean.setErrorCode(ERR_ASSIGN_SUCCESS);
                 System.out.println("### doAssign_err_code: " + bean.getErrorCode());
             //    forwardToView(request, response, "/groupmanagement.jsp", bean);
-                System.out.println("--------------------");
                 return;
 
             } else {
@@ -122,7 +119,6 @@ public class GroupManagementServlet extends servletBase {
                 bean.setErrorCode(ERR_ASSIGN_EXISTS);
                 System.out.println("### doAssign_err_code: " + bean.getErrorCode());
                // forwardToView(request, response, "/groupmanagement.jsp", bean);
-                System.out.println("--------------------");
                 return;
 
             }
@@ -137,35 +133,23 @@ public class GroupManagementServlet extends servletBase {
             // Användaren är inloggad och har behörighet
             GroupManagementBean bean = BeanFactory.getGroupManagementBean();
             BeanUtilities.populateBean(bean, request);
-            System.out.println("--------------------");
-            System.out.println(bean.getType());
-            System.out.println(bean.getType().equals(TYPE_ASSIGNPL));
             if (bean.getType().equals(TYPE_ADD)) {
-
-                System.out.println("IN ADD");
                 // Förfrågning kommer från add-formuläret
                 bean.setTab("add");
                 doAdd(bean, request, response);
             } else if (bean.getType().equals(TYPE_DELETE)) {
-
-                System.out.println("IN DELETE");
                 // Förfrågning kommer från delete-formuläret
                 bean.setTab("delete");
                 doDelete(bean);
             } else if (bean.getType().equals(TYPE_ASSIGN)) {
-                System.out.println("IN ASSIGN");
                 // Förfrågning kommer från assign-formuläret
                 bean.setTab("assign");
                 doAssign(bean, request, response);
             } else if (bean.getType().equals(TYPE_ASSIGNPL)) {
-
-                System.out.println("IN ASSIGNPL");
                 System.out.println(bean.getAssignGroupPl() + ", " + bean.getAssignUserPl());
                 tab = "assignPl";
                 doAssignPl(bean, request, response);
             } else if (bean.getType().equals(TYPE_DELETEPL)) {
-
-                System.out.println("IN DELETEPL");
                 tab = "assignPl";
                 doDeletePl(bean);
             }
@@ -187,7 +171,6 @@ public class GroupManagementServlet extends servletBase {
             GroupManagementBean bean = BeanFactory.getGroupManagementBean();
             if(tab.equals("assignPl")) bean.setTab(tab);
             forwardToView(request, response, "/groupmanagement.jsp", bean);
-            System.out.println("--------------------");
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
