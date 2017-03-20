@@ -222,26 +222,6 @@ public class DatabaseHandler {
         return list;
     }
 
-    /**
-     * Hämtar en
-     * @return A GroupManagementBean that contains a List<String> of all the users (as the users
-     * attribute in bean).
-     */
-    public List<String> getUserListG(){
-        PreparedStatement ps = null;
-        List<String> users = new ArrayList<String>();
-        try{
-            ps = conn.prepareStatement("SELECT * FROM Users");
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                users.add(rs.getString("userName"));
-            }
-        } catch(SQLException e){
-            printError(e);
-        }
-        return users;
-    }
-
 	/*------ UserManagementServlet --------*/
 		/* BeanTransaction */
 
