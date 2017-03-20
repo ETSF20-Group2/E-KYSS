@@ -787,25 +787,19 @@ public class DatabaseHandler {
      * @param group Gruppen det handlar om.
      * @return En sorterad lista som innehåller alla veckor.
      */
-    public List<String[]> getReportWeeks(String group){
-        List<String> weeks = new ArrayList<String>();
+    public List<Integer> getReportWeeks(String group){
+        List<Integer> weeks = new ArrayList<Integer>();
         List<String[]> w1 = getSignedReports(group);
         List<String[]> w2 = getUnsignedReports(group);
         for(String[] s:w1){
-            weeks.add(s[0]);
+            weeks.add(Integer.parseInt(s[0]));
         }
         for(String[] s:w2){
-            weeks.add(s[0]);
+            weeks.add(Integer.parseInt(s[0]));
         }
 
-        weeks.sort(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                Integer f = Integer.parseInt(o1);
-                Integer s = Integer.parseInt(o2);
-                return f.compareTo(s);
-            }
-        });
+        weeks.sort((o1, o2) -> o1.compareTo(o1));
+        return weeks;
     }
 
 
