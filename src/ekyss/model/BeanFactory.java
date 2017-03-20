@@ -81,9 +81,10 @@ public class BeanFactory {
 	/**
 	 * Returnerar en standardböna av typen UserManagementBean.
 	 */
-	public static UserManagementBean getUserManagementBean() {
+	public static UserManagementBean getUserManagementBean(String group) {
 		UserManagementBean bean = new UserManagementBean();
 		bean.setAllUsers(new DatabaseHandler().getUserTable());
+		bean.setPlUserList(new DatabaseHandler().getAllMembers(group));
 		return bean;
 	}
 
