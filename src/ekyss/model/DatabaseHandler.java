@@ -783,6 +783,27 @@ public class DatabaseHandler {
 
 
     /**
+     * Returnerar alla veckor som det har rapporterats i för en projektgrupp sorterat i stigande ordning.
+     * @param group Gruppen det handlar om.
+     * @return En sorterad lista som innehåller alla veckor.
+     */
+    public List<Integer> getReportWeeks(String group){
+        List<Integer> weeks = new ArrayList<Integer>();
+        List<String[]> w1 = getSignedReports(group);
+        List<String[]> w2 = getUnsignedReports(group);
+        for(String[] s:w1){
+            weeks.add(Integer.parseInt(s[0]));
+        }
+        for(String[] s:w2){
+            weeks.add(Integer.parseInt(s[0]));
+        }
+
+        weeks.sort((o1, o2) -> o1.compareTo(o1));
+        return weeks;
+    }
+
+
+    /**
      * Returnerar alla signerade rapporter för en viss grupp.
      * @param group Gruppen det gäller.
      * @return En lista med Sträng-vektorer. I vektorn är:
