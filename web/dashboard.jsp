@@ -145,7 +145,7 @@
         <tbody>
         <tr>
             <th colspan="6">Del A: Total tid (minuter)</th>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sumA")}</td>
         </tr>
         </tbody>
     </table>
@@ -158,7 +158,7 @@
         <tbody>
         <tr>
             <th colspan="6">Del A: Total tid (minuter)</th>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sumA")}</td>
         </tr>
         </tbody>
     </table>
@@ -171,20 +171,7 @@
         <tbody>
         <tr>
             <th colspan="6">Del A: Total tid (minuter)</th>
-            <td>_SUM_</td>
-        </tr>
-        </tbody>
-    </table>
-    ${tbl_B}
-    ${tbl_C}
-</c:set>
-
-<c:set var="tbl_stage">
-    <table class="table table-bordered">
-        <tbody>
-        <tr>
-            <th colspan="6">Del A: Total tid (minuter)</th>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sumA")}</td>
         </tr>
         </tbody>
     </table>
@@ -208,7 +195,6 @@
             <li role="presentation"<c:if test="${bean.getTab() eq 'user'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=user" aria-controls="user" role="tab">Per användare</a></li>
             <li role="presentation"<c:if test="${bean.getTab() eq 'role'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=role" aria-controls="role" role="tab">Per roll</a></li>
             <li role="presentation"<c:if test="${bean.getTab() eq 'week'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=week" aria-controls="week" role="tab">Per vecka</a></li>
-            <li role="presentation"<c:if test="${bean.getTab() eq 'stage'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=stage" aria-controls="stage" role="tab">Per fas</a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="all">
@@ -218,7 +204,16 @@
                         <form class="form-inline" name="input" method="GET" action="${pageContext.request.contextPath}/dashboard">
                             <input type="hidden" name="show" value="user">
                             <select name="user" type="text" class="form-control">
-                                <option value="USER_ID">USER_NAME</option>
+                                <c:forEach items="${bean.getUserList()}" var="user">
+                                    <c:choose>
+                                        <c:when test="${user[0] eq bean.getUser()}">
+                                            <option value="${user[0]}" selected>${user[0]}</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${user[0]}">${user[0]}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
                             </select>
                             <input type="submit" value="Välj" class="btn btn-success">
                         </form>
@@ -229,10 +224,10 @@
                         <form class="form-inline" name="input" method="GET" action="${pageContext.request.contextPath}/dashboard">
                             <input type="hidden" name="show" value="role">
                             <select name="role" type="text" class="form-control">
-                                <option value="PL">PL</option>
-                                <option value="SG">SG</option>
-                                <option value="UG">UG</option>
-                                <option value="TG">TG</option>
+                                <option value="PL"<c:if test="${bean.getRole() eq 'PL'}"> selected</c:if>>PL</option>
+                                <option value="SG"<c:if test="${bean.getRole() eq 'SG'}"> selected</c:if>>SG</option>
+                                <option value="UG"<c:if test="${bean.getRole() eq 'UG'}"> selected</c:if>>UG</option>
+                                <option value="TG"<c:if test="${bean.getRole() eq 'TG'}"> selected</c:if>>TG</option>
                             </select>
                             <input type="submit" value="Välj" class="btn btn-success">
                         </form>
@@ -243,7 +238,16 @@
                         <form class="form-inline" name="input" method="GET" action="${pageContext.request.contextPath}/dashboard">
                             <input type="hidden" name="show" value="week">
                             <select name="week" type="text" class="form-control">
-                                <option value="1">1</option>
+                                <c:forEach items="${bean.getWeeks()}" var="week">
+                                    <c:choose>
+                                        <c:when test="${week eq bean.getWeek()}">
+                                            <option value="${week}" selected>${week}</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${week}">${week}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
                             </select>
                             <input type="submit" value="Välj" class="btn btn-success">
                         </form>

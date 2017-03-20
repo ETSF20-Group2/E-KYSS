@@ -1,8 +1,7 @@
 package ekyss.model;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BeanFactory {
 	DatabaseHandler db = new DatabaseHandler();
@@ -79,6 +78,11 @@ public class BeanFactory {
 		return bean;
 	}
 
+	public static GroupManagementBean fillGroupManagementBean(GroupManagementBean bean) {
+	    bean.setAllPl(new DatabaseHandler().getAllPl());
+	    return bean;
+    }
+
 	/**
 	 * Returnerar en standardböna av typen UserManagementBean.
 	 */
@@ -109,27 +113,19 @@ public class BeanFactory {
 	}
 
 	public static DashboardBean getDashboardBean(String user, String group) {
-        DashboardBean bean = new DashboardBean();
-        bean.setUser(user);
-        bean.setGroup(group);
-        Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
+		DashboardBean bean = new DashboardBean();
+		bean.setUser(user);
+		bean.setGroup(group);
+		Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
 		bean.setReportValuesSum(map);
-	    return bean;
+		return bean;
 	}
 
-	public static DashboardBean getDashboardBeanPL(String tab, String group, String user) {
+	public static DashboardBean getDashboardBeanPL(String tab, String group, String user, String role, String week, String stage) {
 		DashboardBean bean = null;
 
 		switch (tab) {
-			case "all":
-				bean = new DashboardBean();
-				bean.setTab("all");
-				break;
 			case "user":
-				bean = new DashboardBean();
-				bean.setTab("user");
-				break;
-			case "role":
 				List<String[]> users = new DatabaseHandler().getAllMembers(group);
 				if (user == null) {
 					bean = getDashboardBean(users.get(0)[0], group);
@@ -138,26 +134,47 @@ public class BeanFactory {
 				}
 				bean.setUserList(users);
 				bean.setGroup(group);
+				bean.setTab("user");
+				break;
+			case "role":
+				bean = new DashboardBean();
 				bean.setTab("role");
+				if (role == null) {
+					bean.setRole("PL");
+				} else {
+					bean.setRole(role);
+				}
+				bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, bean.getRole(), 0));
 				break;
 			case "week":
 				bean = new DashboardBean();
 				bean.setTab("week");
-				break;
-			case "stage":
-				bean = new DashboardBean();
-				bean.setTab("stage");
+				if (week == null) {
+					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, null, 1));
+					bean.setWeek(1);
+				} else {
+					int w = 1;
+					try {
+						w = Integer.parseInt(week);
+						bean.setWeek(w);
+					} catch (NumberFormatException e) {
+
+					}
+					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, null, w));
+				}
+				List<Integer> w = new DatabaseHandler().getReportWeeks(group);
+				Collections.sort(w);
+				w = w.stream().distinct().collect(Collectors.toList());
+				bean.setWeeks(w);
 				break;
 			default:
 				bean = new DashboardBean();
 				bean.setTab("all");
+				bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, null, 0));
 				break;
 		}
 		return bean;
 	}
-
-
-
 
 	
 	    /* GroupManagementServlet */

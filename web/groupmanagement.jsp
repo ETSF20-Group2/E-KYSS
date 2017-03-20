@@ -14,6 +14,12 @@
             Du har inte anget något namn på den nya projektgrupp som du försöker skapa. Ange ett projekgtuppnamn och klicka sedan på <em>skapa</em>-knappen.
         </div>
     </c:if>
+    <c:if test="${bean.getErrorCode() eq 11}">
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Gruppen har blivit skapad.
+        </div>
+    </c:if>
 </c:set>
 <c:set var="infoMsg_assign">
     <c:if test="${bean.getErrorCode() eq 3}">
@@ -25,7 +31,52 @@
     <c:if test="${bean.getErrorCode() eq 4}">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            Vald användare är redan kopplad till vald projektgrupp. Välj en anna projektgrupp och försök igen på nytt.
+            Vald användare är redan kopplad till vald projektgrupp. Välj en annan projektgrupp och försök igen på nytt.
+        </div>
+    </c:if>
+</c:set>
+
+<c:set var="infoMsg_delete">
+    <c:if test="${bean.getErrorCode() eq 5}">
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Projektgruppen har tagits bort.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErrorCode() eq 6}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Något blev fel. Ingen grupp har tagits bort. Försök igen!
+        </div>
+    </c:if>
+</c:set>
+
+<c:set var="infoMsg_plAssign">
+    <c:if test="${bean.getErrorCode() eq 7}">
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Användaren har tilldelats rollen Projektledare.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErrorCode() eq 8}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Något blev fel. Användaren har inte tilldelats rollen Projektledare. Försök igen!
+        </div>
+    </c:if>
+</c:set>
+
+<c:set var="infoMsg_plDelete">
+    <c:if test="${bean.getErrorCode() eq 9}">
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Användarna har fråntagits rollen Projektledare.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErrorCode() eq 10}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Du har inte markerat någon användare. Markera en eller flera användare och klicka sedan på <em>Ta bort</em>-knappen.
         </div>
     </c:if>
 </c:set>
@@ -121,8 +172,8 @@
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
 
                 <h2 class="form-signin-heading">Hantering av projektgrupper</h2>
                 <p class="form-signin-heading">Lägg till nya projektgrupper, ta bort existerande projektgrupper eller koppla användare till projektgrupp</p>
@@ -138,6 +189,7 @@
 
                     <div role="tabpanel" class="tab-pane active" id="add">
                         <p>Lägg till en ny projektgrupp.</p>
+                            ${infoMsg}
                         <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                             <input type="hidden" name="type" value="add">
                             <div class="input-group">
@@ -146,12 +198,12 @@
                             <button class="btn btn-default" type="submit">Skapa</button>
                         </span>
                             </div>
-                                ${infoMsg}
                         </form>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="delete">
                         <p>Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
+                        ${infoMsg_delete}
                         <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                             <input type="hidden" name="type" value="delete">
                                 ${groups}
@@ -160,6 +212,7 @@
 
                     <div role="tabpanel" class="tab-pane" id="assign">
                         <p>Koppla en användare till given projektgrupp.</p>
+                            ${infoMsg_assign}
                         <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                             <input type="hidden" name="type" value="assign">
                             <div class="form-group">
@@ -175,12 +228,13 @@
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-default">Tilldela</button>
-                            ${infoMsg_assign}
+
                         </form>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="assignPl">
-                        <p>Koppla en användare till given projektgrupp.</p>
+                        <p>Koppla en användare till given projektgrupp. Användaren tilldelas även gruppen och den inte redan är medlem</p>
+                        ${infoMsg_plAssign}
                         <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                             <input type="hidden" name="type" value="assignPl">
                             <div class="form-group">
@@ -196,10 +250,11 @@
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-default">Tilldela</button>
-                                ${infoMsg_assign}
+
                         </form>
                         <h4>Nuvarande projektledare.</h4>
                         <p><em>Ta bort rollen PL genom att markera användaren och klicka på ta bort-knappen.</em></p>
+                            ${infoMsg_plDelete}
                         <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                             <input type="hidden" name="type" value="deletePl">
                                 ${plGroups}
@@ -210,7 +265,7 @@
                 </div>
 
             </div>
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
         </div>
     </jsp:body>
 </t:block>
