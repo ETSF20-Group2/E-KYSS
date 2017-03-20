@@ -1,8 +1,7 @@
 package ekyss.model;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BeanFactory {
 	DatabaseHandler db = new DatabaseHandler();
@@ -141,18 +140,32 @@ public class BeanFactory {
 				bean = new DashboardBean();
 				bean.setTab("role");
 				if (role == null) {
-					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, "PL", 0));
+					bean.setRole("PL");
 				} else {
-					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, role, 0));
+					bean.setRole(role);
 				}
+				bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, bean.getRole(), 0));
 				break;
 			case "week":
 				bean = new DashboardBean();
 				bean.setTab("week");
-				break;
-			case "stage":
-				bean = new DashboardBean();
-				bean.setTab("stage");
+				if (week == null) {
+					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, null, 1));
+					bean.setWeek(1);
+				} else {
+					int w = 1;
+					try {
+						w = Integer.parseInt(week);
+						bean.setWeek(w);
+					} catch (NumberFormatException e) {
+
+					}
+					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, null, w));
+				}
+				List<Integer> w = new DatabaseHandler().getReportWeeks(group);
+				Collections.sort(w);
+				w = w.stream().distinct().collect(Collectors.toList());
+				bean.setWeeks(w);
 				break;
 			default:
 				bean = new DashboardBean();

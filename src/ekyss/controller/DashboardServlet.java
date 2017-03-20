@@ -47,7 +47,7 @@ public class DashboardServlet extends servletBase {
                 if (request.getParameter("show") != null) {
                     bean = BeanFactory.getDashboardBeanPL(request.getParameter("show"), (String) session.getAttribute("group"), request.getParameter("user"), request.getParameter("role"), request.getParameter("week"), request.getParameter("stage"));
                 } else {
-                    bean = BeanFactory.getDashboardBeanPL("all", (String) session.getAttribute("group"), null, null, null, null);
+                    bean = BeanFactory.getDashboardBeanPL("all", (String) session.getAttribute("group"), request.getParameter("user"), request.getParameter("role"), request.getParameter("week"), request.getParameter("stage"));
                 }
             } else {
                 bean = BeanFactory.getDashboardBean((String) session.getAttribute("name"), (String) session.getAttribute("group"));
