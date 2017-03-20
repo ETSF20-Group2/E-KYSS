@@ -31,8 +31,13 @@ public class GroupManagementServlet extends servletBase {
     private final int ERR_GROUP_EMPTY = 2;
     private final int ERR_ASSIGN_SUCCESS = 3;
     private final int ERR_ASSIGN_EXISTS = 4;
-
-    private String tab = "";
+    private final int ERR_DELETE_SUCCESS = 5;
+    private final int ERR_DELETE_FAIL = 6;
+    private final int ERR_ASSIGNPL_SUCCESS = 7;
+    private final int ERR_ASSIGNPL_FAIL = 8;
+    private final int ERR_DELETEPL_SUCCESS = 9;
+    private final int ERR_DELETEPL_FAIL = 10;
+    private final int ERR_ADD_SUCCESS = 11;
 
 
     private void doAdd(GroupManagementBean bean, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,6 +47,10 @@ public class GroupManagementServlet extends servletBase {
                 // Vi har här ett unikt gruppnamn som ska sparas i databasen
                 new BeanTransaction();
                 BeanTransaction.createNewProjectGroup(bean.getGroupName());
+                bean.setErrorCode(ERR_ADD_SUCCESS);
+                forwardToView(request, response, "/groupmanagement.jsp", bean);
+                return;
+
             } else {
                 // Gruppnamnet är tomt
                 bean.setErrorCode(ERR_GROUP_EMPTY);
@@ -56,14 +65,18 @@ public class GroupManagementServlet extends servletBase {
         }
     }
 
-    private void doDelete(GroupManagementBean bean) {
+    private void doDelete(GroupManagementBean bean, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (bean.getDeleteGroup() != null) {
             // Användaren tryckte 'ta bort' med en eller flera grupper som ska tas bort.
+            bean.setErrorCode(ERR_DELETE_SUCCESS);
             new BeanTransaction();
             BeanTransaction.deleteProjectGroup(bean.getDeleteGroup());
+            forwardToView(request, response, "/groupmanagement.jsp", bean);
+            return;
         } else {
-            // Användaren tryckte 'ta bort' utan att markera nån grupp.
-            // TODO: implementera ett felmeddelande
+            bean.setErrorCode(ERR_DELETE_FAIL);
+            forwardToView(request, response, "/groupmanagement.jsp", bean);
+            return;
         }
     }
 
@@ -90,14 +103,21 @@ public class GroupManagementServlet extends servletBase {
         }
     }
 
-    private void doDeletePl(GroupManagementBean bean) {
+    private void doDeletePl(GroupManagementBean bean, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (bean.getRemovePl() != null) {
             // Användaren tryckte 'ta bort' med en eller flera grupper som ska tas bort.
+            bean.setErrorCode(ERR_DELETEPL_SUCCESS);
             new BeanTransaction();
             BeanTransaction.deletePlGroup(bean.getRemovePl());
+            bean = BeanFactory.fillGroupManagementBean(bean);
+            forwardToView(request, response, "/groupmanagement.jsp", bean);
+            return;
+
         } else {
             // Användaren tryckte 'ta bort' utan att markera nån grupp.
-            // TODO: implementera ett felmeddelande
+            bean.setErrorCode(ERR_DELETEPL_FAIL);
+            forwardToView(request, response, "/groupmanagement.jsp", bean);
+            return;
         }
     }
 
@@ -105,20 +125,19 @@ public class GroupManagementServlet extends servletBase {
         if (bean.getAssignUserPl() != null || bean.getAssignGroupPl() != null) {
             // Användaren tryckte 'tilldela' med vald användare som ska kopplas till vald projektgrupp
             new BeanTransaction();
-            boolean assigned = BeanTransaction.assignPlToGroup(bean);
-            System.out.println("Assigned: " + assigned);
-            if (assigned) {
+            if (BeanTransaction.assignPlToGroup(bean)) {
                 // Lyckad tilldelning
-                bean.setErrorCode(ERR_ASSIGN_SUCCESS);
+                bean.setErrorCode(ERR_ASSIGNPL_SUCCESS);
                 System.out.println("### doAssign_err_code: " + bean.getErrorCode());
-            //    forwardToView(request, response, "/groupmanagement.jsp", bean);
+                bean = BeanFactory.fillGroupManagementBean(bean);
+                forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
 
             } else {
                 // Tilldelningen är lyckad - användaren tillhör redan given projektgrupp
-                bean.setErrorCode(ERR_ASSIGN_EXISTS);
+                bean.setErrorCode(ERR_ASSIGNPL_FAIL);
                 System.out.println("### doAssign_err_code: " + bean.getErrorCode());
-               // forwardToView(request, response, "/groupmanagement.jsp", bean);
+                forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
 
             }
@@ -137,21 +156,26 @@ public class GroupManagementServlet extends servletBase {
                 // Förfrågning kommer från add-formuläret
                 bean.setTab("add");
                 doAdd(bean, request, response);
+                return;
             } else if (bean.getType().equals(TYPE_DELETE)) {
                 // Förfrågning kommer från delete-formuläret
                 bean.setTab("delete");
-                doDelete(bean);
+                doDelete(bean,request,response);
+                return;
             } else if (bean.getType().equals(TYPE_ASSIGN)) {
                 // Förfrågning kommer från assign-formuläret
                 bean.setTab("assign");
                 doAssign(bean, request, response);
+                return;
             } else if (bean.getType().equals(TYPE_ASSIGNPL)) {
                 System.out.println(bean.getAssignGroupPl() + ", " + bean.getAssignUserPl());
-                tab = "assignPl";
+                bean.setTab("assignPl");
                 doAssignPl(bean, request, response);
+                return;
             } else if (bean.getType().equals(TYPE_DELETEPL)) {
-                tab = "assignPl";
-                doDeletePl(bean);
+                bean.setTab("assignPl");
+                doDeletePl(bean, request, response);
+                return;
             }
 
 
@@ -169,7 +193,6 @@ public class GroupManagementServlet extends servletBase {
         if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             GroupManagementBean bean = BeanFactory.getGroupManagementBean();
-            if(tab.equals("assignPl")) bean.setTab(tab);
             forwardToView(request, response, "/groupmanagement.jsp", bean);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet

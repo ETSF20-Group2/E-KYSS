@@ -79,6 +79,11 @@ public class BeanFactory {
 		return bean;
 	}
 
+	public static GroupManagementBean fillGroupManagementBean(GroupManagementBean bean) {
+	    bean.setAllPl(new DatabaseHandler().getAllPl());
+	    return bean;
+    }
+
 	/**
 	 * Returnerar en standardböna av typen UserManagementBean.
 	 */
