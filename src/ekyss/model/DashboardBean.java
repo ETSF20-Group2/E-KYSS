@@ -18,6 +18,10 @@ public class DashboardBean implements Serializable {
     private Integer sum_f = 0;
     private Integer sum_r = 0;
     private List<String[]> userList = new ArrayList<>();
+    private String role = "PL";
+    private List<Integer> weeks;
+    private Integer week;
+
 
 
     public void setGroup(String group) {
@@ -71,6 +75,31 @@ public class DashboardBean implements Serializable {
     public void setUserList(List<String[]> userList) {
         this.userList = userList;
     }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setWeeks(List<Integer> weeks) {
+        this.weeks = weeks;
+    }
+
+    public List<Integer> getWeeks() {
+        return weeks;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
 
     private void setSum() {
         for (int i = 11; i<=19; i++) {
