@@ -1,6 +1,7 @@
 package ekyss.model;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 public class BeanFactory {
@@ -78,6 +79,11 @@ public class BeanFactory {
 		return bean;
 	}
 
+	public static GroupManagementBean fillGroupManagementBean(GroupManagementBean bean) {
+	    bean.setAllPl(new DatabaseHandler().getAllPl());
+	    return bean;
+    }
+
 	/**
 	 * Returnerar en standardböna av typen UserManagementBean.
 	 */
@@ -108,20 +114,54 @@ public class BeanFactory {
 	}
 
 	public static DashboardBean getDashboardBean(String user, String group) {
-        DashboardBean bean = new DashboardBean();
-        Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
-		bean.setReportValuesSum(map);
-	    return bean;
-	}
-
-	public static DashboardBean getDashboardBeanPL(String tab) {
 		DashboardBean bean = new DashboardBean();
-		// TODO: implementera funktionaliteten för Dahboard för PL.
+		bean.setUser(user);
+		bean.setGroup(group);
+		Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
+		bean.setReportValuesSum(map);
 		return bean;
 	}
 
+	public static DashboardBean getDashboardBeanPL(String tab, String group, String user, String role, String week, String stage) {
+		DashboardBean bean = null;
 
-
+		switch (tab) {
+			case "user":
+				List<String[]> users = new DatabaseHandler().getAllMembers(group);
+				if (user == null) {
+					bean = getDashboardBean(users.get(0)[0], group);
+				} else {
+					bean = getDashboardBean(user, group);
+				}
+				bean.setUserList(users);
+				bean.setGroup(group);
+				bean.setTab("user");
+				break;
+			case "role":
+				bean = new DashboardBean();
+				bean.setTab("role");
+				if (role == null) {
+					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, "PL", 0));
+				} else {
+					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, role, 0));
+				}
+				break;
+			case "week":
+				bean = new DashboardBean();
+				bean.setTab("week");
+				break;
+			case "stage":
+				bean = new DashboardBean();
+				bean.setTab("stage");
+				break;
+			default:
+				bean = new DashboardBean();
+				bean.setTab("all");
+				bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, null, 0));
+				break;
+		}
+		return bean;
+	}
 
 	
 	    /* GroupManagementServlet */

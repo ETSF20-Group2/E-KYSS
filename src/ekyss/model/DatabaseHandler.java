@@ -165,6 +165,9 @@ public class DatabaseHandler {
             }
             else{
                 ps = conn.prepareStatement("INSERT INTO MemberOf(groupName, userName, role) VALUES(?,?, 'PL')");
+                ps.setString(1, group);
+                ps.setString(2,leader);
+                print(ps);
                 if(ps.executeUpdate() > 0){
                     return true;
                 }
