@@ -16,6 +16,7 @@ public class UserManagementBean implements Serializable {
         return list;
     }
 
+    private int err_code = 0;
     private String username;
     private String password;
     private String group;
@@ -23,6 +24,9 @@ public class UserManagementBean implements Serializable {
     private String type;
     private List<String> userList = new ArrayList<String>();
     private String[] deleteUserList;
+    private String[] assignRole;
+    private final String[] allRoles = {"PL", "SG", "UG", "TG"};
+    private List<String[]> plUserList = new ArrayList<String[]>();
 
     private String email; //Måste läggas till då man använder det i addUser() metoden.
 
@@ -94,4 +98,31 @@ public class UserManagementBean implements Serializable {
         this.email = email;
     }
 
+    public List<String[]> getPlUserList() {
+        return plUserList;
+    }
+
+    public void setPlUserList(List<String[]> plUserList) {
+        this.plUserList = plUserList;
+    }
+
+    public String[] getAllRoles() {
+        return allRoles;
+    }
+
+    public String[] getAssignRole() {
+        return assignRole;
+    }
+
+    public void setAssignRole(String[] assignRole) {
+        this.assignRole = assignRole;
+    }
+
+    public int getErr_code() {
+        return err_code;
+    }
+
+    public void setErr_code(int err_code) {
+        this.err_code = err_code;
+    }
 }

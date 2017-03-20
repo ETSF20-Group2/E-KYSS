@@ -1,7 +1,48 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="users">
+
+<c:set var="infoMsg">
+    <c:if test="${bean.getErr_code() eq 1}">
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Rollerna har tilldelats.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErr_code() eq 2}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Något blev fel! Rollerna har inte tilldelats.
+        </div>
+    </c:if>
+</c:set>
+
+<c:set var="table_row">
+    <c:forEach items="${bean.getPlUserList()}" var="user">
+        <c:if test="${user[0] ne 'admin'}">
+            <tr>
+                <c:set var="select_role">
+                    <c:forEach items="${bean.getAllRoles()}" var="someRole">
+                        <c:choose>
+                            <c:when test="${user[2] eq someRole}">
+                                <option value="${user[0].concat(" ".concat(someRole))}" selected>${someRole}</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="${user[0].concat(" ".concat(someRole))}">${someRole}</option>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </c:set>
+                <td>${user[0]}</td>
+                <td>${user[1]}</td>
+                <td><select name="assignRole" type="text" class="form-control" id="inputRoles">
+                        ${select_role}
+                </select></td>
+            </tr>
+        </c:if>
+    </c:forEach>
+</c:set>
+<c:set var="tbl_admin">
     <table class="table table-hover">
         <c:choose>
             <c:when test="${empty bean.getAllUsers()}">
@@ -38,6 +79,64 @@
         <button class="btn btn-default" type="submit">Ta bort</button>
     </c:if>
 </c:set>
+
+<c:set var="tbl_pl">
+    <table class="table table-hover">
+        <c:choose>
+            <c:when test="${empty bean.getPlUserList()}">
+                <div class="alert alert-info" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Det finns inga användare att visa. Kontakta admin för att lägga till användare i din grupp.
+                </div>
+            </c:when>
+            <c:otherwise>
+                <thead>
+                <tr>
+                    <th>Användarnamn</th>
+                    <th>E-post</th>
+                    <th>Roll</th>
+                </tr>
+                </thead>
+                <tbody>
+                ${table_row}
+                </tbody>
+            </c:otherwise>
+        </c:choose>
+    </table>
+    <c:if test="${not empty bean.getPlUserList()}">
+        <button class="btn btn-default" type="submit">Tilldela roller</button>
+    </c:if>
+</c:set>
+<c:set var="admin_page">
+    <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
+        <input type="hidden" name="type" value="add">
+        <div class="form-group">
+            <label for="inputUsername">Användarnamn</label>
+            <input name="username" type="text" class="form-control" id="inputUsername" placeholder="Användarnamn">
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">E-postadress</label>
+            <input name="email" type="text" class="form-control" id="inputEmail" placeholder="E-post">
+        </div>
+        <button type="submit" class="btn btn-default">Skapa</button>
+    </form>
+    <br>
+    <p class="form-signin-heading">Ta bort existerande användare genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
+    <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
+        <input type="hidden" name="type" value="delete">
+            ${tbl_admin}
+    </form>
+</c:set>
+
+<c:set var="pl_page">
+    ${infoMsg}
+    <p class="form-signin-heading">Tilldela en roll genom att välja roll i listan och klicka sedan på <em>tilldela</em>-knappen.</p>
+    <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
+        <input type="hidden" name="type" value="assign">
+            ${tbl_pl}
+    </form>
+</c:set>
+
 <t:block pageTitle="Användarhanterare">
     <jsp:attribute name="stylesheets" />
     <jsp:attribute name="navigation" />
@@ -48,24 +147,12 @@
             <div class="col-md-8">
                 <h2 class="form-signin-heading">Hantering av användare</h2>
                 <p class="form-signin-heading">Lägg till en ny användare.</p>
-                <form class="form-inline" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
-                    <input type="hidden" name="type" value="add">
-                    <div class="form-group">
-                        <label for="inputUsername">Användarnamn</label>
-                        <input name="username" type="text" class="form-control" id="inputUsername" placeholder="Användarnamn">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputEmail">E-postadress</label>
-                        <input name="email" type="text" class="form-control" id="inputEmail" placeholder="E-post">
-                    </div>
-                    <button type="submit" class="btn btn-default">Skapa</button>
-                </form>
-                <br>
-                <p class="form-signin-heading">Ta bort existerande användare genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
-                <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
-                    <input type="hidden" name="type" value="delete">
-                    ${users}
-                </form>
+                <c:if test="${sessionScope.name eq 'admin'}">
+                    ${admin_page}
+                </c:if>
+                <c:if test="${sessionScope.name ne 'admin'}">
+                    ${pl_page}
+                </c:if>
             </div>
             <div class="col-md-2"></div>
         </div>
