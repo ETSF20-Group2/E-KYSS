@@ -3,6 +3,7 @@ package ekyss.controller;
 import base.servletBase;
 import ekyss.model.BeanFactory;
 import ekyss.model.BeanTransaction;
+import ekyss.model.BeanUtilities;
 import ekyss.model.DashboardBean;
 
 import javax.servlet.ServletContext;
@@ -43,7 +44,14 @@ public class DashboardServlet extends servletBase {
             if (session.getAttribute("name").equals("admin")) {
                 bean = new DashboardBean();
             } else if ((boolean) session.getAttribute("ProjectLeader")) {
-                bean = BeanFactory.getDashboardBeanPL();
+                bean = new DashboardBean();
+                if (request.getParameter("show") != null) {
+                    bean.setTab((String) request.getParameter("show"));
+                } else {
+                    bean.setTab("all");
+                }
+                System.out.println("### " + bean.getTab());
+                //bean = BeanFactory.getDashboardBeanPL(bean.getTab());
             } else {
                 bean = BeanFactory.getDashboardBean((String) session.getAttribute("name"), (String) session.getAttribute("group"));
             }

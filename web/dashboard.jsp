@@ -22,21 +22,7 @@
 <c:set target="${reportActivityList}" property="44" value="Hemläseri" />
 <c:set target="${reportActivityList}" property="100" value="Annat" />
 
-<c:set var="tbl_user">
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <td colspan="2">Namn:</td>
-                <td colspan="2">${sessionScope.name}</td>
-                <td colspan="2">Grupp:</td>
-                <td colspan="2">${sessionScope.group}</td>
-            </tr>
-            <tr>
-                <th colspan="6">Del A: Total tid (minuter)</th>
-                <td>_SUM_</td>
-            </tr>
-        </tbody>
-    </table>
+<c:set var="tbl_B">
     <table class="table table-bordered">
         <tbody>
         <tr>
@@ -90,6 +76,9 @@
         </c:forEach>
         </tbody>
     </table>
+</c:set>
+
+<c:set var="tbl_C">
     <table class="table table-bordered">
         <tbody>
         <tr>
@@ -132,7 +121,26 @@
     </table>
 </c:set>
 
-<c:set var="tbl_tot">
+<c:set var="tbl_user">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td colspan="2">Namn:</td>
+                <td colspan="2">${sessionScope.name}</td>
+                <td colspan="2">Grupp:</td>
+                <td colspan="2">${sessionScope.group}</td>
+            </tr>
+            <tr>
+                <th colspan="6">Del A: Total tid (minuter)</th>
+                <td>_SUM_</td>
+            </tr>
+        </tbody>
+    </table>
+    ${tbl_B}
+    ${tbl_C}
+</c:set>
+
+<c:set var="tbl_all">
     <table class="table table-bordered">
         <tbody>
         <tr>
@@ -141,99 +149,47 @@
         </tr>
         </tbody>
     </table>
+    ${tbl_B}
+    ${tbl_C}
+</c:set>
+
+<c:set var="tbl_role">
     <table class="table table-bordered">
         <tbody>
         <tr>
-            <th colspan="7">
-                Del B: Antal minuter per aktivitet<br>
-                <small>(Den totala summan av samtliga aktiviteter summeras automatiskt och läggs in ovanför.)</small>
-            </th>
-        </tr>
-        <tr>
-            <td>Nummer</td>
-            <td>Aktivitet</td>
-            <td class="text-center">D</td>
-            <td class="text-center">I</td>
-            <td class="text-center">F</td>
-            <td class="text-center">R</td>
-            <td>Total tid</td>
-        </tr>
-        <c:forEach items="${reportActivityList}" var="activity">
-            <c:if test="${activity.key eq 21}">
-                <tr>
-                    <td>Sum</td>
-                    <th></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <th></th>
-                </tr>
-            </c:if>
-            <tr>
-                <td>${activity.key}</td>
-                <c:if test="${activity.key lt 20}">
-                    <c:set var="d" value="${'d_'.concat(activity.key)}" />
-                    <c:set var="i" value="${'i_'.concat(activity.key)}" />
-                    <c:set var="f" value="${'f_'.concat(activity.key)}" />
-                    <c:set var="r" value="${'r_'.concat(activity.key)}" />
-                    <c:set var="t" value="${'t_'.concat(activity.key)}" />
-                    <td>${activity.value}</td>
-                    <td>${bean.getReportValuesSumPLtot()[d]}</td>
-                    <td>${bean.getReportValuesSumPLtot()[i]}</td>
-                    <td>${bean.getReportValuesSumPLtot()[f]}</td>
-                    <td>${bean.getReportValuesSumPLtot()[r]}</td>
-                    <td>${bean.getReportValuesSumPLtot()[t]}</td>
-                </c:if>
-                <c:if test="${activity.key gt 20}">
-                    <c:set var="t" value="${'t_'.concat(activity.key)}" />
-                    <td colspan="5">${activity.value}</td>
-                    <td>${bean.getReportValuesSumPLtot()[t]}</td>
-                </c:if>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    <table class="table table-bordered">
-        <tbody>
-        <tr>
-            <th colspan="7">
-                Del C: Tidsaktivitet för olika underaktiviteter<br>
-                <small>(Värdena summeras ihop automatiskt.)</small>
-            </th>
-        </tr>
-        <tr>
-            <td>Aktivitetstyp</td>
-            <td>Aktivitetskod</td>
-            <td>Beskrivning</td>
-            <td>Summa</td>
-        </tr>
-        <tr>
-            <td>Utveckling och dokumentation</td>
-            <td>D</td>
-            <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
-            <td>_SUM_</td>
-        </tr>
-        <tr>
-            <td>Informell granskning</td>
-            <td>I</td>
-            <td>Spenderad tid åt förberedelse och åt informell granskning.</td>
-            <td>_SUM_</td>
-        </tr>
-        <tr>
-            <td>Formell granskning</td>
-            <td>F</td>
-            <td>Spenderad tid åt föreberedelse och åt informell granskning.</td>
-            <td>_SUM_</td>
-        </tr>
-        <tr>
-            <td>Omarbete, förbättring, rättning</td>
-            <td>R</td>
-            <td>Spenderad tid åt förbättring, omprövning eller dokument- och designobjektsrättning.</td>
+            <th colspan="6">Del A: Total tid (minuter)</th>
             <td>_SUM_</td>
         </tr>
         </tbody>
     </table>
+    ${tbl_B}
+    ${tbl_C}
+</c:set>
+
+<c:set var="tbl_week">
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th colspan="6">Del A: Total tid (minuter)</th>
+            <td>_SUM_</td>
+        </tr>
+        </tbody>
+    </table>
+    ${tbl_B}
+    ${tbl_C}
+</c:set>
+
+<c:set var="tbl_stage">
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th colspan="6">Del A: Total tid (minuter)</th>
+            <td>_SUM_</td>
+        </tr>
+        </tbody>
+    </table>
+    ${tbl_B}
+    ${tbl_C}
 </c:set>
 
 <c:set var="container_admin">
@@ -248,15 +204,70 @@
         <h2 class="form-signin-heading">Översikt</h2>
         <p class="form-signin-heading">Här ser du statistik för tidrapporter över all tid som rapporterats i projektet. Du kan se tidsantgång per användare, roll, aktivitet, vecka, fas och dokument.</p>
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="${pageContext.request.contextPath}/dashboard?show=all" aria-controls="all" role="tab" data-toggle="tab">Sammanställning</a></li>
-            <li role="presentation"><a href="${pageContext.request.contextPath}/dashboard?show=user" aria-controls="user" role="tab" data-toggle="tab">Användare</a></li>
-            <li role="presentation"><a href="${pageContext.request.contextPath}/dashboard?show=role" aria-controls="role" role="tab" data-toggle="tab">Roll</a></li>
-            <li role="presentation"><a href="${pageContext.request.contextPath}/dashboard?show=week" aria-controls="week" role="tab" data-toggle="tab">Vecka</a></li>
-            <li role="presentation"><a href="${pageContext.request.contextPath}/dashboard?show=stage" aria-controls="stage" role="tab" data-toggle="tab">Fas</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'all'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=all" aria-controls="all" role="tab">Sammanställning</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'user'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=user" aria-controls="user" role="tab">Användare</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'role'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=role" aria-controls="role" role="tab">Roll</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'week'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=week" aria-controls="week" role="tab">Vecka</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'stage'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=stage" aria-controls="stage" role="tab">Fas</a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="all">
                 <p>En total sammanställning över all tid som rapporterats in i projektet.</p>
+                <c:choose>
+                    <c:when test="${bean.getTab() eq 'user'}">
+                        <form class="form-inline" name="input" method="GET" action="${pageContext.request.contextPath}/dashboard">
+                            <input type="hidden" name="show" value="user">
+                            <select name="user" type="text" class="form-control">
+                                <option value="USER_ID">USER_NAME</option>
+                            </select>
+                            <input type="submit" value="Välj" class="btn btn-success">
+                        </form>
+                        <br>
+                        ${tbl_user}
+                    </c:when>
+                    <c:when test="${bean.getTab() eq 'role'}">
+                        <form class="form-inline" name="input" method="GET" action="${pageContext.request.contextPath}/dashboard">
+                            <input type="hidden" name="show" value="role">
+                            <select name="role" type="text" class="form-control">
+                                <option value="PL">PL</option>
+                                <option value="SG">SG</option>
+                                <option value="UG">UG</option>
+                                <option value="TG">TG</option>
+                            </select>
+                            <input type="submit" value="Välj" class="btn btn-success">
+                        </form>
+                        <br>
+                        ${tbl_role}
+                    </c:when>
+                    <c:when test="${bean.getTab() eq 'week'}">
+                        <form class="form-inline" name="input" method="GET" action="${pageContext.request.contextPath}/dashboard">
+                            <input type="hidden" name="show" value="week">
+                            <select name="week" type="text" class="form-control">
+                                <option value="1">1</option>
+                            </select>
+                            <input type="submit" value="Välj" class="btn btn-success">
+                        </form>
+                        <br>
+                        ${tbl_week}
+                    </c:when>
+                    <c:when test="${bean.getTab() eq 'stage'}">
+                        <form class="form-inline" name="input" method="GET" action="${pageContext.request.contextPath}/dashboard">
+                            <input type="hidden" name="show" value="stage">
+                            <select name="stage" type="text" class="form-control">
+                                <option value="1">Fas I</option>
+                                <option value="2">Fas II</option>
+                                <option value="3">Fas III</option>
+                                <option value="4">Fas IV</option>
+                            </select>
+                            <input type="submit" value="Välj" class="btn btn-success">
+                        </form>
+                        <br>
+                        ${tbl_stage}
+                    </c:when>
+                    <c:otherwise>
+                        ${tbl_all}
+                    </c:otherwise>
+                </c:choose>
                 ${tbl_tot}
             </div>
         </div>
@@ -293,17 +304,7 @@
         </style>
     </jsp:attribute>
     <jsp:attribute name="navigation" />
-    <jsp:attribute name="javascript">
-        <script>
-            $(document).ready(function(){
-                activaTab('${bean.getTab()}');
-            });
-
-            function activaTab(tab){
-                $('.nav-tabs a[href="#' + tab + '"]').tab('show');
-            };
-        </script>
-    </jsp:attribute>
+    <jsp:attribute name="javascript" />
     <jsp:body>
         <div class="row">
             <div class="col-md-2"></div>
