@@ -145,7 +145,7 @@
         <tbody>
         <tr>
             <th colspan="6">Del A: Total tid (minuter)</th>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sumA")}</td>
         </tr>
         </tbody>
     </table>
@@ -158,7 +158,7 @@
         <tbody>
         <tr>
             <th colspan="6">Del A: Total tid (minuter)</th>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sumA")}</td>
         </tr>
         </tbody>
     </table>
@@ -171,7 +171,7 @@
         <tbody>
         <tr>
             <th colspan="6">Del A: Total tid (minuter)</th>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sumA")}</td>
         </tr>
         </tbody>
     </table>
@@ -184,7 +184,7 @@
         <tbody>
         <tr>
             <th colspan="6">Del A: Total tid (minuter)</th>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sumA")}</td>
         </tr>
         </tbody>
     </table>
@@ -218,7 +218,16 @@
                         <form class="form-inline" name="input" method="GET" action="${pageContext.request.contextPath}/dashboard">
                             <input type="hidden" name="show" value="user">
                             <select name="user" type="text" class="form-control">
-                                <option value="USER_ID">USER_NAME</option>
+                                <c:forEach items="${bean.getUserList()}" var="user">
+                                    <c:choose>
+                                        <c:when test="${user[0] eq bean.getUser()}">
+                                            <option value="${user[0]}" selected>${user[0]}</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${user[0]}">${user[0]}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
                             </select>
                             <input type="submit" value="Välj" class="btn btn-success">
                         </form>

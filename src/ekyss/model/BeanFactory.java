@@ -114,27 +114,19 @@ public class BeanFactory {
 	}
 
 	public static DashboardBean getDashboardBean(String user, String group) {
-        DashboardBean bean = new DashboardBean();
-        bean.setUser(user);
-        bean.setGroup(group);
-        Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
+		DashboardBean bean = new DashboardBean();
+		bean.setUser(user);
+		bean.setGroup(group);
+		Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
 		bean.setReportValuesSum(map);
-	    return bean;
+		return bean;
 	}
 
-	public static DashboardBean getDashboardBeanPL(String tab, String group, String user) {
+	public static DashboardBean getDashboardBeanPL(String tab, String group, String user, String role, String week, String stage) {
 		DashboardBean bean = null;
 
 		switch (tab) {
-			case "all":
-				bean = new DashboardBean();
-				bean.setTab("all");
-				break;
 			case "user":
-				bean = new DashboardBean();
-				bean.setTab("user");
-				break;
-			case "role":
 				List<String[]> users = new DatabaseHandler().getAllMembers(group);
 				if (user == null) {
 					bean = getDashboardBean(users.get(0)[0], group);
@@ -143,7 +135,16 @@ public class BeanFactory {
 				}
 				bean.setUserList(users);
 				bean.setGroup(group);
+				bean.setTab("user");
+				break;
+			case "role":
+				bean = new DashboardBean();
 				bean.setTab("role");
+				if (role == null) {
+					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, "PL", 0));
+				} else {
+					bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, role, 0));
+				}
 				break;
 			case "week":
 				bean = new DashboardBean();
@@ -156,13 +157,11 @@ public class BeanFactory {
 			default:
 				bean = new DashboardBean();
 				bean.setTab("all");
+				bean.setReportValuesSum(new DatabaseHandler().getTimeReport(group, null, null, 0));
 				break;
 		}
 		return bean;
 	}
-
-
-
 
 	
 	    /* GroupManagementServlet */
