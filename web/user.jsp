@@ -12,7 +12,7 @@
     <c:if test="${bean.getErrorCode() eq 2}">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            Fel format på de nya lösenorden.
+            Fel format på de nya lösenorden. Lösenordet måste bestå av <u>exakt</u> 6 tecken.
         </div>
     </c:if>
     <c:if test="${bean.getErrorCode() eq 3}">
