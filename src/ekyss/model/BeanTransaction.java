@@ -3,6 +3,10 @@ package ekyss.model;
 public class BeanTransaction {
 
 
+	public static boolean assignRoles(String group, String[] assigns){
+		return new DatabaseHandler().assignRoles(group, assigns);
+	}
+
 	public static boolean assignPlToGroup(GroupManagementBean bean){
 		return new DatabaseHandler().assignLeader(bean.getAssignGroupPl(), bean.getAssignUserPl());
 	}
