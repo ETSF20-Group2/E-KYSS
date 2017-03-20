@@ -126,9 +126,9 @@
         <tbody>
             <tr>
                 <td colspan="2">Namn:</td>
-                <td colspan="2">${sessionScope.name}</td>
+                <td colspan="2">${bean.getUser()}</td>
                 <td colspan="2">Grupp:</td>
-                <td colspan="2">${sessionScope.group}</td>
+                <td colspan="2">${bean.getGroup()}</td>
             </tr>
             <tr>
                 <th colspan="6">Del A: Total tid (minuter)</th>

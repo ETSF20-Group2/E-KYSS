@@ -1,7 +1,9 @@
 package ekyss.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DashboardBean implements Serializable {
@@ -15,6 +17,8 @@ public class DashboardBean implements Serializable {
     private Integer sum_i = 0;
     private Integer sum_f = 0;
     private Integer sum_r = 0;
+    private List<String[]> userList = new ArrayList<>();
+
 
     public void setGroup(String group) {
         this.group = group;
@@ -58,6 +62,14 @@ public class DashboardBean implements Serializable {
             case "sum_r": return sum_r;
             default: return null;
         }
+    }
+
+    public List<String[]> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<String[]> userList) {
+        this.userList = userList;
     }
 
     private void setSum() {
