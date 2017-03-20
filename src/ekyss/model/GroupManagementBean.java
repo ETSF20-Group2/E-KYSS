@@ -67,9 +67,7 @@ public class GroupManagementBean implements Serializable {
      *                 4 = ej lyckad tilldelning av användare till grupp
      */
     public void setErrorCode(int err_code) {
-        if ( (err_code-0)*(err_code-4) <= 0 ) {
-            this.err_code = err_code;
-        }
+        this.err_code = err_code;
     }
 
     public int getErrorCode() {
