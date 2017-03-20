@@ -87,7 +87,6 @@ public class servletBase extends HttpServlet {
         else {
             long difftime = 0;
             Date lastAccessTime = new Date(session.getLastAccessedTime());
-            System.out.println("Diff: " + (difftime = calcActivityTime(createTime, lastAccessTime, TimeUnit.MILLISECONDS)));
             return(TimeUnit.MINUTES.convert(difftime, TimeUnit.SECONDS) < maxInterval);
         }
     }
@@ -124,7 +123,6 @@ public class servletBase extends HttpServlet {
         if (username != null && loggedIn(request)) {
             boolean isPL = (boolean) session.getAttribute("ProjectLeader");
             String path = request.getServletPath();
-
             switch (path) {
                 case "/dashboard":
                     return true;
@@ -142,8 +140,6 @@ public class servletBase extends HttpServlet {
                     return false;
             }
         }
-
         return false;
     }
-
 }

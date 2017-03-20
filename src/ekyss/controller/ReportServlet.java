@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @WebServlet(
         name="ReportServlet",
@@ -36,14 +37,30 @@ public class ReportServlet extends servletBase {
 
     private int err_code = 0;
 
+    /**
+     * Validerar all input vid uppdatering av tidrapport.
+     * @param req
+     * @return
+     */
+    public boolean validate(HttpServletRequest req) {
+        Enumeration<String> stringEnumeration = req.getParameterNames();
+        while(stringEnumeration.hasMoreElements()) {
+            if((Integer.getInteger(req.getParameter(stringEnumeration.nextElement())) == null)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (securityCheck(request)) {
+        if (securityCheck(request) && validate(request)) {
             // Användaren är inloggad och har behörighet
             HttpSession session = request.getSession();
             String user = (String) session.getAttribute("name");
             String group = (String) session.getAttribute("group");
             ReportBean rb = new ReportBean();
             BeanUtilities.populateBean(rb, request);
+
             rb.setUser(user);
             rb.setGroup(group);
             if (rb.getType().equals(TYPE_CREATE)) {
@@ -71,7 +88,6 @@ public class ReportServlet extends servletBase {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
             HttpSession session = request.getSession();
@@ -84,7 +100,6 @@ public class ReportServlet extends servletBase {
                 bean = BeanFactory.fillReportBean(bean, user, group, bean.getWeek());
                 tab = "update";
             }
-
             bean.setTab(tab);
             forwardToView(request, response, "/report.jsp", bean);
             err_code = 0;
@@ -92,7 +107,5 @@ public class ReportServlet extends servletBase {
             // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
         }
-
     }
-
 }
