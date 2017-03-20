@@ -6,10 +6,25 @@ import java.util.Map;
 
 public class DashboardBean implements Serializable {
 
-
-    private Integer summary = null;
+    private String user = null;
+    private String group = null;
     private Map<String, Integer> reportValuesSum = new HashMap<>();
 
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getUser() {
+        return user;
+    }
 
     public void setReportValuesSum(Map<String, Integer> reportValuesSum) {
         this.reportValuesSum = reportValuesSum;

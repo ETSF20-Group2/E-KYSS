@@ -38,9 +38,8 @@ public class DashboardServlet extends servletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
-            DashboardBean bean = BeanFactory.getDashboardBean();
-
             HttpSession session = request.getSession(true);
+            DashboardBean bean = BeanFactory.getDashboardBean((String) session.getAttribute("name"), (String) session.getAttribute("group"));
             forwardToView(request, response, "/dashboard.jsp",bean);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet

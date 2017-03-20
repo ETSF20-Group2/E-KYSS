@@ -48,7 +48,7 @@
             </tr>
             <tr>
                 <th colspan="6">Del A: Total tid denna vecka (minuter)</th>
-                <td>9999</td>
+                <td>_SUM_</td>
             </tr>
             </tbody>
         </table>
@@ -84,17 +84,22 @@
                 <tr>
                     <td>${activity.key}</td>
                     <c:if test="${activity.key lt 20}">
+                        <c:set var="d" value="${'d_'.concat(activity.key)}" />
+                        <c:set var="i" value="${'i_'.concat(activity.key)}" />
+                        <c:set var="f" value="${'f_'.concat(activity.key)}" />
+                        <c:set var="r" value="${'r_'.concat(activity.key)}" />
+                        <c:set var="t" value="${'t_'.concat(activity.key)}" />
                         <td>${activity.value}</td>
-                        <td>9999</td>
-                        <td>9999</td>
-                        <td>9999</td>
-                        <td>9999</td>
-                        <td>9999</td>
+                        <td>${bean.getReportValuesSum()[d]}</td>
+                        <td>${bean.getReportValuesSum()[i]}</td>
+                        <td>${bean.getReportValuesSum()[f]}</td>
+                        <td>${bean.getReportValuesSum()[r]}</td>
+                        <td>${bean.getReportValuesSum()[t]}</td>
                     </c:if>
                     <c:if test="${activity.key gt 20}">
+                        <c:set var="t" value="${'t_'.concat(activity.key)}" />
                         <td colspan="5">${activity.value}</td>
-                        <td>9999</td>
-
+                        <td>${bean.getReportValuesSum()[t]}</td>
                     </c:if>
                 </tr>
             </c:forEach>
@@ -117,26 +122,26 @@
             <tr>
                 <td>Utveckling och dokumentation</td>
                 <td>D</td>
-                <td>Utveckling av ny kod, testfall och dokumentation, klusive systemdokumentering.</td>
-                <td>9999</td>
+                <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
+                <td>_SUM_</td>
             </tr>
             <tr>
                 <td>Informell granskning</td>
                 <td>I</td>
                 <td>Spenderad tid åt förberedelse och åt informell granskning.</td>
-                <td>9999</td>
+                <td>_SUM_</td>
             </tr>
             <tr>
                 <td>Formell granskning</td>
                 <td>F</td>
                 <td>Spenderad tid åt föreberedelse och åt informell granskning.</td>
-                <td>9999</td>
+                <td>_SUM_</td>
             </tr>
             <tr>
                 <td>Omarbete, förbättring, rättning</td>
                 <td>R</td>
                 <td>Spenderad tid åt förbättring, omprövning eller dokument- och designobjektsrättning.</td>
-                <td>9999</td>
+                <td>_SUM_</td>
             </tr>
             </tbody>
         </table>
