@@ -113,7 +113,7 @@ public class BeanFactory {
 	    return bean;
 	}
 
-	public static DashboardBean getDashboardBeanPL() {
+	public static DashboardBean getDashboardBeanPL(String tab) {
 		DashboardBean bean = new DashboardBean();
 		// TODO: implementera funktionaliteten för Dahboard för PL.
 		return bean;
