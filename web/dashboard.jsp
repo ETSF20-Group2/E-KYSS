@@ -22,24 +22,9 @@
 <c:set target="${reportActivityList}" property="44" value="Hemläseri" />
 <c:set target="${reportActivityList}" property="100" value="Annat" />
 
-<c:set var="container_admin">
-    <c:if test="${sessionScope.name eq 'admin'}">
-        <h2 class="form-signin-heading">Välkommen, administratör!</h2>
-        <p class="form-signin-heading">Välj önskad menyval i menyn för att lägga till eller ta bort användare, skapa projektgrupper samt koppla användare till projektgrupper.</p>
-    </c:if>
-</c:set>
-<c:set var="container_pl">
-    <c:if test="${sessionScope.ProjectLeader}">
-        <h2 class="form-signin-heading">Översikt</h2>
-        <p class="form-signin-heading">Här ser du statistik för tidrapporter över all tid som rapporterats i projektet. Du kan se tidsantgång per användare, roll, aktivitet, vecka, fas och dokument.</p>
-    </c:if>
-</c:set>
-<c:set var="container_others">
-    <c:if test="${not sessionScope.ProjectLeader and sessionScope.name ne 'admin'}">
-        <h2 class="form-signin-heading">Översikt</h2>
-        <p class="form-signin-heading">Här kan du se din sammanfattning av din rapporterade tid.</p>
-        <table class="table table-bordered">
-            <tbody>
+<c:set var="tbl_user">
+    <table class="table table-bordered">
+        <tbody>
             <tr>
                 <td colspan="2">Namn:</td>
                 <td colspan="2">${sessionScope.name}</td>
@@ -47,111 +32,251 @@
                 <td colspan="2">${sessionScope.group}</td>
             </tr>
             <tr>
-                <th colspan="6">Del A: Total tid denna vecka (minuter)</th>
+                <th colspan="6">Del A: Total tid (minuter)</th>
                 <td>_SUM_</td>
             </tr>
-            </tbody>
-        </table>
-        <table class="table table-bordered">
-            <tbody>
-            <tr>
-                <th colspan="7">
-                    Del B: Antal minuter per aktivitet<br>
-                    <small>(Den totala summan av samtliga aktiviteter summeras automatiskt och läggs in ovanför.)</small>
-                </th>
-            </tr>
-            <tr>
-                <td>Nummer</td>
-                <td>Aktivitet</td>
-                <td class="text-center">D</td>
-                <td class="text-center">I</td>
-                <td class="text-center">F</td>
-                <td class="text-center">R</td>
-                <td>Total tid</td>
-            </tr>
-            <c:forEach items="${reportActivityList}" var="activity">
-                <c:if test="${activity.key eq 21}">
-                    <tr>
-                        <td>Sum</td>
-                        <th></th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <th></th>
-                    </tr>
-                </c:if>
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th colspan="7">
+                Del B: Antal minuter per aktivitet<br>
+                <small>(Den totala summan av samtliga aktiviteter summeras automatiskt och läggs in ovanför.)</small>
+            </th>
+        </tr>
+        <tr>
+            <td>Nummer</td>
+            <td>Aktivitet</td>
+            <td class="text-center">D</td>
+            <td class="text-center">I</td>
+            <td class="text-center">F</td>
+            <td class="text-center">R</td>
+            <td>Total tid</td>
+        </tr>
+        <c:forEach items="${reportActivityList}" var="activity">
+            <c:if test="${activity.key eq 21}">
                 <tr>
-                    <td>${activity.key}</td>
-                    <c:if test="${activity.key lt 20}">
-                        <c:set var="d" value="${'d_'.concat(activity.key)}" />
-                        <c:set var="i" value="${'i_'.concat(activity.key)}" />
-                        <c:set var="f" value="${'f_'.concat(activity.key)}" />
-                        <c:set var="r" value="${'r_'.concat(activity.key)}" />
-                        <c:set var="t" value="${'t_'.concat(activity.key)}" />
-                        <td>${activity.value}</td>
-                        <td>${bean.getReportValuesSum()[d]}</td>
-                        <td>${bean.getReportValuesSum()[i]}</td>
-                        <td>${bean.getReportValuesSum()[f]}</td>
-                        <td>${bean.getReportValuesSum()[r]}</td>
-                        <td>${bean.getReportValuesSum()[t]}</td>
-                    </c:if>
-                    <c:if test="${activity.key gt 20}">
-                        <c:set var="t" value="${'t_'.concat(activity.key)}" />
-                        <td colspan="5">${activity.value}</td>
-                        <td>${bean.getReportValuesSum()[t]}</td>
-                    </c:if>
+                    <td>Sum</td>
+                    <th></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <th></th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        <table class="table table-bordered">
-            <tbody>
+            </c:if>
             <tr>
-                <th colspan="7">
-                    Del C: Tidsaktivitet för olika underaktiviteter<br>
-                    <small>(Värdena summeras ihop automatiskt.)</small>
-                </th>
+                <td>${activity.key}</td>
+                <c:if test="${activity.key lt 20}">
+                    <c:set var="d" value="${'d_'.concat(activity.key)}" />
+                    <c:set var="i" value="${'i_'.concat(activity.key)}" />
+                    <c:set var="f" value="${'f_'.concat(activity.key)}" />
+                    <c:set var="r" value="${'r_'.concat(activity.key)}" />
+                    <c:set var="t" value="${'t_'.concat(activity.key)}" />
+                    <td>${activity.value}</td>
+                    <td>${bean.getReportValuesSum()[d]}</td>
+                    <td>${bean.getReportValuesSum()[i]}</td>
+                    <td>${bean.getReportValuesSum()[f]}</td>
+                    <td>${bean.getReportValuesSum()[r]}</td>
+                    <td>${bean.getReportValuesSum()[t]}</td>
+                </c:if>
+                <c:if test="${activity.key gt 20}">
+                    <c:set var="t" value="${'t_'.concat(activity.key)}" />
+                    <td colspan="5">${activity.value}</td>
+                    <td>${bean.getReportValuesSum()[t]}</td>
+                </c:if>
             </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th colspan="7">
+                Del C: Tidsaktivitet för olika underaktiviteter<br>
+                <small>(Värdena summeras ihop automatiskt.)</small>
+            </th>
+        </tr>
+        <tr>
+            <td>Aktivitetstyp</td>
+            <td>Aktivitetskod</td>
+            <td>Beskrivning</td>
+            <td>Summa</td>
+        </tr>
+        <tr>
+            <td>Utveckling och dokumentation</td>
+            <td>D</td>
+            <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
+            <td>_SUM_</td>
+        </tr>
+        <tr>
+            <td>Informell granskning</td>
+            <td>I</td>
+            <td>Spenderad tid åt förberedelse och åt informell granskning.</td>
+            <td>_SUM_</td>
+        </tr>
+        <tr>
+            <td>Formell granskning</td>
+            <td>F</td>
+            <td>Spenderad tid åt föreberedelse och åt informell granskning.</td>
+            <td>_SUM_</td>
+        </tr>
+        <tr>
+            <td>Omarbete, förbättring, rättning</td>
+            <td>R</td>
+            <td>Spenderad tid åt förbättring, omprövning eller dokument- och designobjektsrättning.</td>
+            <td>_SUM_</td>
+        </tr>
+        </tbody>
+    </table>
+</c:set>
+
+<c:set var="tbl_tot">
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th colspan="6">Del A: Total tid (minuter)</th>
+            <td>_SUM_</td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th colspan="7">
+                Del B: Antal minuter per aktivitet<br>
+                <small>(Den totala summan av samtliga aktiviteter summeras automatiskt och läggs in ovanför.)</small>
+            </th>
+        </tr>
+        <tr>
+            <td>Nummer</td>
+            <td>Aktivitet</td>
+            <td class="text-center">D</td>
+            <td class="text-center">I</td>
+            <td class="text-center">F</td>
+            <td class="text-center">R</td>
+            <td>Total tid</td>
+        </tr>
+        <c:forEach items="${reportActivityList}" var="activity">
+            <c:if test="${activity.key eq 21}">
+                <tr>
+                    <td>Sum</td>
+                    <th></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <th></th>
+                </tr>
+            </c:if>
             <tr>
-                <td>Aktivitetstyp</td>
-                <td>Aktivitetskod</td>
-                <td>Beskrivning</td>
-                <td>Summa</td>
+                <td>${activity.key}</td>
+                <c:if test="${activity.key lt 20}">
+                    <c:set var="d" value="${'d_'.concat(activity.key)}" />
+                    <c:set var="i" value="${'i_'.concat(activity.key)}" />
+                    <c:set var="f" value="${'f_'.concat(activity.key)}" />
+                    <c:set var="r" value="${'r_'.concat(activity.key)}" />
+                    <c:set var="t" value="${'t_'.concat(activity.key)}" />
+                    <td>${activity.value}</td>
+                    <td>${bean.getReportValuesSumPLtot()[d]}</td>
+                    <td>${bean.getReportValuesSumPLtot()[i]}</td>
+                    <td>${bean.getReportValuesSumPLtot()[f]}</td>
+                    <td>${bean.getReportValuesSumPLtot()[r]}</td>
+                    <td>${bean.getReportValuesSumPLtot()[t]}</td>
+                </c:if>
+                <c:if test="${activity.key gt 20}">
+                    <c:set var="t" value="${'t_'.concat(activity.key)}" />
+                    <td colspan="5">${activity.value}</td>
+                    <td>${bean.getReportValuesSumPLtot()[t]}</td>
+                </c:if>
             </tr>
-            <tr>
-                <td>Utveckling och dokumentation</td>
-                <td>D</td>
-                <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
-                <td>_SUM_</td>
-            </tr>
-            <tr>
-                <td>Informell granskning</td>
-                <td>I</td>
-                <td>Spenderad tid åt förberedelse och åt informell granskning.</td>
-                <td>_SUM_</td>
-            </tr>
-            <tr>
-                <td>Formell granskning</td>
-                <td>F</td>
-                <td>Spenderad tid åt föreberedelse och åt informell granskning.</td>
-                <td>_SUM_</td>
-            </tr>
-            <tr>
-                <td>Omarbete, förbättring, rättning</td>
-                <td>R</td>
-                <td>Spenderad tid åt förbättring, omprövning eller dokument- och designobjektsrättning.</td>
-                <td>_SUM_</td>
-            </tr>
-            </tbody>
-        </table>
+        </c:forEach>
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th colspan="7">
+                Del C: Tidsaktivitet för olika underaktiviteter<br>
+                <small>(Värdena summeras ihop automatiskt.)</small>
+            </th>
+        </tr>
+        <tr>
+            <td>Aktivitetstyp</td>
+            <td>Aktivitetskod</td>
+            <td>Beskrivning</td>
+            <td>Summa</td>
+        </tr>
+        <tr>
+            <td>Utveckling och dokumentation</td>
+            <td>D</td>
+            <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
+            <td>_SUM_</td>
+        </tr>
+        <tr>
+            <td>Informell granskning</td>
+            <td>I</td>
+            <td>Spenderad tid åt förberedelse och åt informell granskning.</td>
+            <td>_SUM_</td>
+        </tr>
+        <tr>
+            <td>Formell granskning</td>
+            <td>F</td>
+            <td>Spenderad tid åt föreberedelse och åt informell granskning.</td>
+            <td>_SUM_</td>
+        </tr>
+        <tr>
+            <td>Omarbete, förbättring, rättning</td>
+            <td>R</td>
+            <td>Spenderad tid åt förbättring, omprövning eller dokument- och designobjektsrättning.</td>
+            <td>_SUM_</td>
+        </tr>
+        </tbody>
+    </table>
+</c:set>
+
+<c:set var="container_admin">
+    <c:if test="${sessionScope.name eq 'admin'}">
+        <h2 class="form-signin-heading">Välkommen, administratör!</h2>
+        <p class="form-signin-heading">Välj önskad menyval i menyn för att lägga till eller ta bort användare, skapa projektgrupper samt koppla användare till projektgrupper.</p>
     </c:if>
 </c:set>
+
+<c:set var="container_pl">
+    <c:if test="${sessionScope.ProjectLeader}">
+        <h2 class="form-signin-heading">Översikt</h2>
+        <p class="form-signin-heading">Här ser du statistik för tidrapporter över all tid som rapporterats i projektet. Du kan se tidsantgång per användare, roll, aktivitet, vecka, fas och dokument.</p>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="${pageContext.request.contextPath}/dashboard?show=all" aria-controls="all" role="tab" data-toggle="tab">Sammanställning</a></li>
+            <li role="presentation"><a href="${pageContext.request.contextPath}/dashboard?show=user" aria-controls="user" role="tab" data-toggle="tab">Användare</a></li>
+            <li role="presentation"><a href="${pageContext.request.contextPath}/dashboard?show=role" aria-controls="role" role="tab" data-toggle="tab">Roll</a></li>
+            <li role="presentation"><a href="${pageContext.request.contextPath}/dashboard?show=week" aria-controls="week" role="tab" data-toggle="tab">Vecka</a></li>
+            <li role="presentation"><a href="${pageContext.request.contextPath}/dashboard?show=stage" aria-controls="stage" role="tab" data-toggle="tab">Fas</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="all">
+                <p>En total sammanställning över all tid som rapporterats in i projektet.</p>
+                ${tbl_tot}
+            </div>
+        </div>
+    </c:if>
+</c:set>
+
+<c:set var="container_others">
+    <c:if test="${not sessionScope.ProjectLeader and sessionScope.name ne 'admin'}">
+        <h2 class="form-signin-heading">Översikt</h2>
+        <p class="form-signin-heading">Här kan du se din sammanfattning av din rapporterade tid.</p>
+        ${tbl_user}
+    </c:if>
+</c:set>
+
 <c:set var="container">
     ${container_admin}
     ${container_pl}
     ${container_others}
 </c:set>
+
 <t:block pageTitle="Översiktsidan">
     <jsp:attribute name="stylesheets">
         <style>
@@ -168,14 +293,24 @@
         </style>
     </jsp:attribute>
     <jsp:attribute name="navigation" />
-    <jsp:attribute name="javascript" />
+    <jsp:attribute name="javascript">
+        <script>
+            $(document).ready(function(){
+                activaTab('${bean.getTab()}');
+            });
+
+            function activaTab(tab){
+                $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+            };
+        </script>
+    </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
                 ${container}
             </div>
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
         </div>
     </jsp:body>
 </t:block>

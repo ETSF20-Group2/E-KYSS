@@ -113,6 +113,12 @@ public class BeanFactory {
 	    return bean;
 	}
 
+	public static DashboardBean getDashboardBeanPL() {
+		DashboardBean bean = new DashboardBean();
+		// TODO: implementera funktionaliteten för Dahboard för PL.
+		return bean;
+	}
+
 
 
 
