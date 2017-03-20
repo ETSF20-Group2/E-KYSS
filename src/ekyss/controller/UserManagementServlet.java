@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
@@ -22,7 +23,13 @@ public class UserManagementServlet extends servletBase {
     private static final long serialVersionUID = 1L;
     private final String TYPE_CREATE = "add";
     private final String TYPE_DELETE = "delete";
+    private final String TYPE_ASSIGN = "assign";
     private static final long MAXPASSWORDLENGTH = 6;
+
+    private final int ERR_ASSIGNED = 1;
+    private final int ERR_NOTASSIGNED = 2;
+
+    private int err_code = 0;
 
     protected boolean validateInput(UserManagementBean umb) {
         if (umb.getUsername().length() >= 5 && umb.getUsername().length() <= 10) {
@@ -53,7 +60,9 @@ public class UserManagementServlet extends servletBase {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
-            UserManagementBean umb = BeanFactory.getUserManagementBean();
+            HttpSession session = request.getSession();
+            String group = (String) session.getAttribute("group");
+            UserManagementBean umb = BeanFactory.getUserManagementBean(group);
             BeanUtilities.populateBean(umb,request);
             System.out.println("Type = " + umb.getType());
             if(umb.getType().equals(TYPE_CREATE)) {
@@ -72,6 +81,11 @@ public class UserManagementServlet extends servletBase {
                 BeanTransaction.deleteUsers(umb.getDeleteUserList());
                 System.out.println("Deleted user: " + Arrays.toString(umb.getDeleteUserList()));
             }
+            else if(umb.getType().equals(TYPE_ASSIGN)){
+                BeanTransaction.assignRoles(group, umb.getAssignRole());
+                err_code = ERR_ASSIGNED;
+
+            }
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
             System.out.println("sendRedirect");
@@ -83,11 +97,15 @@ public class UserManagementServlet extends servletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityCheck(request)) {
             // Användaren är inloggad och har behörighet
+            HttpSession session = request.getSession();
+            String group = (String) session.getAttribute("group");
             System.out.println("doGet");
-            UserManagementBean bean = BeanFactory.getUserManagementBean();
+            UserManagementBean bean = BeanFactory.getUserManagementBean(group);
             System.out.println("bean created");
             System.out.println(bean.getAllUsers().toString());
+            bean.setErr_code(err_code);
             forwardToView(request, response, "/usermanagement.jsp",bean);
+            err_code = 0;
             System.out.println("forwarded to view");
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
