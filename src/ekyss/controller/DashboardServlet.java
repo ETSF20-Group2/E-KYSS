@@ -44,14 +44,11 @@ public class DashboardServlet extends servletBase {
             if (session.getAttribute("name").equals("admin")) {
                 bean = new DashboardBean();
             } else if ((boolean) session.getAttribute("ProjectLeader")) {
-                bean = new DashboardBean();
                 if (request.getParameter("show") != null) {
-                    bean.setTab((String) request.getParameter("show"));
+                    bean = BeanFactory.getDashboardBeanPL(request.getParameter("show"), (String) session.getAttribute("group"), null);
                 } else {
-                    bean.setTab("all");
+                    bean = BeanFactory.getDashboardBeanPL("all", (String) session.getAttribute("group"), null);
                 }
-                System.out.println("### " + bean.getTab());
-                //bean = BeanFactory.getDashboardBeanPL(bean.getTab());
             } else {
                 bean = BeanFactory.getDashboardBean((String) session.getAttribute("name"), (String) session.getAttribute("group"));
             }

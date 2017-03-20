@@ -1,6 +1,7 @@
 package ekyss.model;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 public class BeanFactory {
@@ -109,14 +110,49 @@ public class BeanFactory {
 
 	public static DashboardBean getDashboardBean(String user, String group) {
         DashboardBean bean = new DashboardBean();
+        bean.setUser(user);
+        bean.setGroup(group);
         Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
 		bean.setReportValuesSum(map);
 	    return bean;
 	}
 
-	public static DashboardBean getDashboardBeanPL(String tab) {
-		DashboardBean bean = new DashboardBean();
-		// TODO: implementera funktionaliteten för Dahboard för PL.
+	public static DashboardBean getDashboardBeanPL(String tab, String group, String user) {
+		DashboardBean bean = null;
+
+		switch (tab) {
+			case "all":
+				bean = new DashboardBean();
+				bean.setTab("all");
+				break;
+			case "user":
+				bean = new DashboardBean();
+				bean.setTab("user");
+				break;
+			case "role":
+				List<String[]> users = new DatabaseHandler().getAllMembers(group);
+				if (user == null) {
+					bean = getDashboardBean(users.get(0)[0], group);
+				} else {
+					bean = getDashboardBean(user, group);
+				}
+				bean.setUserList(users);
+				bean.setGroup(group);
+				bean.setTab("role");
+				break;
+			case "week":
+				bean = new DashboardBean();
+				bean.setTab("week");
+				break;
+			case "stage":
+				bean = new DashboardBean();
+				bean.setTab("stage");
+				break;
+			default:
+				bean = new DashboardBean();
+				bean.setTab("all");
+				break;
+		}
 		return bean;
 	}
 
