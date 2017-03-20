@@ -157,7 +157,6 @@
                             <td class="text-center">R</td>
                             <td>Total tid</td>
                         </tr>
-                        <script src="${pageContext.request.contextPath}/assets/js/formvalidation.js"></script>
                         <c:forEach items="${reportActivityList}" var="activity">
                             <c:if test="${activity.key eq 21}">
                                 <tr>
@@ -174,15 +173,15 @@
                                 <td>${activity.key}</td>
                                 <c:if test="${activity.key lt 20}">
                                     <td>${activity.value}</td>
-                                    <td><input type="text" name="d_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
-                                    <td><input type="text" name="i_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
-                                    <td><input type="text" name="f_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
-                                    <td><input type="text" name="r_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
-                                    <td><input type="text" name="t_${activity.key}" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
+                                    <td><input type="text" name="d_${activity.key}" class="form-control input-sm" size="1" values="" id="d_${activity.key}0" placeholder="0" onChange="checkValidTI(this, 0)"></td>
+                                    <td><input type="text" name="i_${activity.key}" class="form-control input-sm" size="1" values="" id="i_${activity.key}0" placeholder="0" onChange="checkValidTI(this, 0)"></td>
+                                    <td><input type="text" name="f_${activity.key}" class="form-control input-sm" size="1" values="" id="f_${activity.key}0"placeholder="0" onChange="checkValidTI(this, 0)"></td>
+                                    <td><input type="text" name="r_${activity.key}" class="form-control input-sm" size="1" values="" id="r_${activity.key}0"placeholder="0" onChange="checkValidTI(this, 0)"></td>
+                                    <td><input type="text" name="t_${activity.key}" values="" placeholder="0" class="form-control input-sm" id="t_${activity.key}0" size="1" disabled></td>
                                 </c:if>
                                 <c:if test="${activity.key gt 20}">
                                     <td colspan="5">${activity.value}</td>
-                                    <td><input type="text" name="t_${activity.key}" class="form-control input-sm" size="1" values="" placeholder="0" onChange="checkValidTI(this)"></td>
+                                    <td><input type="text" name="t_${activity.key}" class="form-control input-sm" size="1" values="" id="t_${activity.key}0" placeholder="0" onChange="checkValidTI(this, 0)"></td>
 
                                 </c:if>
                             </tr>
@@ -207,19 +206,19 @@
                         <tr>
                             <td>Utveckling och dokumentation</td>
                             <td>D</td>
-                            <td>n/a</td>
+                            <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
                             <td><input type="text" name="t_d" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                         </tr>
                         <tr>
-                            <td>n/a</td>
+                            <td>Informell granskning</td>
                             <td>I</td>
-                            <td>n/a</td>
+                            <td>Spenderad tid åt förberedelse och åt informell granskning.</td>
                             <td><input type="text" name="t_i" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                         </tr>
                         <tr>
-                            <td>n/a</td>
+                            <td>Formell granskning</td>
                             <td>F</td>
-                            <td>n/a</td>
+                            <td>Spenderad tid åt föreberedelse och åt informell granskning.</td>
                             <td><input type="text" name="t_f" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                         </tr>
                         <tr>
@@ -322,16 +321,15 @@
                             <td>${activity.key}</td>
                             <c:if test="${activity.key lt 20}">
                                 <td>${activity.value}</td>
-                                <td><input type="text" name="d_${activity.key}" class="form-control input-sm" size="1" values="" value="${bean.getReportValues().get("d_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this)"></td>
-                                <td><input type="text" name="i_${activity.key}" class="form-control input-sm" size="1" values="" value="${bean.getReportValues().get("i_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this)"></td>
-                                <td><input type="text" name="f_${activity.key}" class="form-control input-sm" size="1" values="" value="${bean.getReportValues().get("f_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this)"></td>
-                                <td><input type="text" name="r_${activity.key}" class="form-control input-sm" size="1" values="" value="${bean.getReportValues().get("r_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this)"></td>
-                                <td><input type="text" name="t_${activity.key}" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
+                                <td><input type="text" name="d_${activity.key}" class="form-control input-sm" size="1" id="d_${activity.key}1" values="" value="${bean.getReportValues().get("d_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this, 1)"></td>
+                                <td><input type="text" name="i_${activity.key}" class="form-control input-sm" size="1" id="i_${activity.key}1" values="" value="${bean.getReportValues().get("i_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this, 1)"></td>
+                                <td><input type="text" name="f_${activity.key}" class="form-control input-sm" size="1" id="f_${activity.key}1" values="" value="${bean.getReportValues().get("f_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this, 1)"></td>
+                                <td><input type="text" name="r_${activity.key}" class="form-control input-sm" size="1" id="r_${activity.key}1" values="" value="${bean.getReportValues().get("r_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this, 1)"></td>
+                                <td><input type="text" name="t_${activity.key}" values="" placeholder="0" id="t_${activity.key}1" class="form-control input-sm" size="1" disabled></td>
                             </c:if>
                             <c:if test="${activity.key gt 20}">
                                 <td colspan="5">${activity.value}</td>
-                                <td><input type="text" name="t_${activity.key}" class="form-control input-sm" size="1" values="" value="${bean.getReportValues().get("t_".concat(activity.key))}" placeholder="0" onChange="checkValidTI(this)"></td>
-
+                                <td><input type="text" name="t_${activity.key}" class="form-control input-sm" size="1" values="" value="${bean.getReportValues().get("t_".concat(activity.key))}" id="t_${activity.key}1" placeholder="0" onChange="checkValidTI(this, 1)"></td>
                             </c:if>
                         </tr>
                     </c:forEach>
@@ -355,19 +353,19 @@
                     <tr>
                         <td>Utveckling och dokumentation</td>
                         <td>D</td>
-                        <td>n/a</td>
+                        <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
                         <td><input type="text" name="t_d" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                     </tr>
                     <tr>
-                        <td>n/a</td>
+                        <td>Informell granskning</td>
                         <td>I</td>
-                        <td>n/a</td>
+                        <td>Spenderad tid åt förberedelse och åt informell granskning.</td>
                         <td><input type="text" name="t_i" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                     </tr>
                     <tr>
-                        <td>n/a</td>
+                        <td>Formell granskning</td>
                         <td>F</td>
-                        <td>n/a</td>
+                        <td>Spenderad tid åt föreberedelse och åt informell granskning.</td>
                         <td><input type="text" name="t_f" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                     </tr>
                     <tr>
