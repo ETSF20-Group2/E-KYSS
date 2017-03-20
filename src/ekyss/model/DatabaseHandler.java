@@ -329,20 +329,24 @@ public class DatabaseHandler {
     /**
      * Tilldelar en roll till en användare i en grupp.
      * @param group Den aktuella gruppen.
-     * @param userName Den aktuella användaren.
-     * @param role Rollen som ska tilldelas.
+     * @param assigns Vektor som innehåller strängar som beskriver de roller som ska tilldelas.
      * @return true om tilldelningen lyckades, annars false.
      */
-    public boolean assignRole(String group, String userName, String role){
+    public boolean assignRoles(String group, String[] assigns){
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("UPDATE memberOf SET role = ? WHERE groupName = ? AND userName = ?");
-            ps.setString(1, role);
-            ps.setString(2, group);
-            ps.setString(3, userName);
-            print(ps);
-            if(ps.executeUpdate() > 0)
-                return true;
+            int i = 1;
+            for(String s:assigns){
+                ps = conn.prepareStatement("UPDATE MemberOf SET role = ? WHERE member = ? AND groupName = ?");
+                String[] s1 = s.split("\\s");
+                ps.setString(1, s1[1]);
+                ps.setString(2, s1[0]);
+                ps.setString(3, group);
+                System.out.print(i + ": ");
+                print(ps);
+                ps.executeUpdate();
+                i++;
+            }
         } catch (SQLException e){
             printError(e);
         }
@@ -876,6 +880,27 @@ public class DatabaseHandler {
             printError(e);
         }
         return allPl;
+    }
+
+    public List<String[]> getAllMembers(String group){
+        List<String[]> members = new ArrayList<String[]>();
+        PreparedStatement ps = null;
+
+        try{
+            ps = conn.prepareStatement("SELECT member, role, email FROM Users LEFT JOIN MemberOf ON Users.userName = MemberOf.member WHERE groupName = ?");
+            ps.setString(1, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String s[] = new String[3];
+                s[0] = rs.getString("member");
+                s[1] = rs.getString("email");
+                s[2] = rs.getString("role");
+                members.add(s);
+            }
+        } catch(SQLException e){
+            printError(e);
+        }
+        return members;
     }
 
     /**
