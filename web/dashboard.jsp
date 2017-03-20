@@ -45,10 +45,10 @@
                 <tr>
                     <td>Sum</td>
                     <th></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>${bean.getSum("sum_d")}</td>
+                    <td>${bean.getSum("sum_i")}</td>
+                    <td>${bean.getSum("sum_f")}</td>
+                    <td>${bean.getSum("sum_r")}</td>
                     <th></th>
                 </tr>
             </c:if>
@@ -97,25 +97,25 @@
             <td>Utveckling och dokumentation</td>
             <td>D</td>
             <td>Utveckling av ny kod, testfall och dokumentation, inklusive systemdokumentering.</td>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sum_d")}</td>
         </tr>
         <tr>
             <td>Informell granskning</td>
             <td>I</td>
             <td>Spenderad tid åt förberedelse och åt informell granskning.</td>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sum_i")}</td>
         </tr>
         <tr>
             <td>Formell granskning</td>
             <td>F</td>
             <td>Spenderad tid åt föreberedelse och åt informell granskning.</td>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sum_f")}</td>
         </tr>
         <tr>
             <td>Omarbete, förbättring, rättning</td>
             <td>R</td>
             <td>Spenderad tid åt förbättring, omprövning eller dokument- och designobjektsrättning.</td>
-            <td>_SUM_</td>
+            <td>${bean.getSum("sum_r")}</td>
         </tr>
         </tbody>
     </table>
@@ -132,7 +132,7 @@
             </tr>
             <tr>
                 <th colspan="6">Del A: Total tid (minuter)</th>
-                <td>_SUM_</td>
+                <td>${bean.getSum("sumA")}</td>
             </tr>
         </tbody>
     </table>
@@ -201,14 +201,14 @@
 
 <c:set var="container_pl">
     <c:if test="${sessionScope.ProjectLeader}">
-        <h2 class="form-signin-heading">Översikt</h2>
+        <h2 class="form-signin-heading">Sammanställning</h2>
         <p class="form-signin-heading">Här ser du statistik för tidrapporter över all tid som rapporterats i projektet. Du kan se tidsantgång per användare, roll, aktivitet, vecka, fas och dokument.</p>
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation"<c:if test="${bean.getTab() eq 'all'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=all" aria-controls="all" role="tab">Sammanställning</a></li>
-            <li role="presentation"<c:if test="${bean.getTab() eq 'user'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=user" aria-controls="user" role="tab">Användare</a></li>
-            <li role="presentation"<c:if test="${bean.getTab() eq 'role'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=role" aria-controls="role" role="tab">Roll</a></li>
-            <li role="presentation"<c:if test="${bean.getTab() eq 'week'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=week" aria-controls="week" role="tab">Vecka</a></li>
-            <li role="presentation"<c:if test="${bean.getTab() eq 'stage'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=stage" aria-controls="stage" role="tab">Fas</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'all'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=all" aria-controls="all" role="tab">Total översikt</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'user'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=user" aria-controls="user" role="tab">Per användare</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'role'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=role" aria-controls="role" role="tab">Per roll</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'week'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=week" aria-controls="week" role="tab">Per vecka</a></li>
+            <li role="presentation"<c:if test="${bean.getTab() eq 'stage'}"> class="active"</c:if>><a href="${pageContext.request.contextPath}/dashboard?show=stage" aria-controls="stage" role="tab">Per fas</a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="all">
@@ -276,7 +276,7 @@
 
 <c:set var="container_others">
     <c:if test="${not sessionScope.ProjectLeader and sessionScope.name ne 'admin'}">
-        <h2 class="form-signin-heading">Översikt</h2>
+        <h2 class="form-signin-heading">Sammanställning</h2>
         <p class="form-signin-heading">Här kan du se din sammanfattning av din rapporterade tid.</p>
         ${tbl_user}
     </c:if>
