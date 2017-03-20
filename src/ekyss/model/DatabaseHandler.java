@@ -191,8 +191,6 @@ public class DatabaseHandler {
             for(String s: deleteArray){
                 String s1[] = new String[2];
                 s1 = s.split("\\s");
-                System.out.println(s1.length + ": " + Arrays.toString(s1));
-                System.out.println("s1[1] = " + s1[1] + " s1[0] = " +  s1[0]);
                 ps.setString(i++, s1[1]);
                 ps.setString(i++,  s1[0]);
             }
