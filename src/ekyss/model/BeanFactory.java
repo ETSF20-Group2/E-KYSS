@@ -1,6 +1,8 @@
 package ekyss.model;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BeanFactory {
 	DatabaseHandler db = new DatabaseHandler();
@@ -104,8 +106,11 @@ public class BeanFactory {
 		return new DatabaseHandler().isProjectLeader(bean.getUsername(),bean.getSelectedGroup());
 	}
 
-	public static DashboardBean getDashboardBean() {
-		return new DashboardBean();
+	public static DashboardBean getDashboardBean(String user, String group) {
+        DashboardBean bean = new DashboardBean();
+        Map<String, Integer> map = new DatabaseHandler().getTimeReport(group, user, null, 0);
+		bean.setReportValuesSum(map);
+	    return bean;
 	}
 
 
