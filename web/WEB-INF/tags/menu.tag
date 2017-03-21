@@ -41,6 +41,7 @@
                             <li><a href="${pageContext.request.contextPath}/report">Veckorapportering</a></li>
                             <li><a href="${pageContext.request.contextPath}/management/users">Hantering av användare</a></li>
                             <li><a href="${pageContext.request.contextPath}/management/reports">Hantering av veckorapporter</a></li>
+                            <li><a href="${pageContext.request.contextPath}/settings/user">Kontoinställningar</a></li>
                         </ul>
                     </li>
                 </c:if>
