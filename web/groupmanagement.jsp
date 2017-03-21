@@ -108,7 +108,7 @@
         </c:choose>
     </table>
     <c:if test="${not empty bean.getAllGroups()}">
-        <button class="btn btn-default" type="submit">Ta bort</button>
+        <input type="button" name="btn" value="Ta bort" id="sumbitBtn" data-toggle="modal" data-target="#confirm-delete" class="btn btn-default">
     </c:if>
 </c:set>
 
@@ -160,6 +160,25 @@
     <jsp:attribute name="stylesheets" />
     <jsp:attribute name="navigation" />
     <jsp:attribute name="javascript">
+        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="delete-group" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Bekräfta borttagande</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Du håller på och tar bort en eller flera projektgrupper som leder till oåterkallelig förlust som inte kan göras ogjort.</p>
+                        <p>Är du verkligen säker på att du vill fortsätta?</p>
+                        <p class="debug-url"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+                        <a  href="#" id="submit" class="btn btn-danger btn-ok">Ta bort</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
             $(document).ready(function(){
                 activaTab('${bean.getTab()}');
@@ -168,6 +187,13 @@
             function activaTab(tab){
                 $('.nav-tabs a[href="#' + tab + '"]').tab('show');
             };
+
+            $('#submitBtn').click(function() {
+                $('#group').text($('#deleteGroup').val());
+            });
+            $('#submit').click(function(){
+                $('#formfield').submit();
+            });
         </script>
     </jsp:attribute>
     <jsp:body>
@@ -204,7 +230,7 @@
                     <div role="tabpanel" class="tab-pane" id="delete">
                         <p>Ta bort existerande projektgrupp(er) genom att markera den/dem och klicka sedan på <em>ta bort</em>-knappen.</p>
                         ${infoMsg_delete}
-                        <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
+                        <form role="form" id="formfield" class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/groups">
                             <input type="hidden" name="type" value="delete">
                                 ${groups}
                         </form>
