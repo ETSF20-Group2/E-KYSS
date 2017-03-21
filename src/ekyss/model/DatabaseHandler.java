@@ -503,7 +503,15 @@ public class DatabaseHandler {
             ps.setString(2, group);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                pl = "pl".equals(rs.getString("role").toLowerCase());
+                String str = null;
+                try {
+                    str = rs.getString("role").toLowerCase();
+                } catch (NullPointerException e) {
+                    return 2;
+                }
+                if (str != null) {
+                    pl = "pl".equals(rs.getString("role").toLowerCase());
+                }
             }
 
             String columns = "(user, groupname, week,";

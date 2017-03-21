@@ -111,9 +111,9 @@ public class BeanTransaction {
 	 *  <br><b><i>week</i></b> Veckan som rapporten gäller för.
 	 *  <br><b><i>reportValues</i></b> En Map som beskriver vilka kolumner som ska rapporteras.
 	 *                     <br>             Nyckeln är kolumnnamnet och värdet är antalet minuter.
-	 * @return true om tidrapporten skapats, annars false (fanns redan användare-vecka-grupp par i databasen).
+	 * @return 0 om tidrapporten skapats, 1 om det är en dublett, 2 om användaren inte har nån roll, annars 3 (okänd fel).
 	 */
-	public static boolean createTimeReport(ReportBean bean){
+	public static int createTimeReport(ReportBean bean){
 		return new DatabaseHandler().createTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek(), bean.getReportValues());
 	}
 

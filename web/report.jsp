@@ -65,6 +65,14 @@
         </div>
     </c:if>
 </c:set>
+<c:set var="infoMsgRemove">
+    <c:if test="${bean.getErr_code() eq 5}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Du har ännu inte blivit tilldelad någon roll inom din projektgrupp och därför kan du inte tidrapportera.
+        </div>
+    </c:if>
+</c:set>
 
 <t:block pageTitle="Tidrapportering">
     <jsp:attribute name="stylesheets">
