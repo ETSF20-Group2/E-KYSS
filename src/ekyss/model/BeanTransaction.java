@@ -48,7 +48,7 @@ public class BeanTransaction {
 	 * Tar bort en eller flera användare.
 	 * @param users En vektor som innehåller namnen på användarna som ska tas bort.
 	 */
-	public static void deleteUsers(String[] users) { new DatabaseHandler().deleteUsers(users); }
+	public static boolean deleteUsers(String[] users) { return new DatabaseHandler().deleteUsers(users); }
 
 	public static boolean changePassword(UserBean b) {
 		return new DatabaseHandler().changePassword(b.getUserName(), b.getOldPassword(), b.getNewPassword1());
