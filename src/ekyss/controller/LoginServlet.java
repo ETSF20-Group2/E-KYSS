@@ -28,6 +28,7 @@ public class LoginServlet extends servletBase {
     private final int LOGIN_WRONG_CREDENTIAL = 1;
     private final int LOGIN_SING_OUT_DO_TO_INACTIVITY = 2;
     private final int LOGIN_SING_OUT = 3;
+    private final int LOGIN_OLD_LOGIN = 4;
 
     private final int LOGIN_TYPE_ADMIN = 0;
     private final int LOGIN_TYPE_COMMON = 1;
@@ -46,24 +47,33 @@ public class LoginServlet extends servletBase {
             bean.setAdminLogin(false);
         }
 
-        // Kontrollerar om inloggningsuppgifterna är korrekta
-        BeanFactory.checkLoginBean(bean);
-
-        if (bean.isLogin()) {
-            // Loggar in användaren
-            session.setAttribute("name", bean.getUsername());
-            session.setAttribute("group", bean.getSelectedGroup());
-            session.setAttribute("state", LOGIN_TRUE);
-            session.setAttribute("ProjectLeader",BeanFactory.isProjectLeader(bean));
-            response.sendRedirect(request.getContextPath() + "/dashboard");
-            return;
-        } else {
-            // Inloggninsuppgifter inkorrekta, skickas tillbaka till inloggning.
-            request.setAttribute("msg_code", LOGIN_WRONG_CREDENTIAL);
+        if (loggedIn(request)) {
+            session.setAttribute("state", LOGIN_FALSE);
+            request.setAttribute("msg_code", LOGIN_OLD_LOGIN);
             if (bean.getAdminLogin()) {
                 request.setAttribute("login_type", LOGIN_TYPE_ADMIN);
             } else {
                 request.setAttribute("login_type", LOGIN_TYPE_COMMON);
+            }
+        } else {
+            // Kontrollerar om inloggningsuppgifterna är korrekta
+            BeanFactory.checkLoginBean(bean);
+            if (bean.isLogin()) {
+                // Loggar in användaren
+                session.setAttribute("name", bean.getUsername());
+                session.setAttribute("group", bean.getSelectedGroup());
+                session.setAttribute("state", LOGIN_TRUE);
+                session.setAttribute("ProjectLeader", BeanFactory.isProjectLeader(bean));
+                response.sendRedirect(request.getContextPath() + "/dashboard");
+                return;
+            } else {
+                // Inloggninsuppgifter inkorrekta, skickas tillbaka till inloggning.
+                request.setAttribute("msg_code", LOGIN_WRONG_CREDENTIAL);
+                if (bean.getAdminLogin()) {
+                    request.setAttribute("login_type", LOGIN_TYPE_ADMIN);
+                } else {
+                    request.setAttribute("login_type", LOGIN_TYPE_COMMON);
+                }
             }
         }
 
