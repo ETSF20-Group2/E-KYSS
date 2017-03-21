@@ -1,6 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="login_msg">
+    <c:choose>
+        <c:when test="${not bean.getAdminLogin()}">Logga in genom att ange ditt användarnamn, lösenord samt projektgrupp.</c:when>
+        <c:otherwise>Logga in genom att ange ditt användarnamn och lösenord.</c:otherwise>
+    </c:choose>
+</c:set>
 <c:set var="infoMsg">
     <c:if test="${bean.getErrorCode() eq 1}">
         <div class="alert alert-warning" role="alert">
@@ -83,7 +89,7 @@
                 ${infoMsg}
                 <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/">
                     <h2 class="form-signin-heading">Välkommen till E-KYSS</h2>
-                    <p class="form-signin-heading">Logga in genom att ange ditt användarnamn, lösenord samt projektgrupp.</p>
+                    <p class="form-signin-heading">${login_msg}</p>
                     ${login}
                 </form>
             </div>
