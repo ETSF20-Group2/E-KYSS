@@ -80,6 +80,8 @@ public class BeanFactory {
 
 	public static GroupManagementBean fillGroupManagementBean(GroupManagementBean bean) {
 	    bean.setAllPl(new DatabaseHandler().getAllPl());
+	    bean.setAllGroups(new DatabaseHandler().getAllGroupsList());
+	    bean.setAllUsers(new DatabaseHandler().getUserList());
 	    return bean;
     }
 
