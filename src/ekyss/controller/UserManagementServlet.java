@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.regex.*;
 
 @WebServlet(
         name="UserManagementServlet",
@@ -28,9 +29,25 @@ public class UserManagementServlet extends servletBase {
 
     private final int ERR_ASSIGNED = 1;
     private final int ERR_NOTASSIGNED = 2;
+    private final int ERR_CREATED = 3;
+    private final int ERR_NAMETOOLONG = 4;
+    private final int ERR_NAMETOOSHORT = 5;
+    private final int ERR_NAMEINVALID = 6;
+    private final int ERR_DELETED = 7;
+    private final int ERR_DELETEERROR = 8;
+    private final int ERR_DELETENOTSELECTED = 9;
+    private final int ERR_INVALIDEMAIL = 10;
 
     private int err_code = 0;
 
+
+    private final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    private boolean validateEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
+    }
     protected boolean validateInput(UserManagementBean umb) {
         if (umb.getUsername().length() >= 5 && umb.getUsername().length() <= 10) {
             for(char c : umb.getUsername().toCharArray()){
@@ -66,24 +83,47 @@ public class UserManagementServlet extends servletBase {
             BeanUtilities.populateBean(umb,request);
             System.out.println("Type = " + umb.getType());
             if(umb.getType().equals(TYPE_CREATE)) {
-                if (validateInput(umb)) {       // TODO: IMPLEMENT validateInput(UserManagementBean)
-                    String pw = generatePassword();
-                    umb.setPassword(pw);
-                    System.out.print(umb.getUsername());
-                    MailHandler.sendPassword(umb.getEmail(), pw);
-                    BeanTransaction.addUser(umb);
+                if(validateEmail(umb.getEmail())) {
+                    if (validateInput(umb)) {       // TODO: IMPLEMENT validateInput(UserManagementBean)
+                        String pw = generatePassword();
+                        umb.setPassword(pw);
+                        System.out.print(umb.getUsername());
+                        MailHandler.sendPassword(umb.getEmail(), pw);
+                        err_code = ERR_CREATED;
+                        BeanTransaction.addUser(umb);
+                    } else {
+                        if (umb.getUsername().length() < 5) {
+                            err_code = ERR_NAMETOOSHORT;
+                        } else if (umb.getUsername().length() > 10) {
+                            err_code = ERR_NAMETOOLONG;
+                        } else {
+                            err_code = ERR_NAMEINVALID;
+                        }
+                    }
                 } else {
-                    System.out.print("Error validating bean!");
+                    err_code = ERR_INVALIDEMAIL;
                 }
             }
             else if(umb.getType().equals(TYPE_DELETE)){
                 System.out.println("Type = " + umb.getType());
-                BeanTransaction.deleteUsers(umb.getDeleteUserList());
-                System.out.println("Deleted user: " + Arrays.toString(umb.getDeleteUserList()));
+                if(umb.getDeleteUserList() != null) {
+                    if (BeanTransaction.deleteUsers(umb.getDeleteUserList())) {
+                        err_code = ERR_DELETED;
+
+                        System.out.println("Deleted user: " + Arrays.toString(umb.getDeleteUserList()));
+                    } else {
+                        err_code = ERR_DELETEERROR;
+                    }
+                } else {
+                    err_code = ERR_DELETENOTSELECTED;
+                }
             }
             else if(umb.getType().equals(TYPE_ASSIGN)){
-                BeanTransaction.assignRoles(group, umb.getAssignRole());
-                err_code = ERR_ASSIGNED;
+                if(BeanTransaction.assignRoles(group, umb.getAssignRole())) {
+                    err_code = ERR_ASSIGNED;
+                } else {
+                    err_code = ERR_NOTASSIGNED;
+                }
 
             }
         } else {
