@@ -81,13 +81,11 @@ public class UserManagementServlet extends servletBase {
             String group = (String) session.getAttribute("group");
             UserManagementBean umb = BeanFactory.getUserManagementBean(group);
             BeanUtilities.populateBean(umb,request);
-            System.out.println("Type = " + umb.getType());
             if(umb.getType().equals(TYPE_CREATE)) {
                 if(validateEmail(umb.getEmail())) {
                     if (validateInput(umb)) {       // TODO: IMPLEMENT validateInput(UserManagementBean)
                         String pw = generatePassword();
                         umb.setPassword(pw);
-                        System.out.print(umb.getUsername());
                         MailHandler.sendPassword(umb.getEmail(), pw);
                         err_code = ERR_CREATED;
                         BeanTransaction.addUser(umb);
@@ -105,12 +103,9 @@ public class UserManagementServlet extends servletBase {
                 }
             }
             else if(umb.getType().equals(TYPE_DELETE)){
-                System.out.println("Type = " + umb.getType());
                 if(umb.getDeleteUserList() != null) {
                     if (BeanTransaction.deleteUsers(umb.getDeleteUserList())) {
                         err_code = ERR_DELETED;
-
-                        System.out.println("Deleted user: " + Arrays.toString(umb.getDeleteUserList()));
                     } else {
                         err_code = ERR_DELETEERROR;
                     }
@@ -128,8 +123,7 @@ public class UserManagementServlet extends servletBase {
             }
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            System.out.println("sendRedirect");
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
         doGet(request, response);
     }
@@ -139,17 +133,13 @@ public class UserManagementServlet extends servletBase {
             // Användaren är inloggad och har behörighet
             HttpSession session = request.getSession();
             String group = (String) session.getAttribute("group");
-            System.out.println("doGet");
             UserManagementBean bean = BeanFactory.getUserManagementBean(group);
-            System.out.println("bean created");
-            System.out.println(bean.getAllUsers().toString());
             bean.setErr_code(err_code);
             forwardToView(request, response, "/usermanagement.jsp",bean);
             err_code = 0;
-            System.out.println("forwarded to view");
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 

@@ -67,10 +67,9 @@ public class ReportServlet extends servletBase {
                 tab = "remove";
                 err_code = ERR_REMOVED;
             }
-            System.out.println("ERROR CODE: " + err_code);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
         doGet(request, response);
     }
@@ -93,7 +92,7 @@ public class ReportServlet extends servletBase {
             err_code = 0;
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 }

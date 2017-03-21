@@ -81,7 +81,6 @@ public class servletBase extends HttpServlet {
             // Get last access time of this web page.
             Date lastAccessTime =
                     new Date(session.getLastAccessedTime());
-            System.out.println("Visitor at: " + lastAccessTime.toString());
             return true;
         }
         else {
@@ -93,8 +92,7 @@ public class servletBase extends HttpServlet {
 
     protected void forwardToView(HttpServletRequest request, HttpServletResponse response, String patternToJSP, Object bean) throws ServletException, IOException {
         if(!validateActivity(request.getSession(), MAXINTERVAL)) {
-            System.out.print("INVALIDATE SESSION");
-            response.sendRedirect("/logout");
+            response.sendRedirect(request.getContextPath() + "/logout");
             request.getSession().invalidate(); // invalidera sessionen.
             return;
         }

@@ -55,7 +55,7 @@ public class LoginServlet extends servletBase {
             session.setAttribute("group", bean.getSelectedGroup());
             session.setAttribute("state", LOGIN_TRUE);
             session.setAttribute("ProjectLeader",BeanFactory.isProjectLeader(bean));
-            response.sendRedirect("/dashboard");
+            response.sendRedirect(request.getContextPath() + "/dashboard");
             return;
         } else {
             // Inloggninsuppgifter inkorrekta, skickas tillbaka till inloggning.
@@ -83,7 +83,7 @@ public class LoginServlet extends servletBase {
                 bean.setErrorCode(LOGIN_SING_OUT);
             } else {
                 // Användare kommer till ./ eller ./login => omdirigeras till ./dashboard
-                response.sendRedirect("/dashboard");
+                response.sendRedirect(request.getContextPath() + "/dashboard");
                 return;
             }
         } else {
