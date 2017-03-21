@@ -26,6 +26,12 @@
             Du har nu blivit utloggad.
         </div>
     </c:if>
+    <c:if test="${bean.getErrorCode() eq 4}">
+        <div class="alert alert-info" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            För att skydda din säkerhet ombeds du att logga in på nytt.
+        </div>
+    </c:if>
 </c:set>
 <c:set var="groups">
     <c:if test="${not empty bean.getAllGroups()}">
