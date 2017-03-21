@@ -62,6 +62,7 @@ public class ReportManagementServlet extends servletBase {
             bean.setTab(tab);
             bean.setErr_code(err_code);
             forwardToView(request, response, "/reportmanagement.jsp", bean);
+            err_code = 0;
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
             response.sendRedirect("/");
