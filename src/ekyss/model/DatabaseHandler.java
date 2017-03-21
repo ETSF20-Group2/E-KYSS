@@ -487,9 +487,12 @@ public class DatabaseHandler {
      * @param week Veckan som rapporten gäller för.
      * @param reportValues En Map som beskriver vilka kolumner(aktiviteter) som ska rapporteras.
      *                     <br> Nyckeln är kolumnnamnet och värdet är antalet minuter.
-     * @return true om tidrapporten skapats, annars false (fanns redan användare-vecka-grupp par i databasen).
+     * @return <b>0</b> om tidrapporten skapats
+     * <br><b>1</b> om användaren redan har rapporterat för vald vecka och grupp
+     * <br><b>2</b> om användaren inte har någon roll i gruppen.
+     * <br><b>3</b> om det blir något okänt fel.
      */
-    public boolean createTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
+    public int createTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
        boolean pl = false;
 
         PreparedStatement ps = null;
@@ -534,14 +537,15 @@ public class DatabaseHandler {
             }
             print(ps);
             if(ps.executeUpdate()>0){
-                return true;
+                return 1;
             }
 
 
         } catch (SQLException e){
             printError(e);
+            return 2;
         }
-        return false;
+        return 3;
     }
 
     /**
@@ -602,7 +606,7 @@ public class DatabaseHandler {
      * @return true om rapporten uppdateras, annars false.
      */
     public boolean updateTimeReport(String user, String group, int week, Map<String, Integer> reportValues){
-        return removeTimeReport(user, group, week) && createTimeReport(user, group, week, reportValues);
+        return removeTimeReport(user, group, week) && createTimeReport(user, group, week, reportValues) == 0;
     }
 
     /**
