@@ -65,7 +65,7 @@
         </div>
     </c:if>
 </c:set>
-<c:set var="infoMsgRemove">
+<c:set var="infoMsgNoGroup">
     <c:if test="${bean.getErr_code() eq 5}">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -112,6 +112,7 @@
             <div role="tabpanel" class="tab-pane active" id="create">
                 <h3>Skapa en ny tidrapport</h3>
                 ${infoMsgCreate}
+                ${infoMsgNoGroup}
                 <form name="input" method="POST" action="${pageContext.request.contextPath}/report">
                     <input type="hidden" name="type" value="create">
                     <table class="table table-bordered">
