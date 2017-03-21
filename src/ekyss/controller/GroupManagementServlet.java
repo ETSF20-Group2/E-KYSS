@@ -89,14 +89,12 @@ public class GroupManagementServlet extends servletBase {
             if (BeanTransaction.assignUserToGroup(bean)) {
                 // Lyckad tilldelning
                 bean.setErrorCode(ERR_ASSIGN_SUCCESS);
-                System.out.println("### doAssign_err_code: " + bean.getErrorCode());
                 bean = BeanFactory.fillGroupManagementBean(bean);
                 forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
             } else {
                 // Tilldelningen är lyckad - användaren tillhör redan given projektgrupp
                 bean.setErrorCode(ERR_ASSIGN_EXISTS);
-                System.out.println("### doAssign_err_code: " + bean.getErrorCode());
                 forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
             }
@@ -131,7 +129,6 @@ public class GroupManagementServlet extends servletBase {
             if (BeanTransaction.assignPlToGroup(bean)) {
                 // Lyckad tilldelning
                 bean.setErrorCode(ERR_ASSIGNPL_SUCCESS);
-                System.out.println("### doAssign_err_code: " + bean.getErrorCode());
                 bean = BeanFactory.fillGroupManagementBean(bean);
                 forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
@@ -139,7 +136,6 @@ public class GroupManagementServlet extends servletBase {
             } else {
                 // Tilldelningen är lyckad - användaren tillhör redan given projektgrupp
                 bean.setErrorCode(ERR_ASSIGNPL_FAIL);
-                System.out.println("### doAssign_err_code: " + bean.getErrorCode());
                 forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
 
@@ -171,7 +167,6 @@ public class GroupManagementServlet extends servletBase {
                 doAssign(bean, request, response);
                 return;
             } else if (bean.getType().equals(TYPE_ASSIGNPL)) {
-                System.out.println(bean.getAssignGroupPl() + ", " + bean.getAssignUserPl());
                 bean.setTab("assignPl");
                 doAssignPl(bean, request, response);
                 return;
@@ -187,7 +182,7 @@ public class GroupManagementServlet extends servletBase {
             }
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
         doGet(request, response);
     }
@@ -199,7 +194,7 @@ public class GroupManagementServlet extends servletBase {
             forwardToView(request, response, "/groupmanagement.jsp", bean);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
