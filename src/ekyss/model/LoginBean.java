@@ -31,11 +31,10 @@ public class LoginBean implements Serializable {
      * @param err_code 0 = inget felmeddelande, 1 = fel anv.namn och/eller lösenord
      *                 2 = utloggningsmeddelande efter 30 minuter
      *                 3 = meddelande vid aktiv utloggning
+     *                 4 = meddelande när användaren loggar in och går bakåt i webbläsaren för att sedan försöka logga in på nytt.
      */
     public void setErrorCode(int err_code) {
-        if ( (err_code-0)*(err_code-3) <= 0 ) {
-            this.err_code = err_code;
-        }
+        this.err_code = err_code;
     }
 
     public int getErrorCode() {
