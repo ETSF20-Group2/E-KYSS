@@ -545,13 +545,13 @@ public class DatabaseHandler {
             }
             print(ps);
             if(ps.executeUpdate()>0){
-                return 1;
+                return 0;
             }
 
 
         } catch (SQLException e){
             printError(e);
-            return 2;
+            return 1;
         }
         return 3;
     }
