@@ -48,7 +48,7 @@ public class ReportManagementServlet extends servletBase {
             }
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
         doGet(request, response);
     }
@@ -65,7 +65,7 @@ public class ReportManagementServlet extends servletBase {
             err_code = 0;
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
 
     }

@@ -32,7 +32,7 @@ public class DashboardServlet extends servletBase {
             doGet(request, response);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
@@ -55,7 +55,7 @@ public class DashboardServlet extends servletBase {
             forwardToView(request, response, "/dashboard.jsp",bean);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
