@@ -222,9 +222,9 @@
                             <td><input type="text" name="t_f" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                         </tr>
                         <tr>
-                            <td>n/a</td>
+                            <td>Omarbetning, förbättring eller rättning</td>
                             <td>R</td>
-                            <td>n/a</td>
+                            <td>Spenderad tid för att förbättra, revidera eller rätta dokument och designobjekt.</td>
                             <td><input type="text" name="t_r" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                         </tr>
                         </tbody>
@@ -369,9 +369,9 @@
                         <td><input type="text" name="t_f" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                     </tr>
                     <tr>
-                        <td>n/a</td>
+                        <td>Omarbetning, förbättring eller rättning</td>
                         <td>R</td>
-                        <td>n/a</td>
+                        <td>Spenderad tid för att förbättra, revidera eller rätta dokument och designobjekt.</td>
                         <td><input type="text" name="t_r" values="" placeholder="0" class="form-control input-sm" size="1" disabled></td>
                     </tr>
                     </tbody>
