@@ -25,7 +25,7 @@ public class GroupManagementBean implements Serializable {
      * @param groups
      */
     public void setAllGroups(List<String> groups) {
-        this.groups.addAll(groups);
+        this.groups = groups;
     }
 
     public List<String> getAllGroups() {

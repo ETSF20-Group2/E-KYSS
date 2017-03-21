@@ -12,9 +12,60 @@
     <c:if test="${bean.getErr_code() eq 2}">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            Något blev fel! Rollerna har inte tilldelats.
+            Något blev fel! Rollerna har inte tilldelats. Försök igen.
         </div>
     </c:if>
+    <c:if test="${bean.getErr_code() eq 3}">
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Användaren har skapats.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErr_code() eq 4}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Användarnamnet är för långt. Ett användarnamn måste vara mellan fem och tio tecken långt.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErr_code() eq 5}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Användarnamnet är för kort. Ett användarnamn måste vara mellan fem och tio tecken långt.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErr_code() eq 6}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Användarnamnet består av ogiltiga tecken. Ett användarnamn får bara bestå av A-Z, a-z och 0-9.
+        </div>
+    </c:if>
+
+    <c:if test="${bean.getErr_code() eq 7}">
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Användarna har tagits bort.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErr_code() eq 8}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Något blev fel! Ingen användare har tagits bort. Försök igen.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErr_code() eq 9}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Du har inte valt någon användare att ta bort. Markera en eller flera användare och klicka sedan på
+            <em>Ta bort</em>-knappen.
+        </div>
+    </c:if>
+    <c:if test="${bean.getErr_code() eq 10}">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Epost-adressen är inte giltig. Skriv in en giltig e-post och försök igen.
+        </div>
+    </c:if>
+
 </c:set>
 
 <c:set var="table_row">
@@ -129,7 +180,6 @@
 </c:set>
 
 <c:set var="pl_page">
-    ${infoMsg}
     <p class="form-signin-heading">Tilldela en roll genom att välja roll i listan och klicka sedan på <em>tilldela</em>-knappen.</p>
     <form class="form-signin" name="input" method="POST" action="${pageContext.request.contextPath}/management/users">
         <input type="hidden" name="type" value="assign">
@@ -147,6 +197,7 @@
             <div class="col-md-8">
                 <h2 class="form-signin-heading">Hantering av användare</h2>
                 <p class="form-signin-heading">Lägg till en ny användare.</p>
+                    ${infoMsg}
                 <c:if test="${sessionScope.name eq 'admin'}">
                     ${admin_page}
                 </c:if>
