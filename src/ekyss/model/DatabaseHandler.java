@@ -64,9 +64,6 @@ public class DatabaseHandler {
      */
     public boolean loginUser(String username, String password, String group){
         PreparedStatement ps = null;
-        System.out.println(username);
-        System.out.println(password);
-        System.out.println(group);
         if(group == null) {
             if (username.equals("admin") && password.equals("adminp")) {
                 return true;
@@ -82,9 +79,6 @@ public class DatabaseHandler {
                 ResultSet rs = ps.executeQuery();
                 print(ps);
                 if (rs.next()) {
-                    System.out.print(rs.getString("username") + "\t");
-                    System.out.print(rs.getString("password") + "\t");
-                    System.out.println(rs.getString("groupName"));
                     return true;
                 }
                 return false;
@@ -345,7 +339,6 @@ public class DatabaseHandler {
                 ps.setString(1, s1[1]);
                 ps.setString(2, s1[0]);
                 ps.setString(3, group);
-                System.out.print(i + ": ");
                 print(ps);
                 ps.executeUpdate();
                 i++;
@@ -959,8 +952,6 @@ public class DatabaseHandler {
             i = s.indexOf("INSERT");
         else if(s.indexOf("CALL") >= 0)
             i = s.indexOf("CALL");
-
-        System.out.println(s.substring(i));
     }
 
     private void printError(SQLException e){

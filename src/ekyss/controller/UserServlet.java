@@ -61,7 +61,7 @@ public class UserServlet extends servletBase {
             return;
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
         doGet(request, response);
 
@@ -76,7 +76,7 @@ public class UserServlet extends servletBase {
             forwardToView(request, response, "/user.jsp", bean);
         } else {
             // Användaren är ej inloggad eller användaren har ej behörighet
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
 
     }
