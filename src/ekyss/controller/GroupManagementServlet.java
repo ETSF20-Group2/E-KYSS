@@ -48,6 +48,7 @@ public class GroupManagementServlet extends servletBase {
                 new BeanTransaction();
                 BeanTransaction.createNewProjectGroup(bean.getGroupName());
                 bean.setErrorCode(ERR_ADD_SUCCESS);
+                bean = BeanFactory.fillGroupManagementBean(bean);
                 forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
 
@@ -71,6 +72,7 @@ public class GroupManagementServlet extends servletBase {
             bean.setErrorCode(ERR_DELETE_SUCCESS);
             new BeanTransaction();
             BeanTransaction.deleteProjectGroup(bean.getDeleteGroup());
+            bean = BeanFactory.fillGroupManagementBean(bean);
             forwardToView(request, response, "/groupmanagement.jsp", bean);
             return;
         } else {
@@ -88,6 +90,7 @@ public class GroupManagementServlet extends servletBase {
                 // Lyckad tilldelning
                 bean.setErrorCode(ERR_ASSIGN_SUCCESS);
                 System.out.println("### doAssign_err_code: " + bean.getErrorCode());
+                bean = BeanFactory.fillGroupManagementBean(bean);
                 forwardToView(request, response, "/groupmanagement.jsp", bean);
                 return;
             } else {
