@@ -1,10 +1,11 @@
 package ekyss.model;
 
+import com.mysql.jdbc.Connection;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//import java.sql.Connection;
 
-import com.mysql.jdbc.Connection;
+//import java.sql.Connection;
 
 public class Database {
 
@@ -20,6 +21,10 @@ public class Database {
         password = Do_not_send_up_this_to_GitHub.getPass();
     }
 
+    /**
+     * Hämtar en instans av databasen.
+     * @return Databasen.
+     */
     public static Database getInstance() {
         if (db == null) {
             db = new Database();
@@ -38,6 +43,9 @@ public class Database {
         }
     }
 
+    /**
+     * Kopplar ifrån databasen.
+     */
     public void close() {
         if (conn != null) {
             try {
@@ -49,6 +57,10 @@ public class Database {
         }
     }
 
+    /**
+     * Returnerar anslutningen till databasen.
+     * @return Anslutningen till databasen.
+     */
     public Connection getConnection() {
         if (conn == null) {
             open();

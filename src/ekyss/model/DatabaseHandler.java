@@ -21,9 +21,6 @@ public class DatabaseHandler {
             "t_42", "t_43", "t_44", "t_100"};
 
     public DatabaseHandler(){
-		/* Endast för test, vet inte riktigt hur det ska se ut här. Tänker att man har
-		 * en tom konstrukor och får conn genom getConnection() eller något liknande
-		 */
 		db = Database.getInstance();
         conn = db.getConnection();
     }
@@ -173,6 +170,12 @@ public class DatabaseHandler {
     }
 
 
+    /**
+     * Tar bort rollen projektledare för en eller flera användare.
+     * @param deleteArray En vektor som innehåller alla användare som ska fråntas rollen.
+     *                    <br>Vektorn ska bestå av strändar uppbyggda enligt "<b>användarnamn</b> <b>grupp</b>"
+     * @return true om alla specificerade användare fråntagits rollen, annars false.
+     */
     public boolean unAssignLeaders(String[] deleteArray){
         PreparedStatement ps = null;
         String where = " WHERE";
@@ -201,7 +204,6 @@ public class DatabaseHandler {
         return false;
     }
 
-	/* BeanFactory */
     /**
      * Hämtar en lista med alla gruppnamn som finns i databasen
      * @return En lista som innehåller namn på alla grupper.
@@ -245,8 +247,6 @@ public class DatabaseHandler {
         return list;
     }
 
-	/*------ UserManagementServlet --------*/
-		/* BeanTransaction */
 
     /**
      * Lägger till en användare i databasen. Användarnamnet måste vara unikt.
@@ -270,6 +270,7 @@ public class DatabaseHandler {
         }
         return false;
     }
+
 
     /**
      * Tar bort en eller flera användare från databasen
@@ -301,6 +302,7 @@ public class DatabaseHandler {
         return false;
     }
 
+
     /**
      * Tilldelar en grupp till en användare. En användare kan vara medlem i flera grupper, men
      * bara en gång per grupp.
@@ -322,6 +324,7 @@ public class DatabaseHandler {
         }
         return false;
     }
+
 
     /**
      * Tilldelar en roll till en användare i en grupp.
@@ -351,6 +354,7 @@ public class DatabaseHandler {
         return false;
     }
 
+
     /**
      * Tar bort en användare från en grupp.
      * @param userName Användaren som ska tas bort.
@@ -373,7 +377,6 @@ public class DatabaseHandler {
         return false;
     }
 
-		/* BeanFactory */
 
     /**
      * Hämtar en lista med alla användarnamn som finns i databasen.
@@ -397,8 +400,6 @@ public class DatabaseHandler {
         return users;
     }
 
-	/*------ ReportManagementServlet ------*/
-			/* BeanTransaction */
 
     /**
      * Signerar en eller flera tidrapporter. Bara projektledaren kan göra detta.
@@ -436,6 +437,7 @@ public class DatabaseHandler {
         return false;
     }
 
+
     /**
      * Annullerar en eller flera tidrapporter. Bara projektledaren kan göra detta.
      * @param group gruppen det gäller.
@@ -470,9 +472,6 @@ public class DatabaseHandler {
         }
         return false;
     }
-
-	/*------ ReportServlet ----------------*/
-			/* BeanTransaction */
 
 
     /**
@@ -636,8 +635,6 @@ public class DatabaseHandler {
         return false;
     }
 
-	/*------ UserServlet ------------------*/
-		/* BeanTransaction */
 
     /**
      * Byter lösenord för en användare.
@@ -669,7 +666,6 @@ public class DatabaseHandler {
         return false;
     }
 
-		/* BeanFactory */
 
     /**
      * Hämtar en lista med alla grupper en användare är medlem i och användarens roll i gruppen.
@@ -698,8 +694,7 @@ public class DatabaseHandler {
         return groups;
     }
 
-	/*------ DashboardServlet -------------*/
-		/* BeanFactory */
+
     /**
      * Hämtar en tidrapport (eller sammanställning) från databasen. Kan hämta på flera olika sätt beroende på vilka parametrar som är ifyllda.
      * @param group Gruppen som rapporten är för. <b><i><u>(Denna parameter bör alltid vara ifylld)</u></i></b>.
@@ -734,6 +729,7 @@ public class DatabaseHandler {
         return reportValues;
     }
 
+
     /**
      * Ger all tid rapporterad för ett specifikt dokument (11,12,...) inom en viss grupp.
      * @param group Gruppen det gäller.
@@ -757,6 +753,7 @@ public class DatabaseHandler {
         }
         return docSummary;
     }
+
 
     /**
      * Ger all tid rapporterad för ett specifikt dokument (d,i,f,r) inom en viss grupp.
@@ -852,6 +849,8 @@ public class DatabaseHandler {
         }
         return reports;
     }
+
+
     /**
      * Returnerar alla signerade rapporter för en viss grupp.
      * @param group Gruppen det gäller.
@@ -895,6 +894,13 @@ public class DatabaseHandler {
         return reports;
     }
 
+
+    /**
+     * Hämtar alla projektledare och tillhörande grupper från databasen.
+     * @return En List med Vektorer. I vektorn är:
+     * <br><b>[0]</b> = Gruppnamnet
+     * <br><b>[1]</b> = Användarnamnet
+     */
     public List<String[]> getAllPl(){
         List<String[]> allPl = new ArrayList<String[]>();
         PreparedStatement ps = null;
@@ -913,6 +919,14 @@ public class DatabaseHandler {
         return allPl;
     }
 
+    /**
+     * Hämtar alla medlemmar i en specifik grupp från databasen.
+     * @param group Gruppnamnet
+     * @return En lista av vektorer. I vektorn är:
+     * <br><b>[0]</b> = Användarnamnet
+     * <br><b>[1]</b> = E-post adressen
+     * <br><b>[2]</b> = Användarens roll i gruppen
+     */
     public List<String[]> getAllMembers(String group){
         List<String[]> members = new ArrayList<String[]>();
         PreparedStatement ps = null;
