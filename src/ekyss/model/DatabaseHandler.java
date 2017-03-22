@@ -340,9 +340,11 @@ public class DatabaseHandler {
                 ps.setString(2, s1[0]);
                 ps.setString(3, group);
                 print(ps);
-                ps.executeUpdate();
+                if(ps.executeUpdate() <= 0)
+                    return false;
                 i++;
             }
+            return true;
         } catch (SQLException e){
             printError(e);
         }
