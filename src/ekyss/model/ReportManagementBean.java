@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+/**
+ *  Denna klass är bönan för för webbsidan "Veckorapporteringshanterare".
+ */
 public class ReportManagementBean implements Serializable {
     private String group;
     private List<String[]> allUnsignedReports = new ArrayList<String[]>();

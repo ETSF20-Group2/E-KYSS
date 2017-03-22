@@ -18,6 +18,9 @@ import java.io.IOException;
                 "/management/groups",
         }
 )
+/**
+ *  Denna klass är servlet för webbsidan "Projektgrupphantering".
+ */
 public class GroupManagementServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;

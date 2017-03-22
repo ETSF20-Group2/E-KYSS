@@ -6,7 +6,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 /**
- * Created by cx on 3/16/17.
+ *  Denna klass sköter vidaresändning av mail.
  */
 public class MailHandler {
     /**

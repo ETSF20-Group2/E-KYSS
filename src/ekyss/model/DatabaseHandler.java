@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ *  Denna klass innehåller webbapplikationens databasförfrågningar.
+ */
 public class DatabaseHandler {
     Database db;
     Connection conn;

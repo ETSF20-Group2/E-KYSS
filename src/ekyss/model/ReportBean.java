@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  Denna klass är bönan för för webbsidan "Veckorapportering".
+ */
 public class ReportBean implements Serializable {
     private String user;
     private String group;

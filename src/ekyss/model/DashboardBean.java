@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  Denna klass är bönan för för webbsidan "Sammanställning".
+ */
 public class DashboardBean implements Serializable {
 
     private String user = null;
