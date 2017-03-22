@@ -5,7 +5,7 @@ package ekyss.model;
  */
 public class DatabaseCredentials {
 
-    private static String url = "jdbc:mysql://vm23.cs.lth.se";
+    private static String url = "jdbc:mysql://vm23.cs.lth.se/pusp1702hbg";
     private static String user = "pusp1702hbg";
     private static String pass = "er74a0et";
 
