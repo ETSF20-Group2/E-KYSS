@@ -5,16 +5,26 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-import static ekyss.model.MailHandler.sendMail;
-
 /**
- * Created by cx on 3/16/17.
+ *  Denna klass sköter vidaresändning av mail.
  */
 public class MailHandler {
+    /**
+     * Skickar ett lösenord för en användare till en specifik e-post adress.
+     * @param recipient E-post adressen mailet ska skickas till.
+     * @param payload Lösenordet.
+     */
     public static void sendPassword(String recipient, String payload) {
         MailHandler.sendMail("puspekyss@gmail.com", "etsf202017", recipient, payload);
     }
 
+    /**
+     * Skickar ett mail till en användare.
+     * @param username E-post adress som mailet ska skickas ifrån.
+     * @param password Lösenord till e-post adressen.
+     * @param to E-post adress som mailet ska skickats till.
+     * @param payload Meddelande.
+     */
     public static void sendMail(final String username, final String password, String to, String payload) {
         String from = "puspekyss@gmail.com";
         String host = "smtp.gmail.com";

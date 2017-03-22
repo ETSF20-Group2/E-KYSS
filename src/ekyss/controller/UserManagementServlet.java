@@ -19,6 +19,9 @@ import java.util.regex.*;
                 "/management/users",
         }
 )
+/**
+ *  Denna klass är servlet för webbsidan "Användarhantering".
+ */
 public class UserManagementServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;

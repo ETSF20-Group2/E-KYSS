@@ -19,6 +19,9 @@ import java.io.IOException;
                 "/report",
         }
 )
+/**
+ *  Denna klass är servlet för webbsidan "Veckorapportering".
+ */
 public class ReportServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;

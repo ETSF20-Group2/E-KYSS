@@ -22,6 +22,9 @@ import java.util.Enumeration;
                 "/dashboard",
         }
 )
+/**
+ *  Denna klass är servlet för webbsidan "Sammanställning".
+ */
 public class DashboardServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;

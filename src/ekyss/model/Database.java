@@ -1,11 +1,13 @@
 package ekyss.model;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
-//import java.sql.Connection;
-
 import com.mysql.jdbc.Connection;
 
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ *  Denna klass sköter kopplingen till databasen.
+ */
 public class Database {
 
     private static Database db;
@@ -15,11 +17,15 @@ public class Database {
     private static Connection conn;
 
     private Database() {
-        url = Do_not_send_up_this_to_GitHub.getUrl();
-        user = Do_not_send_up_this_to_GitHub.getUser();
-        password = Do_not_send_up_this_to_GitHub.getPass();
+        url = DatabaseCredentials.getUrl();
+        user = DatabaseCredentials.getUser();
+        password = DatabaseCredentials.getPass();
     }
 
+    /**
+     * Hämtar en instans av databasen.
+     * @return Databasen.
+     */
     public static Database getInstance() {
         if (db == null) {
             db = new Database();
@@ -38,6 +44,9 @@ public class Database {
         }
     }
 
+    /**
+     * Kopplar ifrån databasen.
+     */
     public void close() {
         if (conn != null) {
             try {
@@ -49,6 +58,10 @@ public class Database {
         }
     }
 
+    /**
+     * Returnerar anslutningen till databasen.
+     * @return Anslutningen till databasen.
+     */
     public Connection getConnection() {
         if (conn == null) {
             open();
