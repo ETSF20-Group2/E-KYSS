@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Denna klass är bönan för för webbsidan "Användarinställningar".
+ */
 public class UserBean implements Serializable {
     private String userName;
     private String email;

@@ -3,6 +3,9 @@ package ekyss.model;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ *  Denna klass är skapar bönor som krevs för webbapplikationens olika webbsidor.
+ */
 public class BeanFactory {
 
 	/**

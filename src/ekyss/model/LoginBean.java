@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Denna klass är bönan för för webbapplikationens inloggningssida.
+ */
 public class LoginBean implements Serializable {
 
     private boolean login = false;

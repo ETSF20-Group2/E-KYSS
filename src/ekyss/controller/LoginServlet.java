@@ -20,6 +20,9 @@ import java.io.IOException;
                 "/logout",
         }
 )
+/**
+ *  Denna klass är servlet för inloggningen till webbapplikationen.
+ */
 public class LoginServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;

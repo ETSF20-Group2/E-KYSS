@@ -1,5 +1,8 @@
 package ekyss.model;
 
+/**
+ *  Denna klass är en tolk mellan bönan och databasen.
+ */
 public class BeanTransaction {
 
 	/**
@@ -47,7 +50,7 @@ public class BeanTransaction {
 	/**
 	 * Tar bort en eller flera användare.
 	 * @param users En vektor som innehåller namnen på användarna som ska tas bort.
-	 * @returns true om alla specificerade användare tagits bort, annars false.
+	 * @return true om alla specificerade användare tagits bort, annars false.
 	 */
 	public static boolean deleteUsers(String[] users) { return new DatabaseHandler().deleteUsers(users); }
 
