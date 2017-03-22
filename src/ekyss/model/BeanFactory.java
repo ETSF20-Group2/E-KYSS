@@ -115,6 +115,7 @@ public class BeanFactory {
 	/**
 	 * Kollar om bönan är behörig att logga in i systemet. För att ta reda på om användaren
 	 * var behörig kollas bean.getLogin();
+	 * @param bean En LoginBean som måste innehålla username, password och selectedGroup.
 	 */
 	public static void checkLoginBean(LoginBean bean) {
 		bean.setLogin(

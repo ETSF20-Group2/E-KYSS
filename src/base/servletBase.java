@@ -42,10 +42,10 @@ public class servletBase extends HttpServlet {
     /**
      * Utility-funktion för att beräkna tidsdifferens mellan första entry till senaste
      * aktivitet/session aktivitet.
-     * @param date1
-     * @param date2
-     * @param timeUnit
-     * @return
+     * @param date1 Start tid.
+     * @param date2 Slut tid.
+     * @param timeUnit Tidsenheter
+     * @return tidsdifferensen mellan första enty till senaste aktivitet.
      */
     public static long calcActivityTime(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
@@ -55,9 +55,9 @@ public class servletBase extends HttpServlet {
     /**
      * Validerar aktiviteten och returnerar sant eller falskt om senaste aktivitet skedde
      * för maxInterval minuter sen.
-     * @param session
-     * @param maxInterval
-     * @return
+     * @param session Sessionen.
+     * @param maxInterval Max tid för inaktivitet.
+     * @return true om senate aktivitet skedde för maxInterval minuter sen.
      */
     protected boolean validateActivity(HttpSession session, long maxInterval) {
         Date createTime = new Date(session.getCreationTime());
@@ -76,12 +76,12 @@ public class servletBase extends HttpServlet {
 
     /**
      * Vidaresänder böna till en given vy-nivå (JSP).
-     * @param request
-     * @param response
-     * @param patternToJSP
-     * @param bean
-     * @throws ServletException
-     * @throws IOException
+     * @param request HttpServletRequesten
+     * @param response HttpServletResponsen
+     * @param patternToJSP Vägen till JSP sidan.
+     * @param bean En böna av vilken typ som helst med värden jsp-sidan kan behöva.
+     * @throws ServletException ServletException
+     * @throws IOException IOException
      */
     protected void forwardToView(HttpServletRequest request, HttpServletResponse response, String patternToJSP, Object bean) throws ServletException, IOException {
         if(!validateActivity(request.getSession(), MAXINTERVAL)) {
@@ -95,11 +95,11 @@ public class servletBase extends HttpServlet {
 
     /**
      * Vidaresänder till given vy-nivå (JSP).
-     * @param request
-     * @param response
-     * @param patternToJSP
-     * @throws ServletException
-     * @throws IOException
+     * @param request HttpServletRequesten
+     * @param response HttpServletResponsen
+     * @param patternToJSP Vägen till JSP sidan.
+     * @throws ServletException ServletException
+     * @throws IOException IOException
      */
     protected void forwardToView(HttpServletRequest request, HttpServletResponse response, String patternToJSP) throws ServletException, IOException {
         ServletContext sc = getServletContext();
@@ -112,7 +112,7 @@ public class servletBase extends HttpServlet {
     /**
      * Kollar om användaren är inloggad och har behörighet att visa sidan.
      * ((( Vad jag kan se är det bara dessa servlets som behöver någon specialbehandling beroende på roll )))
-     * @param request
+     * @param request HttpServletRequest
      * @return true om användaren har behörighet, annars false.
      */
     protected boolean securityCheck(HttpServletRequest request){
