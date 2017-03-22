@@ -16,6 +16,9 @@ import java.io.IOException;
                 "/settings/user",
         }
 )
+/**
+ *  Denna klass är servlet för webbsidan "Användarinställning".
+ */
 public class UserServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;

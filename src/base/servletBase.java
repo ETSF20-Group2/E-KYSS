@@ -13,23 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- *  This class is the superclass for all servlets in the application.
- *  It includes basic functionality required by many servlets, like for example a page head
- *  written by all servlets, and the connection to the database.
- *
- *  This application requires a database.
- *  For username and password, see the constructor in this class.
- *
- *  <p>The database can be created with the following SQL command:
- *  mysql> create database base;
- *  <p>The required table can be created with created with:
- *  mysql> create table users(name varchar(10), password varchar(10), primary key (name));
- *  <p>The administrator can be added with:
- *  mysql> insert into users (name, password) values('admin', 'adminp');
- *
- *  @author Martin Host
- *  @version 1.0
- *
+ *  Denna klass är superklassen för alla servlets i denna applikation.
  */
 public class servletBase extends HttpServlet {
 
@@ -58,10 +42,10 @@ public class servletBase extends HttpServlet {
     /**
      * Utility-funktion för att beräkna tidsdifferens mellan första entry till senaste
      * aktivitet/session aktivitet.
-     * @param date1
-     * @param date2
-     * @param timeUnit
-     * @return
+     * @param date1 Start tid.
+     * @param date2 Slut tid.
+     * @param timeUnit Tidsenheter
+     * @return tidsdifferensen mellan första enty till senaste aktivitet.
      */
     public static long calcActivityTime(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
@@ -71,9 +55,9 @@ public class servletBase extends HttpServlet {
     /**
      * Validerar aktiviteten och returnerar sant eller falskt om senaste aktivitet skedde
      * för maxInterval minuter sen.
-     * @param session
-     * @param maxInterval
-     * @return
+     * @param session Sessionen.
+     * @param maxInterval Max tid för inaktivitet.
+     * @return true om senate aktivitet skedde för maxInterval minuter sen.
      */
     protected boolean validateActivity(HttpSession session, long maxInterval) {
         Date createTime = new Date(session.getCreationTime());
@@ -90,6 +74,15 @@ public class servletBase extends HttpServlet {
         }
     }
 
+    /**
+     * Vidaresänder böna till en given vy-nivå (JSP).
+     * @param request HttpServletRequesten
+     * @param response HttpServletResponsen
+     * @param patternToJSP Vägen till JSP sidan.
+     * @param bean En böna av vilken typ som helst med värden jsp-sidan kan behöva.
+     * @throws ServletException ServletException
+     * @throws IOException IOException
+     */
     protected void forwardToView(HttpServletRequest request, HttpServletResponse response, String patternToJSP, Object bean) throws ServletException, IOException {
         if(!validateActivity(request.getSession(), MAXINTERVAL)) {
             response.sendRedirect(request.getContextPath() + "/logout");
@@ -100,6 +93,14 @@ public class servletBase extends HttpServlet {
         forwardToView(request, response, patternToJSP);
     }
 
+    /**
+     * Vidaresänder till given vy-nivå (JSP).
+     * @param request HttpServletRequesten
+     * @param response HttpServletResponsen
+     * @param patternToJSP Vägen till JSP sidan.
+     * @throws ServletException ServletException
+     * @throws IOException IOException
+     */
     protected void forwardToView(HttpServletRequest request, HttpServletResponse response, String patternToJSP) throws ServletException, IOException {
         ServletContext sc = getServletContext();
         RequestDispatcher rd = sc.getRequestDispatcher(patternToJSP);
@@ -111,7 +112,7 @@ public class servletBase extends HttpServlet {
     /**
      * Kollar om användaren är inloggad och har behörighet att visa sidan.
      * ((( Vad jag kan se är det bara dessa servlets som behöver någon specialbehandling beroende på roll )))
-     * @param request
+     * @param request HttpServletRequest
      * @return true om användaren har behörighet, annars false.
      */
     protected boolean securityCheck(HttpServletRequest request){

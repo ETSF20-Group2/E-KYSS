@@ -19,6 +19,9 @@ import java.io.IOException;
                 "/management/reports",
         }
 )
+/**
+ *  Denna klass är servlet för webbsidan "Veckorapporthantering".
+ */
 public class ReportManagementServlet extends servletBase {
 
     private static final long serialVersionUID = 1L;
