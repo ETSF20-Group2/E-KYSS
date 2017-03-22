@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Denna klass är bönan för för webbsidan "Projektgrupphantering".
+ */
 public class GroupManagementBean implements Serializable {
 
     private List<String> groups = new ArrayList<>();

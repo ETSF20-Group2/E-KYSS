@@ -5,6 +5,9 @@ import org.apache.commons.logging.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ *  Denna klass matar bönan utifrån innehållet i en given anrop.
+ */
 public class BeanUtilities {
 
     /** Examines all of the request parameters to see if
