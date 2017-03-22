@@ -6,7 +6,7 @@ public class BeanTransaction {
 	 * Tilldelar roller till en eller flera användare inom en grupp.
 	 * @param group Gruppen som tilldelningen sker inom.
 	 * @param assigns En vektor som består av strängar med formatet "<b>användarnamn roll</b>"
-	 * @return
+	 * @return true om alla användare har tilldelats sina roller, annars false.
 	 */
 	public static boolean assignRoles(String group, String[] assigns){
 		return new DatabaseHandler().assignRoles(group, assigns);
@@ -47,9 +47,15 @@ public class BeanTransaction {
 	/**
 	 * Tar bort en eller flera användare.
 	 * @param users En vektor som innehåller namnen på användarna som ska tas bort.
+	 * @returns true om alla specificerade användare tagits bort, annars false.
 	 */
 	public static boolean deleteUsers(String[] users) { return new DatabaseHandler().deleteUsers(users); }
 
+	/**
+	 * Byter lösenord på en specifik användare.
+	 * @param b En UserBean med värde på attributen userName, oldPassword och newPassword1.
+	 * @return true om lösenordet har ändrats, annars false.
+	 */
 	public static boolean changePassword(UserBean b) {
 		return new DatabaseHandler().changePassword(b.getUserName(), b.getOldPassword(), b.getNewPassword1());
 	}
@@ -111,7 +117,7 @@ public class BeanTransaction {
 	 *  <br><b><i>week</i></b> Veckan som rapporten gäller för.
 	 *  <br><b><i>reportValues</i></b> En Map som beskriver vilka kolumner som ska rapporteras.
 	 *                     <br>             Nyckeln är kolumnnamnet och värdet är antalet minuter.
-	 * @return 0 om tidrapporten skapats, 1 om det är en dublett, 2 om användaren inte har nån roll, annars 3 (okänd fel).
+	 * @return 0 om tidrapporten skapats, 1 om det är en dubblett, 2 om användaren inte har nån roll, annars 3 (okänd fel).
 	 */
 	public static int createTimeReport(ReportBean bean){
 		return new DatabaseHandler().createTimeReport(bean.getUser(), bean.getGroup(), bean.getWeek(), bean.getReportValues());

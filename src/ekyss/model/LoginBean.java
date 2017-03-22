@@ -22,6 +22,10 @@ public class LoginBean implements Serializable {
         login = status;
     }
 
+    /**
+     * Returnerar om en användare är inloggad i systemet.
+     * @return true om användaren är inloggad, annars false.
+     */
     public boolean isLogin() {
         return login;
     }
@@ -37,6 +41,14 @@ public class LoginBean implements Serializable {
         this.err_code = err_code;
     }
 
+    /**
+     * Hämtar felkoden, som används i login.jsp
+     * @return <b>0</b> = inget felmeddelande
+     *         <br><b>1</b>  = fel anv.namn och/eller lösenord
+     *         <br><b>2</b>  = utloggningsmeddelande efter 30 minuter
+     *         <br><b>3</b>  = meddelande vid aktiv utloggning
+     *         <br><b>4</b>  = meddelande när användaren loggar in och går bakåt i webbläsaren för att sedan försöka logga in på nytt.
+     */
     public int getErrorCode() {
         return err_code;
     }
@@ -57,6 +69,10 @@ public class LoginBean implements Serializable {
         this.groups.add(group);
     }
 
+    /**
+     * Hämtar en lista av alla tillgängliga projektgrupper.
+     * @return En lista av alla tillgängliga projektgrupper.
+     */
     public List<String> getAllGroups() {
         return groups;
     }
@@ -69,6 +85,10 @@ public class LoginBean implements Serializable {
         this.username = username;
     }
 
+    /**
+     * Hämtar ett användarnamn.
+     * @return Användarnamn.
+     */
     public String getUsername() {
         return username;
     }
@@ -81,6 +101,10 @@ public class LoginBean implements Serializable {
         this.password = password;
     }
 
+    /**
+     * Hämtar lösenordet.
+     * @return Lösenordet.
+     */
     public String getPassword() {
         return password;
     }
@@ -93,18 +117,28 @@ public class LoginBean implements Serializable {
         this.group = group;
     }
 
+    /**
+     * Hämtar den projektgrupp användaren loggar in för.
+     * @return Projektgruppen.
+     */
     public String getSelectedGroup() {
         return group;
     }
 
     /**
      * Val av layout för inloggningssidan.
-     * @param adminLogin True - administrationsinloggning, False - ordinarie användarinloggning
+     * @param adminLogin <b>true:</b>: administrationsinloggning
+     *               <br><b>false</b>: ordinarie användarinloggning
      */
     public void setAdminLogin(boolean adminLogin) {
         this.adminLogin = adminLogin;
     }
 
+    /**
+     * Hämtar om det ska vara administrationsinloggning eller inte.
+     * @return <b>true:</b>: administrationsinloggning
+     *     <br><b>false</b>: ordinarie användarinloggning
+     */
     public boolean getAdminLogin() {
         return adminLogin;
     }
