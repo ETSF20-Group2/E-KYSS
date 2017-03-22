@@ -922,7 +922,7 @@ public class ReportBean implements Serializable {
      * Sätter vilken typ av formulär informationen kommer ifrån.
      * @param type <b>"create"</b>: En ny rapport ska skapas.
      * <br><b>"update"</b>: En gammal rapport ska uppdateras.
-     * <br<b>"remove"</b>: En rapport ska raderas.
+     * <br><b>"remove"</b>: En rapport ska raderas.
      * <br><b>"weekSelect"</b>: En rapport med specificerad vecka ska hämtas från databasen.
      */
     public void setType(String type){
@@ -934,7 +934,7 @@ public class ReportBean implements Serializable {
      * Hämtar vilken typ av formulär informationen kommer ifrån.
      * @return <b>"create"</b>: En ny rapport ska skapas.
      * <br><b>"update"</b>: En gammal rapport ska uppdateras.
-     * <br<b>"remove"</b>: En rapport ska raderas.
+     * <br><b>"remove"</b>: En rapport ska raderas.
      * <br><b>"weekSelect"</b>: En rapport med specificerad vecka ska hämtas från databasen.
      */
     public String getType(){
@@ -953,7 +953,7 @@ public class ReportBean implements Serializable {
 
     /**
      * Sätter vilken flik på sidan användaren är på.
-     * @return <b>"create"</b>: Fliken där man skapar nya rapporter.
+     * @param tab  <b>"create"</b>: Fliken där man skapar nya rapporter.
      * <br><b>"update"</b>: Fliken där man uppdaterar rapporter.
      * <br><b>"remove"</b>: Fliken där man raderar rapporter.
      */

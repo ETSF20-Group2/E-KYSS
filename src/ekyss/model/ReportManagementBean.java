@@ -43,7 +43,7 @@ public class ReportManagementBean implements Serializable {
 
     /**
      * Sätter vilken grupp rapporterna ska signeras/annulleras för.
-     * @return Gruppen rapporterna ska signeras/annulleras för.
+     * @param group Gruppen rapporterna ska signeras/annulleras för.
      */
     public void setGroup(String group) {
         this.group = group;

@@ -1,7 +1,7 @@
 package ekyss.model;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -20,6 +20,8 @@ public class BeanUtilities {
      *  is malformed (cannot be converted into the expected
      *  type), numeric properties are assigned zero and boolean
      *  properties are assigned false: no exception is thrown.
+     *  @param fromBean The bean which will be populated.
+     *  @param request The HttpServletRequest from which the bean will be populated.
      */
     public static void populateBean(Object fromBean, HttpServletRequest request) {
         populateBean(fromBean, request.getParameterMap());
@@ -29,6 +31,8 @@ public class BeanUtilities {
      *  bean property names; Map values are the bean property
      *  values. Type conversion is performed automatically as
      *  described above.
+     *  @param bean The bean which will be populated.
+     *  @param propertyMap A Map from which the bean will be populated.
      */
     public static void populateBean(Object bean, Map propertyMap) {
         try {

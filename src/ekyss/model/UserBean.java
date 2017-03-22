@@ -115,7 +115,7 @@ public class UserBean implements Serializable {
 
     /**
      * Sätter rollen för användaren i gruppen den är inloggad för.
-     * @param role
+     * @param role Namnet på rollen.
      */
     public void setRole(String role) {
         this.role = role;

@@ -69,7 +69,6 @@ public class BeanTransaction {
 	 *             <br><b><i>username</i></b> namnet på användaren som ska skapas.
 	 *             <br><b><i>email</i></b> e-post adress för användaren (lösenordet skickas till denna adress).
 	 *             <br><b><i>password</i></b> lösenordet som har valts till användaren.
-	 * @return true om användaren har lagts till, annars false.
 	 */
 	public static void addUser(UserManagementBean bean){
 		new DatabaseHandler().addUser(bean.getUsername(), bean.getEmail(), bean.getPassword());

@@ -236,7 +236,7 @@ public class GroupManagementBean implements Serializable {
 
     /**
      * Sätter en string-vektor med projektledare som ska tas bort.
-     * @return En String-vektor med alla projektledare som ska tas bort.
+     * @param removePl En String-vektor med alla projektledare som ska tas bort.
      * <br>(Strängarna har formen "<b>användarnamn</b> <b>grupp</b>")
      */
     public void setRemovePl(String[] removePl) {
