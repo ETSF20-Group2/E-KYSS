@@ -23,40 +23,82 @@ public class DashboardBean implements Serializable {
     private Integer week;
 
 
-
+    /**
+     * Sätter attributet group med namnet på gruppen.
+     * @param group Namnet på gruppen.
+     */
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * Returnerar gruppens namn
+     * @return Gruppens namn.
+     */
     public String getGroup() {
         return group;
     }
 
+    /**
+     * Sätter attributet user med namnet på användaren.
+     * @param user Användarnamnet.
+     */
     public void setUser(String user) {
         this.user = user;
     }
 
+    /**
+     * Returnerar användarens namn.
+     * @return Användarnamnet.
+     */
     public String getUser() {
         return user;
     }
 
+    /**
+     * Sätter attributen reportValuesSum samt sumA, sum_d, sum_i, sum_f och sum_r
+     * @param reportValuesSum En map med alla värden i en tidrapport. Nyckeln ska vara namnet på kolumnen, värdet ska vara
+     *                        antal minuter.
+     */
     public void setReportValuesSum(Map<String, Integer> reportValuesSum) {
         this.reportValuesSum = reportValuesSum;
         setSum();
     }
 
+    /**
+     * Hämtar reportValuesSum
+     * @return En Map med alla värden i en tidrapport. I mappen är nyckeln namnet på kolumnen och värdet är antal minuter.
+     */
     public Map<String, Integer> getReportValuesSum() {
         return reportValuesSum;
     }
 
+    /**
+     * Sätter vilken flik användaren är inne på.
+     * @param tab Fliken.
+     */
     public void setTab(String tab) {
         this.tab = tab;
     }
 
+    /**
+     * Hämtar vilken flik användaren är inne på.
+     * @return Fliken.
+     */
     public String getTab() {
         return tab;
     }
 
+    /**
+     * Hämtar summan för en viss aktivitet eller totalsumman för alla aktiviteter.
+     * @param type Vilken aktivitet man vill hämta ut. Man kan välja mellan:
+     *             <br><b><i>sumA</i></b>: Summan av alla aktiviteter.
+     *             <br><b><i>sum_d</i></b>: Summan av aktiviteten D.
+     *             <br><b><i>sum_i</i></b>: Summan av aktiviteten I.
+     *             <br><b><i>sum_f</i></b>: Summan av aktiviteten F.
+     *             <br><b><i>sum_r</i></b>: Summan av aktiviteten R.
+     * @return Summan av vald aktivitet/ den totala summan.
+     */
     public Integer getSum(String type) {
         switch (type) {
             case "sumA": return sumA;
@@ -68,34 +110,66 @@ public class DashboardBean implements Serializable {
         }
     }
 
+    /**
+     * Returnerar en lista på användare (userList).
+     * @return En lista på användare.
+     */
     public List<String[]> getUserList() {
         return userList;
     }
 
+    /**
+     * Sätter värde på userList (lista med användare).
+     * @param userList en lista med användarnamn.
+     */
     public void setUserList(List<String[]> userList) {
         this.userList = userList;
     }
 
+    /**
+     * Sätter attributet role (en användares roll).
+     * @param role Rollen man vill sätta.
+     */
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * Returnerar role.
+     * @return En roll.
+     */
     public String getRole() {
         return role;
     }
 
+    /**
+     * Sätter attributet weeks (en lista med veckor).
+     * @param weeks En lista med veckor.
+     */
     public void setWeeks(List<Integer> weeks) {
         this.weeks = weeks;
     }
 
+    /**
+     * Returnerar weeks (en lista med veckor).
+     * @return En lista med veckor.
+     */
     public List<Integer> getWeeks() {
         return weeks;
     }
 
+    /**
+     * Sätten attributet week (en vecka).
+     * @param week En vecka.
+     */
     public void setWeek(Integer week) {
         this.week = week;
     }
 
+    /**
+     * Hämtar attributet week (en vecka).
+     * @return En vecka.
+     */
     public Integer getWeek() {
         return week;
     }
@@ -119,57 +193,5 @@ public class DashboardBean implements Serializable {
         sumA += reportValuesSum.get("t_44");
         sumA += reportValuesSum.get("t_100");
     }
-
-    /*
-    private String user;
-    private String group;
-    private int week;
-    private int documentSummary;
-    private int activitySummary;
-    private Map<String, Integer> reportValues = new HashMap<String, Integer>();
-
-    public String getUser() {
-        return user;
-    }
-    public void setUser(String user) {
-        this.user = user;
-    }
-    public String getGroup() {
-        return group;
-    }
-    public void setGroup(String group) {
-        this.group = group;
-    }
-    public int getWeek() {
-        return week;
-    }
-    public void setWeek(int week) {
-        this.week = week;
-    }
-    public int getDocumentSummary() {
-        return documentSummary;
-    }
-    public void setDocumentSummary(int documentSummary) {
-        this.documentSummary = documentSummary;
-    }
-    public int getActivitySummary() {
-        return activitySummary;
-    }
-    public void setActivitySummary(int activitySummary) {
-        this.activitySummary = activitySummary;
-    }
-    public Map<String, Integer> getReportValues() {
-        return reportValues;
-    }
-    public void setReportValues(Map<String, Integer> reportValues) {
-        this.reportValues = reportValues;
-    }
-    public void setReportValues(String col, int value){
-        reportValues.put(col, value);
-    }
-    public int getReportValues(String col){
-        return reportValues.get(col);
-    }
-    */
 
 }
